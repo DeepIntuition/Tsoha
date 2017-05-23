@@ -5,7 +5,7 @@ source config/environment.sh
 echo "Luodaan projektikansio..."
 
 # Luodaan projektin kansio
-ssh $USERNAME@users.cs.helsinki.fi "
+ssh $USERNAME@users2017.cs.helsinki.fi "
 cd htdocs
 touch favicon.ico
 mkdir $PROJECT_FOLDER
@@ -21,14 +21,14 @@ echo "Valmis!"
 echo "Siirretään tiedostot users-palvelimelle..."
 
 # Siirretään tiedostot palvelimelle
-scp -r app config lib vendor sql assets index.php composer.json $USERNAME@users.cs.helsinki.fi:htdocs/$PROJECT_FOLDER
+scp -r app config lib vendor sql assets index.php composer.json $USERNAME@users2017.cs.helsinki.fi:htdocs/$PROJECT_FOLDER
 
 echo "Valmis!"
 
 echo "Asetetaan käyttöoikeudet ja asennetaan Composer..."
 
 # Asetetaan oikeudet ja asennetaan Composer
-ssh $USERNAME@users.cs.helsinki.fi "
+ssh $USERNAME@users2017.cs.helsinki.fi "
 chmod -R a+rX htdocs
 cd htdocs/$PROJECT_FOLDER
 wget https://getcomposer.org/download/1.2.4/composer.phar
