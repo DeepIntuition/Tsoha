@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block content %}
+  <h2>Modify Algorithm</h2>
+
+  <form>
+    <div class="form-group">
+      <label>Name</label>
+      <input type="text" class="form-control" value="Ford Fulkerson algorithm">
+    </div>
+    <div class="form-group">
+      <label for="sel1">Class:</label>
+      <select class="form-control" id="sel1">
+        <option>Maximum Flow Algorithm</option>
+        <option>Sorting</option>
+        <option>Matrix Multiplication</option>
+        <option>Graph Algorithm</option>
+        <option>Search Algorithm</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>Year:</label>
+      <input type="text" class="form-control" value="1956">
+    </div>
+    <div class="form-group">
+      <label>Authors:</label>
+      <input type="text" class="form-control" value="L. R. Ford, Jr, D. R. Fulkerson">
+    </div>
+    <div class="form-group">
+      <label for="sel2">Link similar algorithms:</label>
+      <select class="form-control" id="sel2">
+        <option>Edmonds-Karp Algorithm</option>
+        <option>Merge Sort</option>
+        <option>Strassen algorithm</option>
+        <option>Quick Sort</option>
+        <option>A*</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>Description</label>
+      <textarea class="form-control"> The Ford–Fulkerson method or Ford–Fulkerson algorithm (FFA) is a greedy algorithm that computes the maximum flow in a flow network. It is called a "method" instead of an "algorithm" as the approach to finding augmenting paths in a residual graph is not fully specified[1] or it is specified in several implementations with different running times.[2] It was published in 1956 by L. R. Ford, Jr. and D. R. Fulkerson.[3] The name "Ford–Fulkerson" is often also used for the Edmonds–Karp algorithm, which is a specialization of Ford–Fulkerson.
+
+      The idea behind the algorithm is as follows: as long as there is a path from the source (start node) to the sink (end node), with available capacity on all edges in the path, we send flow along one of the paths. Then we find another path, and so on. A path with available capacity is called an augmenting path. (source Wikipedia)
+      </textarea>
+    </div>
+    <div class="form-group">
+      <button type="submit" class="btn btn-primary">Save</button>
+    </div>
+  </form>
+{% endblock %}

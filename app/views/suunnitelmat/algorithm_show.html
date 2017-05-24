@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block content %}
+  <h1>Ford Fulkerson algorithm</h1>
+  <!-- Painikkeet tähän -->
+  <p>
+    <button class="btn btn-danger">Poista</button> <a href="#" class="btn btn-default">Muokkaa</a>
+  </p>
+  <!-- Tiedot tulee listana tähän -->
+  <ul>
+    <li><strong>Class:</strong> Maximum Flow Algorithm</li>
+    <li><strong>Time Complexity:</strong> O(Ef)</li>
+    <li><strong>Year:</strong> 1956</li>
+    <li><strong>Authors:</strong> L. R. Ford, Jr, D. R. Fulkerson</li>
+    <li><strong>Similar algorithms:</strong> <a href="#" class="btn btn-default">Edmonds-Karp Algorithm</a></li>
+    <li><strong>Tags:</strong> efficient, fast, flow graph</li>
+    <li><strong>Implementations:</strong> 
+    <button type="button" class="btn btn-danger btn-sm">Ruby</button> 
+    <button type="button" class="btn btn-default btn-sm">C++</button>
+    <button type="button" class="btn btn-success btn-sm">Java</button>
+    <button type="button" class="btn btn-primary btn-sm">Python</button>
+    </li>
+  </ul>
+  <p>
+    <a href="#" class="btn btn-success">Add new implementation</a>
+  </p>
+  <!-- Kuvaus tulee tähän -->
+  <p>
+    The Ford–Fulkerson method or Ford–Fulkerson algorithm (FFA) is a greedy algorithm that computes the maximum flow in a flow network. It is called a "method" instead of an "algorithm" as the approach to finding augmenting paths in a residual graph is not fully specified[1] or it is specified in several implementations with different running times.[2] It was published in 1956 by L. R. Ford, Jr. and D. R. Fulkerson.[3] The name "Ford–Fulkerson" is often also used for the Edmonds–Karp algorithm, which is a specialization of Ford–Fulkerson.
+
+    The idea behind the algorithm is as follows: as long as there is a path from the source (start node) to the sink (end node), with available capacity on all edges in the path, we send flow along one of the paths. Then we find another path, and so on. A path with available capacity is called an augmenting path. (source Wikipedia)
+  </p>
+
+  <h2>Time-Complexity Analyzes by User</h2>
+  <ul>
+    <li><strong><a href="#" class="btn btn-default">UserX</a></strong></li>
+    <li><strong><a href="#" class="btn btn-default">UserY</a></strong></li>
+    <li><strong><a href="#" class="btn btn-default">UserK</a></strong></li>
+    <li><strong><a href="#" class="btn btn-default">UserA</a></strong></li>
+  </ul>
+  <p>
+    <a href="#" class="btn btn-success">Add new analysis</a>
+  </p>
+{% endblock %}

@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block content %}
+  <h1>Algorithms</h1>
+
+  <p>
+    <a href="#" class="btn btn-success">Add new algorithm</a>
+  </p>
+
+  <table class="table table-striped table-bordered">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Class</th>
+        <th>Time Complexity</th>
+        <th>Available implementations</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <!-- Listataan algoritmit tähän -->
+      <tr>
+        <td><a href="#">Ford Fulkerson algorithm</a></td>
+        <td>Maximum Flow</td>
+        <td>O(Ef)</td>
+        <td><label class="label label-danger"></label></td>
+        <th><a class="btn btn-default btn-sm" href="#">Modify</a></th>
+      </tr>
+      <tr>
+        <td><a href="#">Merge Sort</a></td>
+        <td>Sorting</td>
+        <td>O(nlogn)</td>
+        <td><label class="label label-danger"></label></td>
+        <th><a class="btn btn-default btn-sm" href="#">Modify</a></th>
+      </tr>
+      <tr>
+        <td><a href="#">Strassen algorithm</a></td>
+        <td>Matrix multiplication</td>
+        <td>O(n^2.8074)</td>
+        <td><label class="label label-danger"></label></td>
+        <th><a class="btn btn-default btn-sm" href="#">Modify</a></th>
+      </tr>
+    </tbody>
+  </table>
+{% endblock %}
