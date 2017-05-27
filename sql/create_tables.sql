@@ -7,9 +7,10 @@ CREATE TABLE Algorithm(
   id SERIAL PRIMARY KEY,
   class_id INTEGER REFERENCES Class(id), -- Viiteavain Class-tauluun
   name varchar(120) NOT NULL,
-  timecomplexity varchar(30),
+  timecomplexity varchar(30) NOT NULL,
   year varchar(4),
-  author varchar(120)
+  author varchar(120),
+  description varchar(4000) NOT NULL
 );
 
 CREATE TABLE Algorithmlink(
