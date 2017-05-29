@@ -6,7 +6,7 @@ CREATE TABLE Class(
 CREATE TABLE Algorithm(
   id SERIAL PRIMARY KEY,
   class_id INTEGER REFERENCES Class(id), -- Viiteavain Class-tauluun
-  name varchar(120) NOT NULL,
+  name varchar(120) UNIQUE NOT NULL,
   timecomplexity varchar(30) NOT NULL,
   year varchar(4),
   author varchar(120),
@@ -21,7 +21,7 @@ CREATE TABLE Algorithmlink(
 
 CREATE TABLE Contributor(
   id SERIAL PRIMARY KEY,
-  name varchar(15) NOT NULL,
+  name varchar(15) UNIQUE NOT NULL,
   password varchar(30) NOT NULL,
   administrator boolean DEFAULT FALSE
 );
@@ -46,7 +46,7 @@ CREATE TABLE Analysis(
 
 CREATE TABLE Tag(
   id SERIAL PRIMARY KEY,
-  name varchar(30) NOT NULL
+  name varchar(30) UNIQUE NOT NULL
 );
 
 CREATE TABLE Tagobject(
