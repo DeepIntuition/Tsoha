@@ -24,15 +24,15 @@ INSERT INTO Algorithm (class_id, name, timecomplexity, year, author, description
     		'Ford and Fulkerson',
     		'Ford-Fulkerson Algorithm (FFA) is a residual flow algoritm in flow graph networks.');
 
-INSERT INTO Algorithm (class_id, name, timecomplexity, year, author)
+INSERT INTO Algorithm (class_id, name, timecomplexity, year, author,description)
     VALUES ((SELECT id FROM Class WHERE name='Sorting Algorithm'), 
     		'Mergesort',
     		'O(nlogn)',
     		'1945',
     		'John von Neumann',
-    		'In computer science, merge sort (also commonly spelled mergesort) is an efficient, general-purpose, comparison-based sorting algorithm. Most implementations produce a stable sort, which means that the implementation preserves the input order of equal elements in the sorted output. Mergesort is a divide and conquer algorithm that was invented by John von Neumann in 1945.[1] A detailed description and analysis of bottom-up mergesort appeared in a report by Goldstine and Neumann as early as 1948');
+    		'Mergesort is a general-purpose sorting algorithm invented by John van Neumann in 1945');
 
-INSERT INTO Algorithm (class_id, name, timecomplexity, year, author)
+INSERT INTO Algorithm (class_id, name, timecomplexity, year, author, description)
     VALUES ((SELECT id FROM Class WHERE name='Linear Algebra'), 
     		'Strassen Matrix Multiplication',
     		'O(n^2.8047)',
@@ -40,7 +40,7 @@ INSERT INTO Algorithm (class_id, name, timecomplexity, year, author)
     		'Voler Strassen',
     		'In linear algebra, the Strassen algorithm, named after Volker Strassen, is an algorithm for matrix multiplication. It is faster than the standard matrix multiplication algorithm and is useful in practice for large matrices, but would be slower than the fastest known algorithms for extremely large matrices. Strassens algorithm works for any ring, such as plus/multiply, but not all semirings, such as min/plus or boolean algebra, where the naive algorithm still works, and so called combinatorial matrix multiplication.');
 
-INSERT INTO Algorithm (class_id, name, timecomplexity, year, author)
+INSERT INTO Algorithm (class_id, name, timecomplexity, year, author, description)
     VALUES ((SELECT id FROM Class WHERE name='Sorting Algorithm'), 
     		'Heap Sort',
     		'O(nlogn)',

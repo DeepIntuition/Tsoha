@@ -9,7 +9,7 @@ CREATE TABLE Algorithm(
   name varchar(120) UNIQUE NOT NULL,
   timecomplexity varchar(30) NOT NULL,
   year varchar(4),
-  author varchar(120),
+  author varchar(120S),
   description varchar(4000) NOT NULL
 );
 
