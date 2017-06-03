@@ -9,10 +9,10 @@ INSERT INTO Class (name)
     VALUES ('Linear Algebra');
 
 -- Luodaan yksi ylläpitäjä ja yksi tavallinen käyttäjä
-INSERT INTO Contributor (username, password, administrator)
+INSERT INTO Contributor (name, password, administrator)
     VALUES ('Yyni Yllapitaja', 'pwsedwrs223**', TRUE);
 
-INSERT INTO Contributor (username, password)
+INSERT INTO Contributor (name, password)
     VALUES ('NikkiSaari56', 'algorithm_lover96');
 
 -- Luodaan 4 uutta algoritmia
@@ -24,7 +24,7 @@ INSERT INTO Algorithm (class_id, name, timecomplexity, year, author, description
     		'Ford and Fulkerson',
     		'Ford-Fulkerson Algorithm (FFA) is a residual flow algoritm in flow graph networks.');
 
-INSERT INTO Algorithm (class_id, name, timecomplexity, year, author,description)
+INSERT INTO Algorithm (class_id, name, timecomplexity, year, author, description)
     VALUES ((SELECT id FROM Class WHERE name='Sorting Algorithm'), 
     		'Mergesort',
     		'O(nlogn)',
@@ -77,7 +77,7 @@ INSERT INTO Algorithmlink (algorithmfrom_id, algorithmto_id)
 
 -- Lisätään NikkiSaari56:n versio Pythonilla toteutetusta Ford-Fulkerson-algoritmista
 INSERT INTO Implementation (algorithm_id, contributor_id, programminglanguage, date, description)
-	VALUES ((SELECT id FROM Algorithm WHERE name='Ford-Fulkerson'), 
+	VALUES ((SELECT id FROM Algorithm WHERE name='Ford Fulkerson'), 
 			(SELECT id FROM Contributor WHERE name='NikkiSaari56'),
 			'Python',
 			'2012-01-08',
