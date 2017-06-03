@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+{% block content %}
+  <h1>Add new Algorithm</h1>
+
+  <form method="post" action="{{base_path}}/algorithm/new">
+    <div class="form-group">
+      <label>Name: </label>
+      <input name="name" class="form-control" type="text">
+    </div>
+
+    <div class="form-group">
+      <label for="class">Class:</label>
+      <select class="form-control" id="class">
+        <option>Maximum Flow Algorithm</option>
+        <option>Sorting</option>
+        <option>Matrix Multiplication</option>
+        <option>Graph Algorithm</option>
+        <option>Search Algorithm</option>
+      </select>
+    </div>
+
+   <div class="form-group">
+      <label for="timecomplexity">Time Complexity:</label>
+      <select class="form-control" id="timecomplexity">
+        <option>O(1) - Constant</option>
+        <option>O(logn) - Logarithmic</option>
+        <option>O(n) - Linear</option>
+        <option>O(nlogn) - n-Logarithmic</option>
+        <option>O(n^2) - Squared</option>
+        <option>O(n^3) - Cubed</option>
+        <option>O(n^k) - Polynomial</option>
+        <option>O(2^n^k) - Non-deterministic Polynomial</option>
+        <option>O(n^k^i) - Exponential</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label for="similar">Similar Algorithms:</label>
+      <select class="form-control" id="similar">
+        <option>List database!</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label>Year of publication: </label>
+      <input name="year" class="form-control" type="text">
+    </div>
+
+    <div class="form-group">
+      <label>Original author(s): </label>
+      <input name="author" class="form-control" type="text">
+    </div>
+
+    <div class="form-group">
+      <label>Description: </label>
+      <textarea name="description" class="form-control"></textarea>
+    </div>
+
+    <div class="form-group">
+      <label>Tags: </label>
+      <input name="tags" class="form-control" type="text">
+    </div>
+
+    <div class="form-group">
+      <button type="submit" class="btn btn-primary">Add</button>
+    </div>
+
+  </form>
+{% endblock %}

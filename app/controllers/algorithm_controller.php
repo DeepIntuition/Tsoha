@@ -2,8 +2,29 @@
 
   class AlgorithmController extends BaseController{
 
+    public static function store() {
+      $params = $_POST;
+      $algorithm = new Algorithm(array(
+        'name' => $params['name'],
+        'class' => $params['class'],
+        'timecomplexity' => $params['timecomplexity'],
+        'year' => $params['year'],
+        'tags' => $params['tags'],
+        'author' => $params['author'],
+        'description' => $params['description'],
+        'similar' => $params['similar'] 
+      ));
+
+      $algorithm->save();
+      Redirect::to('/algorithm/' . $algorithm->id, array('message' => 'Algorithm has been added to the database!'));
+    }
+
     public static function home(){                 
    	  View::make('suunnitelmat/home.html');
+    }
+
+    public static function new(){                 
+      View::make('algorithm/new.html');
     }
 
     public static function index(){      

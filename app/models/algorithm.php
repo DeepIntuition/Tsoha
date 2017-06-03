@@ -8,6 +8,13 @@ class Algorithm extends BaseModel{
     	parent::__construct($attributes);
   	}
 
+    public function save(){
+      $query = DB::connection()->prepare('INSERT INTO Algorithm (class_id, name, timecomplexity, year, author, description) VALUES ((SELECT id FROM Class WHERE name= :class), :name, :timecomplexity, :year, :author, :description) RETURNING id');
+      $query->execute(array('class' => $this->class, 'name' => $this->name, 'timecomplexity' => $this->timecomplexity, 'year' => $this->year, 'author' => $this->author, 'description' => $this->description));
+      $row = $query->fetch();
+      $this->id = $row['id'];
+    }
+
   	public static function fetchAll(){
   		$query = DB::connection()->prepare('SELECT * FROM Algorithm');
 

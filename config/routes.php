@@ -20,6 +20,10 @@
     AlgorithmController::implementation_modify();
   });
 
+  $routes->get('/algorithm/new', function() {
+    AlgorithmController::new();
+  });
+
   $routes->get('/algorithm/:id', function($id) {
     AlgorithmController::algorithm_show($id);
   });
