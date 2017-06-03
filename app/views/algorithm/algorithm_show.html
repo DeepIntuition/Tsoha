@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block content %}
+    <h1>{{algorithm.name}}</h1>
+    <p>
+      <button class="btn btn-danger">Poista</button> <a href="#" class="btn btn-default">Muokkaa</a>
+    </p>
+    <!-- Tiedot tulee listana tähän -->
+    <ul>
+      <li><strong>Class:</strong>{{algorithm.class}}</li>
+      <li><strong>Time Complexity:</strong>{{algorithm.timecomplexity}}</li>
+      <li><strong>Year:</strong>{{algorithm.year}}</li>
+      <li><strong>Authors:</strong>{{algorithm.author}}</li>
+      <li><strong>Similar algorithms:</strong> 
+        {% for algo in algorithms.similar %}
+          <a href="{{base_path}}/algorithm/{{algo['id']}}" class="btn btn-default">{{algo['algorithm']}}</a>
+        {% endfor %}
+      </li>
+      <li><strong>Tags:</strong> 
+        {% for tag in algorithm.tags %}
+          <a href="{{base_path}}/tag/{{tag['id']}}" class="btn btn-default">{{tag['tag']}}</a>
+        {% endfor %}
+      </li>
+      <li><strong>Implementations:</strong>
+        {% for planguage in algorithm.implementations %}
+                {{planguage }}
+        {% endfor %}
+      
+      <!-- <button type="button" class="btn btn-danger btn-sm">Ruby</button> 
+      <button type="button" class="btn btn-default btn-sm">C++</button>
+      <button type="button" class="btn btn-success btn-sm">Java</button>
+      <button type="button" class="btn btn-primary btn-sm">Python</button>-->
+
+      </li>
+    </ul>
+    <p>
+      <a href="#" class="btn btn-success">Add new implementation</a>
+    </p>
+    <!-- Kuvaus tulee tähän -->
+    <p>{{algorithm.description}}</p>
+
+    <h2>Time-Complexity Analyzes by User</h2>
+    <ul>
+      {% for user in algorithms.analyses %}
+        <li><strong><a href="#" class="btn btn-default">{{user}}</a></strong></li>
+      {% endfor %}
+    </ul>
+    <p>
+      <a href="#" class="btn btn-success">Add new analysis</a>
+    </p>  
+{% endblock %}

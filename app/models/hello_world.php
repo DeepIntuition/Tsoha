@@ -1,5 +1,5 @@
 <?php
-require 'app/models/algorithm.php';
+
 class HelloWorld extends BaseModel{
 
     public static function say_hi(){

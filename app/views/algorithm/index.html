@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block content %}
+  <h1>Algorithms</h1>
+
+  <p>
+    <a href="{{base_path}}/algorithm/new" class="btn btn-success">Add new algorithm</a>
+  </p>
+
+  <table class="table table-striped table-bordered">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Class</th>
+        <th>Time Complexity</th>
+        <th>Available implementations</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      {% for algorithm in algorithms %}
+        <tr>
+          <td><a href="{{base_path}}/algorithm/{{algorithm.id}}">{{algorithm.name}}</a></td>
+          <td>{{algorithm.class}}</td>
+          <td>{{algorithm.timecomplexity}}</td>
+          <td>
+            {% for planguage in algorithm.implementations %}
+              {{planguage }}
+            {% endfor %}
+          </td>
+          <th><a class="btn btn-default btn-sm" href="{{base_path}}/algorithm/modify/{{algorithm.id}}">Modify</a></th>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}
