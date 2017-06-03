@@ -8,7 +8,7 @@
     AlgorithmController::home();
   });
 
-  $routes->get('/', function() {
+  $routes-> post('/algorithm/new', function(){
     AlgorithmController::store();
   });
 
