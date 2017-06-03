@@ -8,6 +8,10 @@
     AlgorithmController::home();
   });
 
+  $routes->get('/', function() {
+    AlgorithmController::store();
+  });
+
   $routes->get('/index', function() {
     AlgorithmController::index();
   });
@@ -27,7 +31,7 @@
   $routes->get('/algorithm/:id', function($id) {
     AlgorithmController::algorithm_show($id);
   });
-
+  
   $routes->get('/algorithm_list', function() {
     AlgorithmController::algorithm_list();
   });

@@ -15,8 +15,10 @@
         'similar' => $params['similar'] 
       ));
 
+      Kint::dump($params);
+      
       $algorithm->save();
-      Redirect::to('/algorithm/' . $algorithm->id, array('message' => 'Algorithm has been added to the database!'));
+      // Redirect::to('/algorithm/' . $algorithm->id, array('message' => 'Algorithm has been successfully added to the database!'));
     }
 
     public static function home(){                 
