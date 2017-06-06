@@ -2,7 +2,7 @@
 {% block content %}
     <h1>{{algorithm.name}}</h1>
     <p>
-      <button class="btn btn-danger">Poista</button> <a href="#" class="btn btn-default">Muokkaa</a>
+      <button class="btn btn-danger">Delete</button> <a href="#" class="btn btn-default">Modify</a>
     </p>
     <!-- Tiedot tulee listana tähän -->
     <ul>
@@ -11,25 +11,27 @@
       <li><strong>Year:</strong>{{algorithm.year}}</li>
       <li><strong>Authors:</strong>{{algorithm.author}}</li>
       <li><strong>Similar algorithms:</strong> 
-        {% for algo in algorithms.similar %}
-          <a href="{{base_path}}/algorithm/{{algo['id']}}" class="btn btn-default">{{algo['algorithm']}}</a>
+        {% for algo1 in algorithm.similar %}
+          <a href="{{base_path}}/algorithm/" class="btn btn-default">{{ algo1 }}</a>
         {% endfor %}
       </li>
-      <li><strong>Tags:</strong> 
-        {% for tag in algorithm.tags %}
-          <a href="{{base_path}}/tag/{{tag['id']}}" class="btn btn-default">{{tag['tag']}}</a>
+      <li><strong>Tags:</strong>
+        {% for tagi in algorithm.tags %}
+          <a href="{{base_path}}/tags/{{tagi}}" class="btn btn-default">{{ tagi }}</a>
         {% endfor %}
       </li>
       <li><strong>Implementations:</strong>
         {% for planguage in algorithm.implementations %}
-                {{planguage }}
+          {% if planguage == "Ruby" %}
+            <button type="button" class="btn btn-danger btn-sm">Ruby</button>
+          {% elseif planguage == "Python" %}
+            <button type="button" class="btn btn-primary btn-sm">Python</button>
+          {% elseif planguage == "Java" %}
+            <button type="button" class="btn btn-success btn-sm">Java</button>
+          {% else %}
+            <button type="button" class="btn btn-default btn-sm">{{ planguage }}</button>
+          {% endif %}    
         {% endfor %}
-      
-      <!-- <button type="button" class="btn btn-danger btn-sm">Ruby</button> 
-      <button type="button" class="btn btn-default btn-sm">C++</button>
-      <button type="button" class="btn btn-success btn-sm">Java</button>
-      <button type="button" class="btn btn-primary btn-sm">Python</button>-->
-
       </li>
     </ul>
     <p>
@@ -40,7 +42,7 @@
 
     <h2>Time-Complexity Analyzes by User</h2>
     <ul>
-      {% for user in algorithms.analyses %}
+      {% for user in algorithm.analyses %}
         <li><strong><a href="#" class="btn btn-default">{{user}}</a></strong></li>
       {% endfor %}
     </ul>

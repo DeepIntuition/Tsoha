@@ -9,19 +9,17 @@
     </div>
 
     <div class="form-group">
-      <label for="class">Class:</label>
-      <select class="form-control" id="class" type="text">
-        <option>Maximum Flow Algorithm</option>
-        <option>Sorting</option>
-        <option>Matrix Multiplication</option>
-        <option>Graph Algorithm</option>
-        <option>Search Algorithm</option>
+      <label>Class:</label>
+      <select class="form-control" name="class" type="text">
+        {% for class1 in params.classes %}  
+          <option>{{ class1 }}</option>
+        {% endfor %}
       </select>
     </div>
 
    <div class="form-group">
-      <label for="timecomplexity">Time Complexity:</label>
-      <select class="form-control" id="timecomplexity" type="text">
+      <label>Time Complexity:</label>
+      <select class="form-control" name="timecomplexity" type="text">
         <option>O(1) - Constant</option>
         <option>O(logn) - Logarithmic</option>
         <option>O(n) - Linear</option>
@@ -30,14 +28,15 @@
         <option>O(n^3) - Cubed</option>
         <option>O(n^k) - Polynomial</option>
         <option>O(2^n^k) - Non-deterministic Polynomial</option>
-        <option>O(n^k^i) - Exponential</option>
       </select>
     </div>
 
     <div class="form-group">
-      <label for="similar">Similar Algorithms:</label>
-      <select class="form-control" id="similar" type="text">
-        <option>List database</option>
+      <label>Similar Algorithms:</label>
+      <select multiple class="form-control" name="similar[]">
+        {% for algo1 in params.algorithms %}  
+          <option>{{ algo1 }}</option>
+        {% endfor %}
       </select>
     </div>
 
@@ -58,12 +57,12 @@
 
     <div class="form-group">
       <label>Tags: </label>
-      <input name="tags" class="form-control" type="text">
-    </div>
-
-    <div class="form-group">
-      <button type="submit" class="btn btn-primary">Add</button>
-    </div>
-
+      <select multiple data-role="tagsinput" name="tags[]">
+      {% for tagname in params.tags %}  
+        <option>{{ tagname }}</option>
+      {% endfor %}
+      </select>
+      </div>
+    <button type="submit" class="btn btn-default">Submit</button>
   </form>
 {% endblock %}

@@ -15,18 +15,29 @@
         'similar' => $params['similar'] 
       ));
 
-      Kint::dump($params);
-      
+      $newTags = $algorithm->newTagNames();
+      Tag::saveNewTags($newTags);
+
       $algorithm->save();
-      // Redirect::to('/algorithm/' . $algorithm->id, array('message' => 'Algorithm has been successfully added to the database!'));
+      Redirect::to('/algorithm/' . $algorithm->id, array('message' => 'Algorithm has been successfully added to the database!'));
     }
 
     public static function home(){                 
    	  View::make('suunnitelmat/home.html');
     }
 
-    public static function new(){                 
-      View::make('algorithm/new.html');
+    public static function new(){
+      $algorithms = Algorithm::fetchNames();      
+      $tags = Tag::fetchNames();
+      $classes = AClass::fetchNames();      
+
+      $params = array(
+        'algorithms' => $algorithms,
+        'tags' => $tags,
+        'classes' => $classes
+      );           
+
+      View::make('algorithm/new.html', array('params' => $params));
     }
 
     public static function index(){      

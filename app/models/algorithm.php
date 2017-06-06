@@ -13,11 +13,32 @@ class Algorithm extends BaseModel{
       $query->execute(array('class' => $this->class, 'name' => $this->name, 'timecomplexity' => $this->timecomplexity, 'year' => $this->year, 'author' => $this->author, 'description' => $this->description));
       $row = $query->fetch();
       $this->id = $row['id'];
+
+      if($this->tags != NULL) {
+        Tagobject::saveByAlgorithmId($this->id, $this->tags);
+      }
+
+      if($this->similar != NULL) {
+        Algorithmlink::saveByAlgorithmId($this->id, $this->similar);
+      }
+    }
+
+    public function newTagNames() {
+      $allTags = Tag::fetchNames();
+      $newTags = array();
+      
+      foreach ($this->tags as $tag) {
+        if(!(in_array($tag, $allTags))) {
+          $newTags[] = $tag;
+        }
+      }      
+
+      return $newTags;
     }
 
   	public static function fetchAll(){
   		$query = DB::connection()->prepare('SELECT * FROM Algorithm');
-
+ 
   		$query->execute();
   		$rows = $query->fetchAll();
     	$algorithms = array();
@@ -60,7 +81,7 @@ class Algorithm extends BaseModel{
   public static function fetchAnalyses($algorithm_id){
 
     $analyses = array();
-   	$query = DB::connection()->prepare('SELECT Contributor.name AS added_by FROM Algorithm, Implementation, Contributor WHERE Algorithm.id = Implementation.algorithm_id AND Contributor.id = Implementation.contributor_id AND Algorithm.id= :algorithm_id');
+   	$query = DB::connection()->prepare('SELECT Contributor.name AS added_by FROM Algorithm, Analysis, Contributor WHERE Algorithm.id = analysis.algorithm_id AND Contributor.id = analysis.contributor_id AND Algorithm.id= :algorithm_id');
 
  	  $query->execute(array('algorithm_id' => $algorithm_id));
 		$rows = $query->fetchAll();
@@ -101,7 +122,7 @@ class Algorithm extends BaseModel{
         'similar' => $similar 
     	));
 
-      return $algorithm;  
+      return $algorithm;
   	}
   }
 
@@ -113,10 +134,7 @@ class Algorithm extends BaseModel{
     $similar = array();
 
     foreach ($rows as $row) {
-      $similar = array(
-        'id' => $row['id'],
-        'algorithm' => $row['algorithm']        
-      );
+      $similar[] = $row['algorithm'];        
     }
 
     return $similar;
@@ -127,6 +145,7 @@ class Algorithm extends BaseModel{
 
     $query->execute(array('algorithm_id' => $algorithm_id));
     $row = $query->fetch();
+    $class = array();
 
     if($row){      
       $class = $row['name'];
@@ -143,12 +162,23 @@ class Algorithm extends BaseModel{
     $tags = array();
 
     foreach ($rows as $row) {
-      $tags = array(
-        'id' => $row['id'],
-        'tag' => $row['tag']        
-      );
+      $tags[] = $row['tag'];
     }
 
     return $tags;
+  }
+
+  public static function fetchNames() {
+    $query = DB::connection()->prepare('SELECT name FROM Algorithm');
+    $query->execute();
+
+    $rows = $query->fetchAll();
+    $names = array();
+
+    foreach ($rows as $row) {
+      $names[] = $row['name'];
+    }
+
+    return $names;
   }
 }	
