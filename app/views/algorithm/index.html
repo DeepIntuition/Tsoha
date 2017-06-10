@@ -24,10 +24,10 @@
           <td>{{algorithm.timecomplexity}}</td>
           <td>
             {% for planguage in algorithm.implementations %}
-              {{planguage }}
+              {{ forms.planguage_button_selector(planguage) }}
             {% endfor %}
           </td>
-          <th><a class="btn btn-default btn-sm" href="{{base_path}}/algorithm/modify/{{algorithm.id}}">Modify</a></th>
+          <th>{{ forms.modify_algorithm_button(#{base_path}}/algorithm/modify/#{ algorithm.id }) }}</th>
         </tr>
       {% endfor %}
     </tbody>

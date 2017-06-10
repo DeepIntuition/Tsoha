@@ -1,0 +1,21 @@
+{% macro delete_button(action, text) %}
+    <form method="post" action="{{ action }}" style="display: inline-block;">
+    	<button type="submit" class="btn btn-danger">{{ text|default('Delete') }}</button>
+    </form>
+{% endmacro %}
+
+{% macro modify_algorithm_button(action, text) %}
+	<a class="btn btn-default btn-sm" href="{{action}}">{{ text|default('Modify')</a>
+{% endmacro %}
+
+{% macro planguage_button_selector(planguage) %}
+	{% if planguage == "Ruby" %}
+        <button type="button" class="btn btn-danger btn-sm">Ruby</button>
+    {% elseif planguage == "Python" %}
+        <button type="button" class="btn btn-primary btn-sm">Python</button>
+    {% elseif planguage == "Java" %}
+        <button type="button" class="btn btn-success btn-sm">Java</button>
+    {% else %}
+        <button type="button" class="btn btn-default btn-sm">{{ planguage }}</button>
+    {% endif %}   
+{% endmacro %}

@@ -9,31 +9,20 @@ class Algorithm extends BaseModel{
   	}
 
     public function save(){
-      $query = DB::connection()->prepare('INSERT INTO Algorithm (class_id, name, timecomplexity, year, author, description) VALUES ((SELECT id FROM Class WHERE name= :class), :name, :timecomplexity, :year, :author, :description) RETURNING id');
+      $query = DB::connection()->prepare('
+        INSERT INTO Algorithm (class_id, name, timecomplexity, year, author, description) 
+          VALUES ((SELECT id FROM Class WHERE name= :class), :name, :timecomplexity, :year, :author, :description) RETURNING id');
+
       $query->execute(array('class' => $this->class, 'name' => $this->name, 'timecomplexity' => $this->timecomplexity, 'year' => $this->year, 'author' => $this->author, 'description' => $this->description));
       $row = $query->fetch();
       $this->id = $row['id'];
 
-      if($this->tags != NULL) {
-        Tagobject::saveByAlgorithmId($this->id, $this->tags);
+      if(isset($this->tags)) {
+        Tagobject::saveByName($this->id, $this->tags);
       }
-
-      if($this->similar != NULL) {
-        Algorithmlink::saveByAlgorithmId($this->id, $this->similar);
+      if(isset($this->similar)) {
+        AlgorithmLink::saveByName($this->id, $this->similar);
       }
-    }
-
-    public function newTagNames() {
-      $allTags = Tag::fetchNames();
-      $newTags = array();
-      
-      foreach ($this->tags as $tag) {
-        if(!(in_array($tag, $allTags))) {
-          $newTags[] = $tag;
-        }
-      }      
-
-      return $newTags;
     }
 
   	public static function fetchAll(){
@@ -66,7 +55,10 @@ class Algorithm extends BaseModel{
 	public static function fetchImplementedLanguages($algorithm_id){
 
     $implementations = array();
-   	$query = DB::connection()->prepare('SELECT Implementation.programminglanguage AS language FROM Algorithm, Implementation WHERE Algorithm.id = Implementation.algorithm_id AND Algorithm.id= :algorithm_id');
+   	$query = DB::connection()->prepare('
+      SELECT Implementation.programminglanguage AS language FROM Algorithm, Implementation 
+      WHERE Algorithm.id = Implementation.algorithm_id 
+      AND Algorithm.id= :algorithm_id');
 
  		$query->execute(array('algorithm_id' => $algorithm_id));
   	$rows = $query->fetchAll();
@@ -78,23 +70,9 @@ class Algorithm extends BaseModel{
     return $implementations;
   }
 
-  public static function fetchAnalyses($algorithm_id){
-
-    $analyses = array();
-   	$query = DB::connection()->prepare('SELECT Contributor.name AS added_by FROM Algorithm, Analysis, Contributor WHERE Algorithm.id = analysis.algorithm_id AND Contributor.id = analysis.contributor_id AND Algorithm.id= :algorithm_id');
-
- 	  $query->execute(array('algorithm_id' => $algorithm_id));
-		$rows = $query->fetchAll();
-    	
-  	foreach ($rows as $row) {
-  		$analyses[] = $row['added_by'];
-  	}
-
-    return $analyses;
-  }
-
   public static function fetchSingleAlgorithm($algorithm_id){
-  	$query = DB::connection()->prepare('SELECT * FROM Algorithm WHERE id= :algorithm_id');
+  	$query = DB::connection()->prepare('
+      SELECT * FROM Algorithm WHERE id= :algorithm_id');
   	$query->execute(array('algorithm_id' => $algorithm_id));
   	$row = $query->fetch();
 
@@ -102,7 +80,7 @@ class Algorithm extends BaseModel{
 			$row_id = $row['id'];
     		
     	$implementations = Algorithm::fetchImplementedLanguages($row_id);
-    	$analyses = Algorithm::fetchAnalyses($row_id);
+    	$analyses = Analysis::fetchAnalyses($row_id);
       $similar = Algorithm::fetchSimilar($row_id);
       $class = Algorithm::fetchClass($row_id);
       $tags = Algorithm::fetchTags($row_id);
@@ -127,7 +105,10 @@ class Algorithm extends BaseModel{
   }
 
   public static function fetchSimilar($algorithm_id){
-    $query = DB::connection()->prepare('SELECT Algorithm.name AS algorithm, Algorithm.id AS id FROM Algorithmlink, Algorithm WHERE Algorithmlink.algorithmto_id = Algorithm.id AND Algorithmlink.algorithmfrom_id = :algorithm_id');
+    $query = DB::connection()->prepare('
+      SELECT Algorithm.name AS algorithm, 
+        Algorithm.id AS id FROM Algorithmlink, Algorithm 
+      WHERE Algorithmlink.algorithmto_id = Algorithm.id AND Algorithmlink.algorithmfrom_id = :algorithm_id');
 
     $query->execute(array('algorithm_id' => $algorithm_id));
     $rows = $query->fetchAll();
@@ -155,7 +136,12 @@ class Algorithm extends BaseModel{
   }
 
   public static function fetchTags($algorithm_id){
-    $query = DB::connection()->prepare('SELECT Tag.name AS tag, Tagobject.tag_id AS id FROM Tagobject, Tag WHERE Tagobject.tag_id = Tag.id AND Tagobject.algorithm_id = :algorithm_id');
+    $query = DB::connection()->prepare('
+      SELECT Tag.name AS tag, Tagobject.tag_id AS id 
+        FROM Tagobject, Tag 
+        WHERE Tagobject.tag_id = Tag.id 
+        AND Tagobject.algorithm_id = :algorithm_id
+    ');
 
     $query->execute(array('algorithm_id' => $algorithm_id));
     $rows = $query->fetchAll();
@@ -178,7 +164,40 @@ class Algorithm extends BaseModel{
     foreach ($rows as $row) {
       $names[] = $row['name'];
     }
-
     return $names;
   }
+
+  public function delete(){
+    $query = DB::connection()->prepare('DELETE FROM Algorithm WHERE id= :algorithm_id');
+    $query->execute(array('algorithm_id' => $this->id));
+
+    AlgorithmLink::deleteByAlgorithmId($this->id);
+    Analysis::deleteByAlgorithmId($this->id);
+    Tagobject::deleteByAlgorithmId($this->id);
+  }
+
+  public function update(){
+    $query = DB::connection()->prepare('
+        UPDATE Algorithm SET
+          class_id = :class_id,
+          name = :name,
+          timecomplexity = :timecomplexity, 
+          year = :year, 
+          author = :author, 
+          description = :description
+        WHERE id= :algorithm_id');
+
+    $query->execute(array(
+      'algorithm_id' => $this->id,
+      'class_id' => $this->class_id,
+      'name' => $this->name,
+      'timecomplexity' => $this->timecomplexity,
+      'year' => $this->year,
+      'author' => $this->author,
+      'description' => $this->description));
+
+    Tagobject::update($this->id, $this->tags);
+    AlgorithmLink::update($this->id, $this->similar);
+  }
 }	
+

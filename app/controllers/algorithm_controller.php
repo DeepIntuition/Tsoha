@@ -2,42 +2,90 @@
 
   class AlgorithmController extends BaseController{
 
-    public static function store() {
-      $params = $_POST;
-      $algorithm = new Algorithm(array(
+  public static function edit($id){
+    $algorithm = Algorithm::fetchSingleAlgorithm($id);
+    $params = AlgorithmController::fetchGlobalParams();  
+
+    View::make('algorithm/algorithm_modify.html', array('algorithm' => $algorithm, 'params' => $params));
+  }
+
+  public static function update($id){
+    $params = $_POST;
+
+    $algorithm = new Algorithm(array(
         'name' => $params['name'],
         'class' => $params['class'],
         'timecomplexity' => $params['timecomplexity'],
         'year' => $params['year'],
-        'tags' => $params['tags'],
+        'tags' => $tags,
         'author' => $params['author'],
         'description' => $params['description'],
-        'similar' => $params['similar'] 
+        'similar' => $similar 
       ));
 
-      $newTags = $algorithm->newTagNames();
-      Tag::saveNewTags($newTags);
+    $errors = $algorithm->errors();
 
-      $algorithm->save();
-      Redirect::to('/algorithm/' . $algorithm->id, array('message' => 'Algorithm has been successfully added to the database!'));
+    if(count($errors) > 0){
+      View::make('algorithm/algorithm_modify.html', array('errors' => $errors, 'attributes' => $attributes));
+    }else{
+      $algorithm->update();
+
+      Redirect::to('/algorithm/:id' . $algorithm->id, array('message' => 'Algorithm was successfully modified!'));
+    }
+  }
+
+    public static function store() {
+      $params = $_POST;
+      $tags = array();
+      $similar = array();
+      
+      if(isset($params['tags']))  {
+        $tags = $params['tags'];  
+      }
+      if(isset($params['inputTags']))  {
+        Tag::saveNewTags($params['inputTags']);
+        $tags = array_merge($tags, $params['inputTags']);
+      }
+      if(isset($params['similar'])) {
+        $similar = $params['similar'];  
+      }
+      
+      $attributes = array(
+        'name' => $params['name'],
+        'class' => $params['class'],
+        'timecomplexity' => $params['timecomplexity'],
+        'year' => $params['year'],
+        'tags' => $tags,
+        'author' => $params['author'],
+        'description' => $params['description'],
+        'similar' => $similar 
+      );
+
+      $algorithm = new Algorithm($attributes);
+      $algorithm->errors();
+
+      if(count($errors) == 0){
+        $algorithm->save();
+        Redirect::to('/algorithm/' . $algorithm->id, array('message' => 'Algorithm has been successfully added to the database!'));
+      } else {
+        View::make('algorithm/new.html', array('errors' => $errors, 'attributes' => $attributes));
+      }
     }
 
     public static function home(){                 
-   	  View::make('suunnitelmat/home.html');
+   	  View::make('home.html');
     }
 
     public static function new(){
-      $algorithms = Algorithm::fetchNames();      
-      $tags = Tag::fetchNames();
-      $classes = AClass::fetchNames();      
-
-      $params = array(
-        'algorithms' => $algorithms,
-        'tags' => $tags,
-        'classes' => $classes
-      );           
-
+      $params = AlgorithmController::fetchGlobalParams();          
       View::make('algorithm/new.html', array('params' => $params));
+    }
+
+    public static function delete($id){
+      $algorithm = new Algorithm(array('id' => $id));
+      $algorithm->delete();
+
+      Redirect::to('/index', array('message' => 'Algorithm has been removed successfully!'));
     }
 
     public static function index(){      
@@ -66,4 +114,17 @@
       View::make('suunnitelmat/login.html');
     }
     
+    private static function fetchGlobalParams(){
+      $algorithms = Algorithm::fetchNames();
+      $tags = Tag::fetchNames();
+      $classes = AClass::fetchNames();      
+
+      $params = array(
+        'algorithms' => $algorithms,
+        'tags' => $tags,
+        'classes' => $classes
+      );
+
+      return $params;           
+    } 
   }

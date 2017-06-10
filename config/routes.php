@@ -12,6 +12,14 @@
     AlgorithmController::store();
   });
 
+  $routes-> get('/algorithm/modify/:id', function($id){
+    AlgorithmController::edit($id);
+  });
+
+  $routes-> post('/algorithm/modify/:id', function($id){
+    AlgorithmController::update($id);
+  });
+
   $routes->get('/index', function() {
     AlgorithmController::index();
   });
@@ -38,6 +46,10 @@
 
   $routes->get('/algorithm_modify', function() {
     AlgorithmController::algorithm_modify();
+  });
+
+  $routes->post('/algorithm/:id/deletealgo', function($id){
+    AlgorithmController::delete($id);
   });
 
   $routes->get('/login', function() {

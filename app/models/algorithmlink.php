@@ -8,6 +8,25 @@ class AlgorithmLink extends BaseModel{
     	parent::__construct($attributes);
   }
 
+  public static function fetchByAlgorithmId($algorithm_id){
+    $query = DB::connection()->prepare('
+      SELECT * FROM Algorithmlink 
+        WHERE algorithmfrom_id= :algorithm_id');
+    $query->execute(array('algorithm_id' => $algorithm_id));
+    $rows = $query->fetchAll();
+    $queriedLinks = array();
+
+    foreach ($rows as $row) {
+      $queriedLinks[] = new AlgorithmLink(array(
+        'id' => $row['id'],  
+        'algorithmfrom_id' => $algorithm_id,  
+        'algorithmto_id' => $row['algorithmto_id']
+      ));
+    }
+
+    return $queriedLinks;
+  }
+
   public function save(){
     $query = DB::connection()->prepare('INSERT INTO Algorithmlink (algorithmfrom_id, algorithmto_id) VALUES (:algorithm_id, :algorithmto_id) RETURNING id');
 
@@ -17,7 +36,6 @@ class AlgorithmLink extends BaseModel{
   }
 
   public static function saveByAlgorithmId($algorithmfrom_id, $algorithmNames){
-    
     foreach($algorithmNames as $algoName) {
       $query = DB::connection()->prepare('SELECT id FROM Algorithm WHERE name= :algoName');
     
@@ -27,5 +45,22 @@ class AlgorithmLink extends BaseModel{
         
       $algorithmLink->save();
     }
+  }
+
+  public static function saveByName($algorithm_id, $algorithmNames){
+    foreach($algorithmNames as $name) {
+      $query = DB::connection()->prepare('INSERT INTO Algorithmlink (algorithmfrom_id, algorithmto_id) VALUES (:algorithm_id, (SELECT id FROM Algorithm WHERE name= :name))');
+      $query->execute(array('algorithm_id' => $algorithm_id, 'name' => $name));
+    }
+  }
+
+  public static function deleteByAlgorithmId($algorithm_id){
+    $query = DB::connection()->prepare('DELETE FROM Algorithmlink WHERE algorithmfrom_id= :algorithm_id');
+    $query->execute(array('algorithm_id' => $algorithm_id));
+  }
+
+  public static function update($algorithm_id, $algorithmNames){
+    AlgorithmLink::deleteByAlgorithmId($algorithm_id);
+    AlgorithmLink::saveByName($algorithm_id, $algorithmNames);
   }
 }

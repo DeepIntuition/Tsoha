@@ -1,9 +1,12 @@
 {% extends "base.html" %}
 {% block content %}
-    <h1>{{algorithm.name}}</h1>
+{% import "macros/forms.html" as forms %}
+    <h1>{{ algorithm.name }}</h1>
     <p>
-      <button class="btn btn-danger">Delete</button> <a href="#" class="btn btn-default">Modify</a>
-    </p>
+      {{ forms.delete_button(#{base_path}/algorithm/#{algorithm.id}/deletealgo") }}
+      {{ forms.modify_algorithm_button(#{base_path}}/algorithm/modify/#{ algorithm.id}) }}
+
+    </p>s
     <!-- Tiedot tulee listana tähän -->
     <ul>
       <li><strong>Class:</strong>{{algorithm.class}}</li>
@@ -17,36 +20,32 @@
       </li>
       <li><strong>Tags:</strong>
         {% for tagi in algorithm.tags %}
-          <a href="{{base_path}}/tags/{{tagi}}" class="btn btn-default">{{ tagi }}</a>
+          <a href="{{base_path}}/tags/{{ tagi }}" class="btn btn-default">{{ tagi }}</a>
         {% endfor %}
       </li>
       <li><strong>Implementations:</strong>
         {% for planguage in algorithm.implementations %}
-          {% if planguage == "Ruby" %}
-            <button type="button" class="btn btn-danger btn-sm">Ruby</button>
-          {% elseif planguage == "Python" %}
-            <button type="button" class="btn btn-primary btn-sm">Python</button>
-          {% elseif planguage == "Java" %}
-            <button type="button" class="btn btn-success btn-sm">Java</button>
-          {% else %}
-            <button type="button" class="btn btn-default btn-sm">{{ planguage }}</button>
-          {% endif %}    
+          {{ forms.planguage_button_selector(planguage) }}  
         {% endfor %}
       </li>
     </ul>
     <p>
       <a href="#" class="btn btn-success">Add new implementation</a>
     </p>
-    <!-- Kuvaus tulee tähän -->
     <p>{{algorithm.description}}</p>
 
     <h2>Time-Complexity Analyzes by User</h2>
-    <ul>
-      {% for user in algorithm.analyses %}
-        <li><strong><a href="#" class="btn btn-default">{{user}}</a></strong></li>
-      {% endfor %}
-    </ul>
+    {% for analysis in algorithm.analyses %}
+      <ul>
+        <li><strong><a href="#" class="btn btn-default">{{ analysis.name }}</a></strong></li>
+        <li><strong>Time Complexity Class:</strong>{{ analysis.timecomplexity }}</li>
+          <li><strong>Date:</strong>{{ analysis.date }}</li>
+          <div class="well">
+            {{ analysis.description }}            
+          </div>  
+      </ul>
+    {% endfor %}
     <p>
       <a href="#" class="btn btn-success">Add new analysis</a>
-    </p>  
+    </p>
 {% endblock %}
