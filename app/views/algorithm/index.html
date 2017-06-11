@@ -1,7 +1,11 @@
+{% import "macros/forms.html" as forms %}
+{% import "macros/messages.html" as messages %}
 {% extends "base.html" %}
 {% block content %}
   <h1>Algorithms</h1>
 
+  {% messages.success_message("#{message}")}
+  
   <p>
     <a href="{{base_path}}/algorithm/new" class="btn btn-success">Add new algorithm</a>
   </p>
@@ -24,10 +28,18 @@
           <td>{{algorithm.timecomplexity}}</td>
           <td>
             {% for planguage in algorithm.implementations %}
-              {{ forms.planguage_button_selector(planguage) }}
+              {% if planguage == "Ruby" %}
+                <button type="button" class="btn btn-danger btn-sm">Ruby</button>
+              {% elseif planguage == "Python" %}
+                <button type="button" class="btn btn-primary btn-sm">Python</button>
+              {% elseif planguage == "Java" %}
+                <button type="button" class="btn btn-success btn-sm">Java</button>
+              {% else %}
+                <button type="button" class="btn btn-default btn-sm">{{ planguage }}</button>
+              {% endif %}   
             {% endfor %}
           </td>
-          <th>{{ forms.modify_algorithm_button(#{base_path}}/algorithm/modify/#{ algorithm.id }) }}</th>
+          <th>{{forms.modify_algorithm_button("#{base_path}/algorithm/modify/#{algorithm.id}") }}</th>
         </tr>
       {% endfor %}
     </tbody>

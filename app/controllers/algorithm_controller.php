@@ -24,14 +24,17 @@
       ));
 
     $errors = $algorithm->errors();
-
-    if(count($errors) > 0){
+    Kint::dump($errors);
+    
+    /*
+    if(count($errors) > 0)){
       View::make('algorithm/algorithm_modify.html', array('errors' => $errors, 'attributes' => $attributes));
     }else{
       $algorithm->update();
 
       Redirect::to('/algorithm/:id' . $algorithm->id, array('message' => 'Algorithm was successfully modified!'));
     }
+    */
   }
 
     public static function store() {
@@ -62,7 +65,7 @@
       );
 
       $algorithm = new Algorithm($attributes);
-      $algorithm->errors();
+      $errors = $algorithm->errors();
 
       if(count($errors) == 0){
         $algorithm->save();
@@ -108,10 +111,6 @@
 
     public static function implementation_modify(){
       View::make('suunnitelmat/implementation_modify.html');
-    }
-
-    public static function login(){
-      View::make('suunnitelmat/login.html');
     }
     
     private static function fetchGlobalParams(){

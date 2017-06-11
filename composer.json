@@ -4,7 +4,9 @@
 			"config/database.php",
 			"lib",
 			"app/controllers",
-			"app/models"
+			"app/models",
+			"config/salt.php",
+			"config/passwordtools.php"
 		]
 	},
 	"require": {

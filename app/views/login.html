@@ -1,20 +1,22 @@
 {% extends "base.html" %}
 {% block content %}
-{% import "macros/messages.html" as messages %}
   <h1>Login</h1>
-  {{ messages.warning_message("#{message}")}}
 
+  <!-- Kaikki lomakkeen elementit form-tagin sisään -->
   <form method="post" action="{{base_path}}/login">
+    <!-- Tekstikenttä käyttäjätunnukselle -->
     <div class="form-group">
       <label>Username</label>
-      <input type="text" class="form-control" value="{username}">
+      <input type="text" class="form-control">
     </div>
 
+    <!-- Salasanakenttä salasanalle -->
     <div class="form-group">
       <label>Password</label>
       <input type="password" class="form-control">
     </div>
 
+    <button type="submit" class="btn btn-warning">Register</button>
     <button type="submit" class="btn btn-primary">Login</button>
   </form>
 {% endblock %}

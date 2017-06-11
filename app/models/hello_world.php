@@ -7,10 +7,14 @@ class HelloWorld extends BaseModel{
     }
 
     public static function sandbox(){
-    	$fulkerson = Algorithm::fetchSingleAlgorithm(1);
-    	$algorithms = Algorithm::fetchAll();
-    	// Kint-luokan dump-metodi tulostaa muuttujan arvon
-    	Kint::dump($fulkerson);
-    	Kint::dump($algorithms);
-  	}
+        $fulkerun = new Algorithm(array(
+        'name' => 'dwe',
+        'class' => 'trumpetirump',
+        'description' => '',
+        'year' => 'Booom!'
+        ));
+        $errors = $fulkerun->errors();
+
+        Kint::dump($errors);
+    }
 }

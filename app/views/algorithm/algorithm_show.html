@@ -3,10 +3,10 @@
 {% import "macros/forms.html" as forms %}
     <h1>{{ algorithm.name }}</h1>
     <p>
-      {{ forms.delete_button(#{base_path}/algorithm/#{algorithm.id}/deletealgo") }}
-      {{ forms.modify_algorithm_button(#{base_path}}/algorithm/modify/#{ algorithm.id}) }}
+      {{forms.delete_button("#{base_path}/algorithm/#{algorithm.id}/deletealgo")}}
+      {{forms.modify_algorithm_button("#{base_path}/algorithm/modify/#{algorithm.id}") }}
 
-    </p>s
+    </p>
     <!-- Tiedot tulee listana tähän -->
     <ul>
       <li><strong>Class:</strong>{{algorithm.class}}</li>
@@ -25,7 +25,15 @@
       </li>
       <li><strong>Implementations:</strong>
         {% for planguage in algorithm.implementations %}
-          {{ forms.planguage_button_selector(planguage) }}  
+              {% if planguage == "Ruby" %}
+                <button type="button" class="btn btn-danger btn-sm">Ruby</button>
+              {% elseif planguage == "Python" %}
+                <button type="button" class="btn btn-primary btn-sm">Python</button>
+              {% elseif planguage == "Java" %}
+                <button type="button" class="btn btn-success btn-sm">Java</button>
+              {% else %}
+                <button type="button" class="btn btn-default btn-sm">{{ planguage }}</button>
+              {% endif %}   
         {% endfor %}
       </li>
     </ul>
@@ -36,14 +44,16 @@
 
     <h2>Time-Complexity Analyzes by User</h2>
     {% for analysis in algorithm.analyses %}
-      <ul>
-        <li><strong><a href="#" class="btn btn-default">{{ analysis.name }}</a></strong></li>
-        <li><strong>Time Complexity Class:</strong>{{ analysis.timecomplexity }}</li>
-          <li><strong>Date:</strong>{{ analysis.date }}</li>
-          <div class="well">
+    <p>
+        <strong><a href="#" class="btn btn-default">{{ analysis.name }}</a></strong>
+    </p>
+    <ul>  
+      <li><strong>Time Complexity Class:</strong>{{ analysis.timecomplexity }}</li>
+      <li><strong>Date:</strong>{{ analysis.date }}</li>
+      <div class="well">
             {{ analysis.description }}            
-          </div>  
-      </ul>
+      </div>  
+    </ul>
     {% endfor %}
     <p>
       <a href="#" class="btn btn-success">Add new analysis</a>

@@ -21,4 +21,13 @@ class AClass extends BaseModel{
 
   	return $names;
 	}
+
+  public static function contains($name){
+    $names = AClass::fetchNames();
+    if (in_array($name, $names)) {
+      return TRUE;
+    } else {
+      return FALSE;
+    }
+  }
 }

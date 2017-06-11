@@ -53,5 +53,17 @@
   });
 
   $routes->get('/login', function() {
-  	AlgorithmController::login();
+  	UserController::login();
+  });
+
+  $routes->post('/login', function() {
+    AlgorithmController::verify_user();
+  });
+
+  $routes->get('/register', function() {
+    UserController::register();
+  });
+
+  $routes->post('/register', function() {
+    AlgorithmController::save_new_user();
   });

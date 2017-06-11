@@ -6,6 +6,7 @@ class Algorithm extends BaseModel{
   
   	public function __construct($attributes){
     	parent::__construct($attributes);
+      $this->validators = array('validate_name','validate_year', 'validate_description', 'validate_class');
   	}
 
     public function save(){
@@ -155,7 +156,8 @@ class Algorithm extends BaseModel{
   }
 
   public static function fetchNames() {
-    $query = DB::connection()->prepare('SELECT name FROM Algorithm');
+    $query = DB::connection()->prepare('
+      SELECT name FROM Algorithm');
     $query->execute();
 
     $rows = $query->fetchAll();
@@ -168,7 +170,8 @@ class Algorithm extends BaseModel{
   }
 
   public function delete(){
-    $query = DB::connection()->prepare('DELETE FROM Algorithm WHERE id= :algorithm_id');
+    $query = DB::connection()->prepare('
+      DELETE FROM Algorithm WHERE id= :algorithm_id');
     $query->execute(array('algorithm_id' => $this->id));
 
     AlgorithmLink::deleteByAlgorithmId($this->id);
@@ -198,6 +201,53 @@ class Algorithm extends BaseModel{
 
     Tagobject::update($this->id, $this->tags);
     AlgorithmLink::update($this->id, $this->similar);
+  }
+
+  public function validate_name(){
+    $errors = array();
+    $name_max_length = 120; 
+    $name_min_length = 5; 
+
+    $errors = array_merge($errors, $this->validate_not_null($this->name));
+    $errors = array_merge($errors, $this->validate_string_length_at_least($this->name, $name_min_length));
+    $errors = array_merge($errors, $this->validate_string_max_length($this->name, $name_max_length));
+
+    return $errors;
+  }
+
+  public function validate_year(){
+    $errors = array();
+    $string_max_length = 4;
+
+    $errors = array_merge($errors, $this->validate_not_null($this->year));
+      
+    $errors = array_merge($errors, $this->validate_string_max_length($this->year, $string_max_length));
+
+    $errors = array_merge($errors, $this->validate_string_length_at_least($this->year, $string_max_length));
+
+    $errors = array_merge($errors, $this->validate_string_contains_only_numbers($this->year));          
+      
+    return $errors;
+  }
+
+  public function validate_class(){
+    $errors = array();
+    if(!AClass::contains($this->class)){
+      $errors[] = "Class ".$this.class." does not exist!";
+    }
+    $errors = array_merge($errors, $this->validate_not_null($this->class));
+    
+    return $errors;
+  } 
+
+  public function validate_description(){
+    $errors = array();
+    $string_max_length = 4000;
+
+    $errors = array_merge($errors, $this->validate_not_null($this->class));
+    $errors = array_merge($errors, $this->validate_string_max_length($this->class, $string_max_length));
+    
+    return $errors;
   }
 }	
 
