@@ -24,6 +24,14 @@
     AlgorithmController::index();
   });
 
+  $routes->get('/tags/index', function() {
+    TagController::index();
+  });
+
+  $routes->get('/tags/:id', function($id) {
+    TagController::tag_show($id);
+  });
+
   $routes->get('/implementation_show', function() {
     AlgorithmController::implementation_show();
   });

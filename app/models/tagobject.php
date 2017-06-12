@@ -2,10 +2,31 @@
 
 class Tagobject extends BaseModel{
 
-	public $id, $algorithm_id, $tag_id;
+	public $id, $tag_id, $tag_name, $algorithm_name, $algorithm_id;
 
 	public function __construct($attributes){
     	parent::__construct($attributes);
+  }
+
+  public static function fetchByAlgorithmId(){
+    $query = DB::connection()->prepare('
+      SELECT * FROM Tagobject, Algorithm, Tag 
+        WHERE Tagobject.algorithm_id = Algorithm.id
+        AND Tagobject.tag_id = Tag.id');
+
+    $query->execute();
+    $rows = $query->fetchAll();
+    $tagObject = array();
+
+    foreach ($rows as $row) {
+      $tagobjects[] = new Tagobject(
+        'id' => $row['Tagobject.id'],
+        'tag_id' => $row['Tagobject.tag_id'],
+        'tag_name' => $row['Tag.name'],
+        )
+    }
+
+    return $tagobjects;
   }
 
   public function save(){

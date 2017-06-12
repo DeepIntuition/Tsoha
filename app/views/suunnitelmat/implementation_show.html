@@ -1,6 +1,9 @@
 {% extends "base.html" %}
+{% import "macros/selectors.html" as selectors %}
 {% block content %}
-  <h1>Ford Fulkerson algorithm: Python</h1>
+  <h1>Ford Fulkerson algorithm</h1>
+  <h3>Implemented in:</h3>
+  {{selectors.planguage_button_selector("#{algorithm.name}")}} 
   <!-- Painikkeet tähän -->
   <p>
     <button class="btn btn-danger">Poista</button> <a href="#" class="btn btn-default">Muokkaa</a>

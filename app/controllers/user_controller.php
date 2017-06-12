@@ -15,6 +15,10 @@ class UserController extends BaseController{
 			View::make('algorithm/login.html', array('error' => 'Wrong username or password!', 'username' => $params['username']));
 		}else{
 			$_SESSION['user'] = $user->id;
+			if($self->check_administrator_rights()){
+				$_SESSION['administrator'] = TRUE;
+			}
+
 			Redirect::to('/index/' . $algorithm->id, array('message' => 'Login successful! Welcome back to AlgorithmDB!'));
 		}
 	}
@@ -25,7 +29,7 @@ class UserController extends BaseController{
 		$user = new User(array(
 			'name' => $params['name'],
 			'password' => $pwHash
-			));
+		));
 
 		$errors = $user->errors();
 		$errors = array_merge($errors, PasswordTools::validate_password($user->password));

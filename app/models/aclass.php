@@ -30,4 +30,18 @@ class AClass extends BaseModel{
       return FALSE;
     }
   }
+
+  public static function fetchClassByAlgorithm($algorithm_id){
+    $query = DB::connection()->prepare('SELECT Class.name AS name FROM Algorithm, Class WHERE Algorithm.class_id = Class.id AND Algorithm.id = :algorithm_id');
+
+    $query->execute(array('algorithm_id' => $algorithm_id));
+    $row = $query->fetch();
+    $class = array();
+
+    if($row){      
+      $class = $row['name'];
+    }
+
+    return $class;  
+  }
 }

@@ -5,10 +5,13 @@
   <h1>Algorithms</h1>
 
   {% messages.success_message("#{message}")}
-  
-  <p>
-    <a href="{{base_path}}/algorithm/new" class="btn btn-success">Add new algorithm</a>
-  </p>
+
+  {% if administrator %}
+    <p>
+      <a href="{{base_path}}/algorithm/new" class="btn btn-success">
+      Add new algorithm</a>
+    </p>
+  {% endif %}
 
   <table class="table table-striped table-bordered">
     <thead>
@@ -39,7 +42,11 @@
               {% endif %}   
             {% endfor %}
           </td>
-          <th>{{forms.modify_algorithm_button("#{base_path}/algorithm/modify/#{algorithm.id}") }}</th>
+          <th>
+          {% if user %}
+            {{forms.modify_algorithm_button("#{base_path}/algorithm/modify/#{algorithm.id}") }}
+          {% endif %}
+          </th>
         </tr>
       {% endfor %}
     </tbody>

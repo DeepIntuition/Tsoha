@@ -83,8 +83,8 @@ class Algorithm extends BaseModel{
     	$implementations = Algorithm::fetchImplementedLanguages($row_id);
     	$analyses = Analysis::fetchAnalyses($row_id);
       $similar = Algorithm::fetchSimilar($row_id);
-      $class = Algorithm::fetchClass($row_id);
-      $tags = Algorithm::fetchTags($row_id);
+      $class = AClass::fetchClassByAlgorithm($row_id);
+      $tags = Tag::fetchTagsByAlgorithm($row_id);
 
 
     	$algorithm = new Algorithm(array(
@@ -122,37 +122,25 @@ class Algorithm extends BaseModel{
     return $similar;
   } 
 
-  public static function fetchClass($algorithm_id){
-    $query = DB::connection()->prepare('SELECT Class.name AS name FROM Algorithm, Class WHERE Algorithm.class_id = Class.id AND Algorithm.id = :algorithm_id');
+  public static function fetchByTag($tag_id){
+     $query = DB::connection()->prepare('
+      SELECT Algorithm.id AS id, Algorithm.name AS name 
+        FROM Algorithm, Tagobject 
+        WHERE Tagobject.algorithm_id = Algorithm.id 
+        AND Tagobject.tag_id = :tag_id');
 
-    $query->execute(array('algorithm_id' => $algorithm_id));
-    $row = $query->fetch();
-    $class = array();
-
-    if($row){      
-      $class = $row['name'];
-    }
-
-    return $class;
-  }
-
-  public static function fetchTags($algorithm_id){
-    $query = DB::connection()->prepare('
-      SELECT Tag.name AS tag, Tagobject.tag_id AS id 
-        FROM Tagobject, Tag 
-        WHERE Tagobject.tag_id = Tag.id 
-        AND Tagobject.algorithm_id = :algorithm_id
-    ');
-
-    $query->execute(array('algorithm_id' => $algorithm_id));
+    $query->execute(array('tag_id' => $tag_id));
     $rows = $query->fetchAll();
-    $tags = array();
+    $algorithms = array();
 
     foreach ($rows as $row) {
-      $tags[] = $row['tag'];
+      $tags[] = new Algorithm(array(
+        'id' => $row['id'],
+        'name' => $row['name']
+      ));
     }
 
-    return $tags;
+    return $algorithms;
   }
 
   public static function fetchNames() {

@@ -3,11 +3,12 @@
 {% import "macros/forms.html" as forms %}
     <h1>{{ algorithm.name }}</h1>
     <p>
-      {{forms.delete_button("#{base_path}/algorithm/#{algorithm.id}/deletealgo")}}
-      {{forms.modify_algorithm_button("#{base_path}/algorithm/modify/#{algorithm.id}") }}
-
+      {% if administrator %}
+        {{forms.delete_button("#{base_path}/algorithm/#{algorithm.id}/deletealgo")}}
+        {{forms.modify_algorithm_button("#{base_path}/algorithm/modify/#{algorithm.id}") }}
+      {% endif %}
     </p>
-    <!-- Tiedot tulee listana tähän -->
+
     <ul>
       <li><strong>Class:</strong>{{algorithm.class}}</li>
       <li><strong>Time Complexity:</strong>{{algorithm.timecomplexity}}</li>
@@ -37,9 +38,11 @@
         {% endfor %}
       </li>
     </ul>
-    <p>
-      <a href="#" class="btn btn-success">Add new implementation</a>
-    </p>
+    {% if user %}
+      <p>
+        <a href="#" class="btn btn-success">Add new implementation</a>
+      </p>
+    {% endif %}
     <p>{{algorithm.description}}</p>
 
     <h2>Time-Complexity Analyzes by User</h2>
@@ -55,7 +58,9 @@
       </div>  
     </ul>
     {% endfor %}
-    <p>
-      <a href="#" class="btn btn-success">Add new analysis</a>
-    </p>
+    {% if user %}
+      <p>
+        <a href="#" class="btn btn-success">Add new analysis</a>
+      </p>
+    {% endif %}
 {% endblock %}
