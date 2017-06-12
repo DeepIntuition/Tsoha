@@ -40,27 +40,27 @@
     </ul>
     {% if user %}
       <p>
-        <a href="#" class="btn btn-success">Add new implementation</a>
-      </p>
-    {% endif %}
-    <p>{{algorithm.description}}</p>
+          <a href="#" class="btn btn-success">Add new implementation</a>
+        </p>
+      {% endif %}
+      <p>{{algorithm.description}}</p>
 
-    <h2>Time-Complexity Analyzes by User</h2>
-    {% for analysis in algorithm.analyses %}
-    <p>
-        <strong><a href="#" class="btn btn-default">{{ analysis.name }}</a></strong>
-    </p>
-    <ul>  
-      <li><strong>Time Complexity Class:</strong>{{ analysis.timecomplexity }}</li>
-      <li><strong>Date:</strong>{{ analysis.date }}</li>
-      <div class="well">
-            {{ analysis.description }}            
-      </div>  
-    </ul>
-    {% endfor %}
-    {% if user %}
-      <p>
-        <a href="#" class="btn btn-success">Add new analysis</a>
-      </p>
+      <h2>Time-Complexity Analyzes by User</h2>
+      {% for analysis in algorithm.analyses %}
+        <p>
+            <strong><a href="#" class="btn btn-default">{{ analysis.name }}</a></strong>
+        </p>
+        <ul>  
+          <li><strong>Time Complexity Class:</strong>{{ analysis.timecomplexity }}</li>
+          <li><strong>Date:</strong>{{ analysis.date }}</li>
+          <div class="well">
+              {{ analysis.description }}            
+          </div>
+        </ul>  
+        {% if user %}
+          {{  forms.modify_algorithm_button("#{base_path}/analysis/modify/#{analysis.id}") }}
+        {% endif %}
+      {% endfor %}
+      <a href="#" class="btn btn-success">Add new analysis</a>
     {% endif %}
 {% endblock %}

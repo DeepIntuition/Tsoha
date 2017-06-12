@@ -62,9 +62,9 @@ class AlgorithmController extends BaseController{
       ));
 
     $errors = $algorithm->errors();
-    Kint::dump($errors);
+    // Kint::dump($errors);
     
-    /*
+    
     if(count($errors) > 0)){
       View::make('algorithm/algorithm_modify.html', array('errors' => $errors, 'attributes' => $attributes));
     }else{
@@ -72,7 +72,7 @@ class AlgorithmController extends BaseController{
 
       Redirect::to('/algorithm/:id' . $algorithm->id, array('message' => 'Algorithm was successfully modified!'));
     }
-    */
+    
   }
 
   public static function home(){                 
