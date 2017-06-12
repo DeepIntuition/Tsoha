@@ -41,6 +41,9 @@
             <!-- Navigaation linkit -->
             <li><a href="{{base_path}}">Homepage</a></li>
             <li><a href="{{base_path}}/index">Algorithms</a></li>
+            {% if user %}
+              <li><a href="{{base_path}}/logout">Logout</a></li>
+            {% endif %}
           </ul>
         </div>
       </div>
