@@ -12,8 +12,11 @@
     }
 
     public static function check_logged_in(){
-      // Toteuta kirjautumisen tarkistus tähän.
-      // Jos käyttäjä ei ole kirjautunut sisään, ohjaa hänet toiselle sivulle (esim. kirjautumissivulle).
+      return isset($_SESSION['user']);
+    }
+
+    public static function check_administrator_rights(){
+      return User::check_administrator_rights($_SESSION['user'])) {
     }
 
   }
