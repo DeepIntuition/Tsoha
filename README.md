@@ -5,6 +5,10 @@ Yleisiä linkkejä:
 * [Linkki sovellukseeni](https://saaville.users.cs.helsinki.fi/tsoha)
 * [Linkki dokumentaatiooni](https://github.com/DeepIntuition/Tsoha/blob/master/doc/dokumentaatio.pdf)
 
+#### Ylläpitäjän tunnukset:
+* __käyttäjänimi:__ Yyni Yllapitaja
+* __salasana:__ pwsedwrs223**
+
 ## Työn aihe
 
 Harjoitustyön aiheena on __algoritmitietokanta__, jonka on tarkoitus auttaa algoritmeista ja tietokoneella suoritettavasta ongelmanratkaisusta kiinnostuneita löytämään helposti ja nopeasti tietoa erilaisista algoritmeista, niiden ominaisuuksista ja konkreettisista toteutustavoista.
