@@ -41,7 +41,7 @@ class UserController extends BaseController{
 		$errors = array_merge($errors, PasswordTools::validate_password($params['password']));
 		$errors = array_merge($errors, PasswordTools::validate_password_check($params['password'], $params['password_check']));		
 
-		if(count($errors > 0)){
+		if(count($errors) > 0){
 			View::make('register.html', array('errors' => $errors, 'username' => $user->username));
 		}else{
 			$user->save();
