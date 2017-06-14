@@ -79,7 +79,6 @@ class AlgorithmController extends BaseController{
     if(!isset($_SESSION['user'])){
       $_SESSION['user'] = null;                 
     }
-    
     View::make('home.html');
   }
 
