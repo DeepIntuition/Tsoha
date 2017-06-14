@@ -33,7 +33,7 @@ class User extends BaseModel{
 
 	public function save(){
 		$query = DB::connection()->prepare('
-			INSERT INTO Contributor (username, password) 
+			INSERT INTO Contributor (name, password) 
 			VALUES (:username, :password) RETURNING id');
 
 		$query->execute(array('username' => $this->username, 'password' => $this->password));
