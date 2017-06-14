@@ -36,7 +36,7 @@ class Algorithm extends BaseModel{
     	foreach ($rows as $row) {
     		$row_id = $row['id'];
     		$implementations = Algorithm::fetchImplementedLanguages($row_id);
-        $class = Algorithm::fetchClass($row_id);
+        $class = AClass::fetchClassByAlgorithm($row_id);
 
     		$algorithms[] = new Algorithm(array(
     			'id' => $row_id,
@@ -208,11 +208,8 @@ class Algorithm extends BaseModel{
     $string_max_length = 4;
 
     $errors = array_merge($errors, $this->validate_not_null($this->year));
-      
     $errors = array_merge($errors, $this->validate_string_max_length($this->year, $string_max_length));
-
     $errors = array_merge($errors, $this->validate_string_length_at_least($this->year, $string_max_length));
-
     $errors = array_merge($errors, $this->validate_string_contains_only_numbers($this->year));          
       
     return $errors;
@@ -221,7 +218,7 @@ class Algorithm extends BaseModel{
   public function validate_class(){
     $errors = array();
     if(!AClass::contains($this->class)){
-      $errors[] = "Class ".$this.class." does not exist!";
+      $errors[] = "Class ".$this->class." does not exist!";
     }
     $errors = array_merge($errors, $this->validate_not_null($this->class));
     

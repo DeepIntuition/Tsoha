@@ -2,6 +2,7 @@
 
 class Salt {
 	public static function getSalt() {
-		return "$5$riP20hvAnf_28";	
+		$salt = '$5$riP20hvAnf_28';
+		return $salt;	
 	}
 }

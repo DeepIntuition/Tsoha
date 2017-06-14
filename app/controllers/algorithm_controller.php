@@ -65,7 +65,7 @@ class AlgorithmController extends BaseController{
     // Kint::dump($errors);
     
     
-    if(count($errors) > 0)){
+    if(count($errors) > 0){
       View::make('algorithm/algorithm_modify.html', array('errors' => $errors, 'attributes' => $attributes));
     }else{
       $algorithm->update();
@@ -75,7 +75,11 @@ class AlgorithmController extends BaseController{
     
   }
 
-  public static function home(){                 
+  public static function home(){
+    if(!isset($_SESSION['user'])){
+      $_SESSION['user'] = null;                 
+    }
+    
     View::make('home.html');
   }
 

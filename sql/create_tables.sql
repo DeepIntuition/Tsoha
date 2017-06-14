@@ -22,7 +22,7 @@ CREATE TABLE Algorithmlink(
 CREATE TABLE Contributor(
   id SERIAL PRIMARY KEY,
   name varchar(15) UNIQUE NOT NULL,
-  password varchar(30) NOT NULL,
+  password varchar(100) NOT NULL,
   administrator boolean DEFAULT FALSE
 );
 

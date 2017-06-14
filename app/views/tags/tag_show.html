@@ -1,11 +1,10 @@
 {% extends "base.html" %}
 {% block content %}
-	<h1><strong>Algorithms associated with tag:</strong>{{ tagName }}</h1>
+
+	<h1><strong>Algorithms associated with tag: </strong>{{ tagName }}</h1>
 	<ul>
-		<li>
 		{% for algorithm in algorithms %}
 			<a a class="btn btn-default btn-sm" href="{{base_path}}/algorithm/{{algorithm.id}}">{{ algorithm.name }}</a>
 		{% endfor %}
-		</li>
 	</ul>
 {% endblock %}

@@ -3,8 +3,10 @@
 {% extends "base.html" %}
 {% block content %}
   <h1>Algorithms</h1>
-
-  {% messages.success_message("#{message}")}
+  
+  {% if message %}
+    {{ messages.success_message("#{message}") }}
+  {% endif %}
 
   {% if administrator %}
     <p>
@@ -43,7 +45,7 @@
             {% endfor %}
           </td>
           <th>
-          {% if user %}
+          {% if user_logged_in %}
             {{forms.modify_algorithm_button("#{base_path}/algorithm/modify/#{algorithm.id}") }}
           {% endif %}
           </th>

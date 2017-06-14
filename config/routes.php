@@ -65,7 +65,11 @@
   });
 
   $routes->post('/login', function() {
-    AlgorithmController::verify_user();
+    UserController::verify_user();
+  });
+
+  $routes->post('/logout', function() {
+    UserController::logout();
   });
 
   $routes->get('/register', function() {
@@ -73,5 +77,5 @@
   });
 
   $routes->post('/register', function() {
-    AlgorithmController::save_new_user();
+    UserController::save_new_user();
   });

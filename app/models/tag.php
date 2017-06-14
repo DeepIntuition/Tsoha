@@ -5,25 +5,26 @@ class Tag extends BaseModel{
 	public $id, $name, $algorithms;
 
 	public function __construct($attributes){
-   parent::__construct($attributes);
- }
+    parent::__construct($attributes);
+  }
 
- public static function fetchAll() {
-  $query = DB::connection()->prepare('SELECT * FROM Tag');
+  public static function fetchAll() {
+    $query = DB::connection()->prepare('SELECT * FROM Tag');
 
-  $query->execute();
-  $rows = $query->fetchAll();
-  $tags = array();
+    $query->execute();
+    $rows = $query->fetchAll();
+    $tags = array();
 
-  foreach ($rows as $row) {
-    $algorithms = Algorithm::fetchByTag($row['id']);
-    $tags[] = new Tag(array(
-      'id' => $row['id'],
-      'name' => $row['name'],
-      'algorithms' => $algorithms
-      ));
+    foreach ($rows as $row) {
+      $algorithms = Algorithm::fetchByTag($row['id']);
+      $tags[] = new Tag(array(
+        'id' => $row['id'],
+        'name' => $row['name'],
+        'algorithms' => $algorithms
+        ));
 
-    return $tags;
+      return $tags;
+    }
   }
 
   public static function fetchNames() {
@@ -53,32 +54,35 @@ class Tag extends BaseModel{
     foreach ($newTags as $key) {
      $newTag = new Tag(array('name' => $key));
      $newTag->save();
-   }
- }
-
- public static function fetchTagsByAlgorithm($algorithm_id){
-  $query = DB::connection()->prepare('
-    SELECT Tag.name AS tag, Tagobject.tag_id AS id 
-    FROM Tagobject, Tag 
-    WHERE Tagobject.tag_id = Tag.id 
-    AND Tagobject.algorithm_id = :algorithm_id
-    ');
-
-  $query->execute(array('algorithm_id' => $algorithm_id));
-  $rows = $query->fetchAll();
-  $tags = array();
-
-  foreach ($rows as $row) {
-    $tags[] = $row['tag'];
+    }
   }
 
-  return $tags;
+  public static function fetchTagsByAlgorithm($algorithm_id){
+    $query = DB::connection()->prepare('
+      SELECT Tag.name AS tag, Tagobject.tag_id AS id 
+      FROM Tagobject, Tag 
+      WHERE Tagobject.tag_id = Tag.id 
+      AND Tagobject.algorithm_id = :algorithm_id
+      ');
+
+    $query->execute(array('algorithm_id' => $algorithm_id));
+    $rows = $query->fetchAll();
+    $tags = array();
+
+    foreach ($rows as $row) {
+      $tags[] = new Tag(array(
+        'id' => $row['id'],
+        'name' => $row['tag']
+        ));
+    }
+
+    return $tags;
   }
 
   public static function fetchName($tag_id) {
     $query = DB::connection()->prepare('
       SELECT name FROM Tag 
-        WHERE id= :tag_id');
+      WHERE id= :tag_id');
     $query->execute(array('tag_id' => $tag_id));
     $row = $query->fetch();
 

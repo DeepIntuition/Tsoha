@@ -1,12 +1,12 @@
 {% macro warning_message(text) %}
     <div class="alert alert-warning">
-        <strong>Warning!</strong>{{ text|default('Something went wrong!') }}
+        <strong>Warning! </strong>{{ text|default('Something went wrong!') }}
     </div>
 {% endmacro %}
 
 {% macro success_message(text) %}
     <div class="alert alert-success fade in">
-        <strong>Success!</strong><i>{{ text|default('Success is a science; if you have the conditions, you get the result. 
+        <strong>Success! </strong><i>{{ text|default('Success is a science; if you have the conditions, you get the result. 
         - Oscar Wilde') }}</i>
     </div>
 {% endmacro %}

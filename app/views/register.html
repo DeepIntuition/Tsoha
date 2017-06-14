@@ -3,12 +3,20 @@
 {% import "macros/messages.html" as messages %}
   <h1>Register</h1>
   
-  {{ messages.warning_message("#{message}") }}
+  {% if errors %}
+    {% for message in errors %}
+      {{ messages.warning_message("#{message}") }}
+    {% endfor %}
+  {% endif %}
 
   <form method="post" action="{{base_path}}/register">
     <div class="form-group">
       <label>Username</label>
-      <input type="text" name="username" class="form-control" value="{username}">
+      {% if message %}
+        <input type="text" name="username" class="form-control" value="{username}">
+      {% else %}
+        <input type="text" name="username" class="form-control">
+      {% endif %}
     </div>
 
     <div class="form-group">

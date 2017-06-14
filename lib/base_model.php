@@ -17,8 +17,13 @@
 
     public function errors(){
       $errors = array();
-      foreach($this->validators as $validator){
-        $errors = array_merge($errors, $this->{$validator}());
+      if(count($this->validators) > 1){
+        foreach($this->validators as $validator){
+          $errors = array_merge($errors, $this->{$validator}());
+        }          
+      }else{
+        $validator = $this->validators[0];
+        $errors[] = $this->{$validator}();
       }
 
       return $errors;
@@ -33,6 +38,7 @@
     }
 
     public function validate_string_length_at_least($string, $length){
+      $errors = array();
       if(strlen($string) < $length){
         $errors[] = "String should be at least ".$length." characters long.";
       }

@@ -17,9 +17,17 @@ class PasswordTools {
   	public static function validate_password($password) {	  
       $errors = array();
       if(!preg_match('/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9A-Za-z!@#$%]{8,30}$/', $password)) {
-        $errors[] = 'Password does not meet the required criteria! (8-30 characters long, containing one or more numbers, at least one uppercase character and one lowercase and special characters.';
+        $errors[] = 'Password does not meet the required criteria! (8-30 characters long, containing one or more numbers, at least one uppercase character and one lowercase and more than one special character.)';
+      }
+      return $errors;
+    }
+
+    public static function validate_password_check($password, $password_check){
+      $errors = array();
+      if(strcmp($password, $password_check) !== 0){
+        $errors[] = 'Password does not match with the given password check.';
       }
 
-      return $errors;
+      return $errors; 
     }
 }

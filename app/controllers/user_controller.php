@@ -6,20 +6,24 @@ class UserController extends BaseController{
 		View::make('login.html');
 	}
 
+	public static function logout() {
+		unset($_SESSION['user']);
+		unset($_SESSION['administrator']);
+
+		Redirect::to('/', array('message' => "You've been successfully logged out. Hope to see you again soon!"));
+	}
+
 	public static function verify_user(){
 		$params = $_POST;
 		$pwHash = PasswordTools::hash($params['password']);
 		$user = User::authenticate($params['username'], $pwHash);
 
-		if(!$user){
-			View::make('algorithm/login.html', array('error' => 'Wrong username or password!', 'username' => $params['username']));
-		}else{
+		if($user){
 			$_SESSION['user'] = $user->id;
-			if($self->check_administrator_rights()){
-				$_SESSION['administrator'] = TRUE;
-			}
-
-			Redirect::to('/index/' . $algorithm->id, array('message' => 'Login successful! Welcome back to AlgorithmDB!'));
+			self::check_administrator_rights();
+			Redirect::to('/index', array('message' => 'Login successful! Welcome back to AlgorithmDB!'));
+		}else{
+			View::make('login.html', array('error' => 'Wrong username or password!', 'username' => $params['username']));
 		}
 	}
 
@@ -27,23 +31,28 @@ class UserController extends BaseController{
 		$params = $_POST;
 		$pwHash = PasswordTools::hash($params['password']);
 		$user = new User(array(
-			'name' => $params['name'],
+			'username' => $params['username'],
 			'password' => $pwHash
-		));
+			));
 
-		$errors = $user->errors();
-		$errors = array_merge($errors, PasswordTools::validate_password($user->password));
+		//$errors = $user->errors();
+		$errors = array();
+		$errors = array_merge($errors, User::check_name_available($user->username));
+		$errors = array_merge($errors, PasswordTools::validate_password($params['password']));
+		$errors = array_merge($errors, PasswordTools::validate_password_check($params['password'], $params['password_check']));		
 
 		if(count($errors > 0)){
-			View::make('register.html', array('error' => 'Wrong username or password!', 'username' => $params['username']));
+			View::make('register.html', array('errors' => $errors, 'username' => $user->username));
 		}else{
 			$user->save();
 			$_SESSION['user'] = $user->id;
-			Redirect::to('/index/' . $algorithm->id, array('message' => 'Welcome to AlgorithmDB '.{$user->username}.'! Time to explore the world of algorithms!'));
+			Redirect::to('/index', array('message' => 'Welcome to AlgorithmDB '. $user->username .'! Time to explore the world of algorithms!'));
 		}
+		
 	}
 
 	public static function register() {
-		View::make('register.html');	
+		View::make('register.html', array(''));	
 	}
+	
 }

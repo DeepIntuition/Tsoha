@@ -10,10 +10,7 @@ INSERT INTO Class (name)
 
 -- Luodaan yksi ylläpitäjä ja yksi tavallinen käyttäjä
 INSERT INTO Contributor (name, password, administrator)
-    VALUES ('Yyni Yllapitaja', 'pwsedwrs223**', TRUE);
-
-INSERT INTO Contributor (name, password)
-    VALUES ('NikkiSaari56', 'algorithm_lover96');
+    VALUES ('Yyni Yllapitaja', '$5$riP20hvAnf_28$aQaGgR/6nHsT7ku/sP6e7BZnrUU93Qhm3RMbkV025G4', TRUE);
 
 -- Luodaan 4 uutta algoritmia
 INSERT INTO Algorithm (class_id, name, timecomplexity, year, author, description)
