@@ -19,7 +19,8 @@ class AnalysisController extends BaseController{
 
     if(count($errors) == 0){
       $Analysis->save();
-      Redirect::to('/algorithm/:id' . $algorithm_id, array('message' => 'Analysis has been successfully added to the database!'));
+      $algorithm = new Algorithm(array('id' => $algorithm_id));
+      Redirect::to('/algorithm/:id' . $algorithm->id, array('message' => 'Analysis has been successfully added to the database!'));
     } else {
       View::make('analysis/new.html', array('errors' => $errors, 'attributes' => $attributes));
     }
@@ -71,7 +72,8 @@ class AnalysisController extends BaseController{
     $Analysis = new Analysis(array('id' => $id));
     $Analysis->delete();
 
-    Redirect::to('/algorithm/:id' . $algorithm_id, array('message' => 'Analysis has been removed successfully!'));
+    $algorithm = new Algorithm(array('id' => $algorithm_id));
+      Redirect::to('/algorithm/:id' . $algorithm->id, array('message' => 'Analysis has been removed successfully!'));
   }
  
 }
