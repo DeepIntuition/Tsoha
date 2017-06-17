@@ -79,3 +79,13 @@
   $routes->post('/register', function() {
     UserController::save_new_user();
   });
+
+  $routes->get('/class/new', function() {
+    AClassController::new();
+  });
+
+  $routes->post('/class/new', function() {
+    AClassController::save_new_class();
+  });
+
+  
