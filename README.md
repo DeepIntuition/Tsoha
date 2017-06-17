@@ -18,10 +18,12 @@ Tavoitteena on, että järjestelmään kirjautunut käyttäjä voi vaivattomasti
 --- 
 
 ### Linkit sivuihin 
-* [Kirjaudu/Rekisteröidy](https://saaville.users.cs.helsinki.fi/tsoha/login)
-* [Listaa tietokannan sisältämät algoritmit](https://saaville.users.cs.helsinki.fi/tsoha/algorithm_list)
-* [Näytä valittu algoritmi](https://saaville.users.cs.helsinki.fi/tsoha/algorithm_show)
-* [Muokkaa algoritmia](https://saaville.users.cs.helsinki.fi/tsoha/algorithm_modify)
+* [Kirjaudu](https://saaville.users.cs.helsinki.fi/tsoha/login)
+* [Rekisteröidy](https://saaville.users.cs.helsinki.fi/tsoha/register)
+* [Listaa tietokannan sisältämät algoritmit](https://saaville.users.cs.helsinki.fi/tsoha/index)
+* [Näytä valittu algoritmi](https://saaville.users.cs.helsinki.fi/tsoha/algorithm/1)
+* [Muokkaa algoritmia](https://saaville.users.cs.helsinki.fi/tsoha/algorithm/modify/1)
+* [Muokkaa omaa analyysiä](https://saaville.users.cs.helsinki.fi/tsoha/algorithm/23/analysis/edit/5)
 * [Näytä algoritmin implementaatio valitulla ohjelmointikielellä](https://saaville.users.cs.helsinki.fi/tsoha/implementation_show)
 * [Muokkaa algoritmin implementaatiota](https://saaville.users.cs.helsinki.fi/tsoha/implementation_modify)
 
