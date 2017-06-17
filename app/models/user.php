@@ -43,10 +43,11 @@ class User extends BaseModel{
 
 	public function validate_username() {
 		$errors = array();
-		$max_length = 3;
+		$min_length = 3;
 		$errors[] = self::validate_not_null($this->username);
 		$errors = array_merge($errors, self::validate_string_max_length($this->username, 25));
-		$errors = array_merge($errors, self::validate_string_length_at_least($this->username, $max_length));
+		$errors = array_merge($errors, self::validate_string_length_at_least($this->username, $min_length));
+		return $errors;
 	}
 
 	public static function check_administrator_rights($user_id){

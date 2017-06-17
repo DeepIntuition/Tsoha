@@ -44,4 +44,39 @@ class AClass extends BaseModel{
 
     return $class;  
   }
+
+  public function validate_class_name(){
+    $errors = array();
+    $min_length = 3;
+    $errors[] = $this->validate_not_null($this->name);
+    $errors = array_merge($errors, $this->validate_string_max_length($this->name, 50));
+    $errors = array_merge($errors, $this->validate_string_length_at_least($this->name, $min_length));
+    if(!self::check_name_available($this->name)) {
+      $errors[] = 'Class already exists!';
+    }
+    return $errors;
+  }
+
+  public function save(){
+    $query = DB::connection()->prepare('
+      INSERT INTO Class (name) 
+      VALUES (:name) RETURNING id');
+
+    $query->execute(array('name' => $this->name));
+    $row = $query->fetch();
+    $this->id = $row;
+  }
+
+  public static function check_name_available($class_name){
+    $query = DB::connection()->prepare('
+      SELECT * FROM Class  
+      WHERE name= :name');
+
+    $query->execute(array('name' => $class_name));
+    $row = $query->fetch();
+    if($row) {
+      return FALSE;
+    }
+    return TRUE;
+  }
 }

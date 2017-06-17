@@ -6,7 +6,7 @@ class Algorithm extends BaseModel{
   
   	public function __construct($attributes){
     	parent::__construct($attributes);
-      $this->validators = array('validate_name','validate_year', 'validate_description', 'validate_class');
+      $this->validators = array('validate_name','validate_year','validate_description','validate_class');
   	}
 
     public function save(){
@@ -15,6 +15,7 @@ class Algorithm extends BaseModel{
           VALUES ((SELECT id FROM Class WHERE name= :class), :name, :timecomplexity, :year, :author, :description) RETURNING id');
 
       $query->execute(array('class' => $this->class, 'name' => $this->name, 'timecomplexity' => $this->timecomplexity, 'year' => $this->year, 'author' => $this->author, 'description' => $this->description));
+      
       $row = $query->fetch();
       $this->id = $row['id'];
 

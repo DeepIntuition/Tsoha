@@ -46,7 +46,7 @@ class UserController extends BaseController{
 		}else{
 			$user->save();
 			$_SESSION['user'] = $user->id;
-			Redirect::to('/index', array('message' => 'Welcome to AlgorithmDB!'));
+			Redirect::to('/index', array('message' => 'Your registration was successful, welcome to AlgorithmDB!'));
 		}
 		
 	}
