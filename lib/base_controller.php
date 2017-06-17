@@ -12,17 +12,11 @@ class BaseController{
   }
 
   public static function check_logged_in(){
-    return isset($_SESSION['user']);
+    if (!isset($_SESSION['user'])) {
+      Redirect::to('/login', array('message' => 'Kirjaudu ensin sisään!'));
+    }else{
+      return TRUE;
+    } 
   }
-
-  public static function check_administrator_rights(){
-    $adminRights = User::check_administrator_rights($_SESSION['user']);
-    if(!isset($_SESSION['administrator']) && $adminRights){
-      $_SESSION['administrator'] = TRUE;
-    }
-
-    return $adminRights;
-  }
-
 }
 

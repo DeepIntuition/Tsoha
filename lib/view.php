@@ -19,7 +19,9 @@
         }
 
         if(method_exists('BaseController', 'check_administrator_rights')){
-          $content['administrator'] = BaseController::check_administrator_rights();
+          if(BaseController::check_administrator_rights()){
+            $content['administrator'] = 1;
+          }
         } 
 
         // Tulostetaan Twig:n renderöimä näkymä

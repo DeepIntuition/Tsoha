@@ -3,6 +3,7 @@
 class AlgorithmController extends BaseController{
 
   public static function store() {
+    self::check_logged_in();
     $params = $_POST;
     $tags = array();
     $similar = array();
@@ -41,6 +42,7 @@ class AlgorithmController extends BaseController{
   }
 
   public static function edit($id){
+    self::check_logged_in();
     $algorithm = Algorithm::fetchSingleAlgorithm($id);
     $params = AlgorithmController::fetchGlobalParams();  
 
@@ -48,6 +50,7 @@ class AlgorithmController extends BaseController{
   }
 
   public static function update($id){
+    self::check_logged_in();
     $params = $_POST;
 
     $algorithm = new Algorithm(array(
@@ -77,17 +80,20 @@ class AlgorithmController extends BaseController{
 
   public static function home(){
     if(!isset($_SESSION['user'])){
-      $_SESSION['user'] = null;                 
+      $_SESSION['user'] = null;
+      $_SESSION['administrator'] = null;                 
     }
     View::make('home.html');
   }
 
   public static function new(){
+    self::check_logged_in();
     $params = AlgorithmController::fetchGlobalParams();          
     View::make('algorithm/new.html', array('params' => $params));
   }
 
   public static function delete($id){
+    self::check_logged_in();
     $algorithm = new Algorithm(array('id' => $id));
     $algorithm->delete();
 

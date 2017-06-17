@@ -135,7 +135,7 @@ class Algorithm extends BaseModel{
     $algorithms = array();
 
     foreach ($rows as $row) {
-      $tags[] = new Algorithm(array(
+      $algorithms[] = new Algorithm(array(
         'id' => $row['id'],
         'name' => $row['name']
       ));

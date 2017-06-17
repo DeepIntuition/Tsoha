@@ -47,11 +47,10 @@ class AClass extends BaseModel{
 
   public function validate_class_name(){
     $errors = array();
-    $min_length = 3;
-    $errors[] = $this->validate_not_null($this->name);
-    $errors = array_merge($errors, $this->validate_string_max_length($this->name, 50));
-    $errors = array_merge($errors, $this->validate_string_length_at_least($this->name, $min_length));
-    if(!self::check_name_available($this->name)) {
+    $name_string = $this->name;
+    $errors = array_merge($errors, $this->validate_not_null($name_string));
+    $errors = array_merge($errors, $this->validate_string_max_length($name_string, 50));
+    if(!self::check_name_available($name_string)) {
       $errors[] = 'Class already exists!';
     }
     return $errors;
@@ -69,12 +68,13 @@ class AClass extends BaseModel{
 
   public static function check_name_available($class_name){
     $query = DB::connection()->prepare('
-      SELECT * FROM Class  
+      SELECT name, id FROM Class  
       WHERE name= :name');
 
     $query->execute(array('name' => $class_name));
     $row = $query->fetch();
-    if($row) {
+
+    if($row['id']) {
       return FALSE;
     }
     return TRUE;

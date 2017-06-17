@@ -4,6 +4,7 @@ class TagController extends BaseController{
 
 	public static function index() {
 		$tags = Tag::fetchAll();
+		Kint::dump($tags);
 		View::make('tags/tag_index.html', array('tags' => $tags));
 	}
 

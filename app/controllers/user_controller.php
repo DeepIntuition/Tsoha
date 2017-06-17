@@ -7,8 +7,8 @@ class UserController extends BaseController{
 	}
 
 	public static function logout() {
-		unset($_SESSION['user']);
-		unset($_SESSION['administrator']);
+		$_SESSION['user'] = null;
+		$_SESSION['administrator'] = null;
 
 		Redirect::to('/', array('message' => "You've been successfully logged out. Hope to see you again soon!"));
 	}
@@ -20,7 +20,6 @@ class UserController extends BaseController{
 
 		if($user){
 			$_SESSION['user'] = $user->id;
-			self::check_administrator_rights();
 			Redirect::to('/index', array('message' => 'Login successful! Welcome back to AlgorithmDB!'));
 		}else{
 			View::make('login.html', array('error' => 'Wrong username or password!', 'username' => $params['username']));

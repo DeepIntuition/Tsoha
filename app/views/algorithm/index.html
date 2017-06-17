@@ -8,7 +8,7 @@
     {{ messages.success_message("#{message}") }}
   {% endif %}
 
-  {% if administrator %}
+  {% if user_logged_in.administrator %}
     <p>
       <a href="{{base_path}}/algorithm/new" class="btn btn-success">
       Add new algorithm</a>
@@ -47,7 +47,7 @@
             {% endfor %}
           </td>
           <th>
-          {% if user_logged_in %}
+          {% if user_logged_in.administrator %}
             {{forms.modify_algorithm_button("#{base_path}/algorithm/modify/#{algorithm.id}") }}
           {% endif %}
           </th>

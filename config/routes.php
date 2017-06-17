@@ -72,6 +72,10 @@
     UserController::logout();
   });
 
+  $routes->get('/logout', function() {
+    UserController::logout();
+  });
+
   $routes->get('/register', function() {
     UserController::register();
   });
@@ -85,7 +89,7 @@
   });
 
   $routes->post('/class/new', function() {
-    AClassController::save_new_class();
+    AClassController::store();
   });
 
   

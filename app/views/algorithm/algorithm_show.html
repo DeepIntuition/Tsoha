@@ -3,7 +3,7 @@
 {% import "macros/forms.html" as forms %}
     <h1>{{ algorithm.name }}</h1>
     <p>
-      {% if administrator %}
+      {% if user_logged_in.administrator %}
         {{forms.delete_button("#{base_path}/algorithm/#{algorithm.id}/deletealgo")}}
         {{forms.modify_algorithm_button("#{base_path}/algorithm/modify/#{algorithm.id}") }}
       {% endif %}
@@ -38,7 +38,7 @@
         {% endfor %}
       </li>
     </ul>
-    {% if user %}
+    {% if user_logged_in %}
       <p>
           <a href="#" class="btn btn-success">Add new implementation</a>
         </p>
@@ -46,7 +46,7 @@
       <h3>Description</h3>
       <p>{{algorithm.description}}</p>
 
-      <h2>Time-Complexity Analyzes by User</h2>
+      <h3>Time-Complexity Analyzes by User</h3>
       {% for analysis in algorithm.analyses %}
         <p>
             <strong><a href="#" class="btn btn-default">{{ analysis.name }}</a></strong>
@@ -58,11 +58,11 @@
               {{ analysis.description }}            
           </div>
         </ul>  
-        {% if user %}
+        {% if user_logged_in %}
           {{  forms.modify_algorithm_button("#{base_path}/analysis/modify/#{analysis.id}") }}
         {% endif %}
       {% endfor %}
-    {% if user %}
+    {% if user_logged_in %}
       <a href="#" class="btn btn-success">Add new analysis</a>
     {% endif %}
 {% endblock %}

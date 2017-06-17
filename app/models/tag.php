@@ -15,16 +15,16 @@ class Tag extends BaseModel{
     $rows = $query->fetchAll();
     $tags = array();
 
-    foreach ($rows as $row) {
+    foreach($rows as $row) {
       $algorithms = Algorithm::fetchByTag($row['id']);
       $tags[] = new Tag(array(
         'id' => $row['id'],
         'name' => $row['name'],
         'algorithms' => $algorithms
         ));
-
-      return $tags;
     }
+    
+    return $tags;
   }
 
   public static function fetchNames() {
