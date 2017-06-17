@@ -117,7 +117,10 @@ class Algorithm extends BaseModel{
     $similar = array();
 
     foreach ($rows as $row) {
-      $similar[] = $row['algorithm'];        
+      $similar[] = new Algorithm(array(
+        'id' => $row['id'],
+        'name' => $row['algorithm']
+      ));
     }
 
     return $similar;
@@ -144,16 +147,19 @@ class Algorithm extends BaseModel{
     return $algorithms;
   }
 
-  public static function fetchNames() {
+  public static function fetchSimple() {
     $query = DB::connection()->prepare('
-      SELECT name FROM Algorithm');
+      SELECT name, id FROM Algorithm');
     $query->execute();
 
     $rows = $query->fetchAll();
     $names = array();
 
     foreach ($rows as $row) {
-      $names[] = $row['name'];
+      $names[] = new Algorithm(array(
+        'id' => $row['id'],
+        'name' => $row['name']
+      ));
     }
     return $names;
   }

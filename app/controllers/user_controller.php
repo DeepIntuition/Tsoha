@@ -8,8 +8,6 @@ class UserController extends BaseController{
 
 	public static function logout() {
 		$_SESSION['user'] = null;
-		$_SESSION['administrator'] = null;
-
 		Redirect::to('/', array('message' => "You've been successfully logged out. Hope to see you again soon!"));
 	}
 
@@ -33,7 +31,6 @@ class UserController extends BaseController{
 			'username' => $params['username'],
 			'password' => $pwHash
 			));
-
 		//$errors = $user->errors();
 		$errors = array();
 		$errors = array_merge($errors, User::check_name_available($user->username));
@@ -44,10 +41,10 @@ class UserController extends BaseController{
 			View::make('register.html', array('errors' => $errors, 'username' => $user->username));
 		}else{
 			$user->save();
+			
 			$_SESSION['user'] = $user->id;
-			Redirect::to('/index', array('message' => 'Your registration was successful, welcome to AlgorithmDB!'));
+			Redirect::to('/index', array('message' => "Your registration was successful, welcome to AlgorithmDB!"));
 		}
-		
 	}
 
 	public static function register() {

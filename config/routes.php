@@ -16,6 +16,26 @@
     AlgorithmController::edit($id);
   });
 
+  $routes-> get('/algorithm/:id/analysis/edit/:analysis_id', function($id, $analysis_id){
+    AnalysisController::edit($id, $analysis_id);
+  });
+
+  $routes-> post('/algorithm/:id/analysis/edit/:analysis_id', function($id, $analysis_id){
+    AnalysisController::update($id, $analysis_id);
+  });
+
+  $routes-> post('/algorithm/:id/analysis/delete/:analysis_id', function($id, $analysis_id){
+    AnalysisController::delete($analysis_id, $id);
+  });
+
+  $routes-> get('/algorithm/:id/analysis/new', function($id){
+    AnalysisController::new($id);
+  });
+
+  $routes-> post('/algorithm/:id/analysis/new', function($id){
+    AnalysisController::store($id);
+  });
+
   $routes-> post('/algorithm/modify/:id', function($id){
     AlgorithmController::update($id);
   });

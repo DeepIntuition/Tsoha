@@ -36,9 +36,12 @@ class User extends BaseModel{
 			INSERT INTO Contributor (name, password) 
 			VALUES (:username, :password) RETURNING id');
 
-		$query->execute(array('username' => $this->username, 'password' => $this->password));
+		$query->execute(array(
+			'username' => $this->username, 
+			'password' => $this->password));
+
 		$row = $query->fetch();
-		$this->id = $row;
+		$this->id = $row['id'];
 	}
 
 	public function validate_username() {

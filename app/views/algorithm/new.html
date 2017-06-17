@@ -45,7 +45,7 @@
       <label>Similar Algorithms:</label>
       <select multiple class="form-control" name="similar[]">
         {% for algo1 in params.algorithms %}  
-          <option>{{ algo1 }}</option>
+          <option>{{ algo1.name }}</option>
         {% endfor %}
       </select>
     </div>

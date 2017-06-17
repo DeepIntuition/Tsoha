@@ -36,6 +36,30 @@ class Analysis extends BaseModel{
   		return $analyses;
   	}
 
+  	public function delete(){
+    	$query = DB::connection()->prepare('
+      		DELETE FROM Analysis WHERE id= :id');
+    	$query->execute(array('id' => $this->id));
+  	}
+
+  	public function save(){
+  		$query = DB::connection()->prepare('
+      		INSERT INTO Analysis (algorithm_id, contributor_id, timecomplexity, description, date)
+      			VALUES (:algorithm_id, :contributor_id, :timecomplexity, :description, CURRENT_DATE)
+      			RETURNING id, date');
+
+    	$query->execute(array(
+    		'algorithm_id' => $this->algorithm_id,
+    		'contributor_id' => $this->contributor_id,
+    		'timecomplexity' => $this->timecomplexity,
+    		'description' => $this->description
+    		));
+
+    	$row = $query->fetch();
+      	$this->id = $row['id'];
+      	$this->date = $row['date'];
+  	}
+
   	public static function deleteByAlgorithmId($algorithm_id){
 	    $query = DB::connection()->prepare('DELETE FROM Analysis WHERE algorithm_id= :algorithm_id');
 	    $query->execute(array('algorithm_id' => $algorithm_id));

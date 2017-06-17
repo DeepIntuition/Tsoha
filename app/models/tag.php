@@ -51,10 +51,15 @@ class Tag extends BaseModel{
   }
 
   public static function saveNewTags($newTags){
+    $uniqueTags = array();
     foreach ($newTags as $key) {
-     $newTag = new Tag(array('name' => $key));
-     $newTag->save();
+      $newTag = new Tag(array('name' => $key));
+      if($newTag->check_name_available()){
+        $newTag->save();
+        $uniqueTags[] = $newTag;
+      }
     }
+    return $uniqueTags;
   }
 
   public static function fetchTagsByAlgorithm($algorithm_id){
@@ -87,5 +92,22 @@ class Tag extends BaseModel{
     $row = $query->fetch();
 
     return $row['name'];
+  }
+
+  public function check_name_available(){
+    $query = DB::connection()->prepare('
+      SELECT name FROM Tag 
+      WHERE name= :tag_name');
+
+    $query->execute(array(
+      'tag_name' => $this->name)); 
+
+    $row = $query->fetch();
+    if($row['name']){
+      return FALSE;
+    }else{
+      return TRUE;
+    }
+
   }
 }

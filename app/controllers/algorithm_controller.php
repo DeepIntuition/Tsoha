@@ -12,8 +12,9 @@ class AlgorithmController extends BaseController{
       $tags = $params['tags'];  
     }
     if(isset($params['inputTags']))  {
-      Tag::saveNewTags($params['inputTags']);
-      $tags = array_merge($tags, $params['inputTags']);
+      $separatedTags = explode(",", $params['inputTags'][0]);
+      $uniqueTags = Tag::saveNewTags($separatedTags);
+      $tags = array_merge($tags, $uniqueTags);
     }
     if(isset($params['similar'])) {
       $similar = $params['similar'];  
@@ -81,7 +82,6 @@ class AlgorithmController extends BaseController{
   public static function home(){
     if(!isset($_SESSION['user'])){
       $_SESSION['user'] = null;
-      $_SESSION['administrator'] = null;                 
     }
     View::make('home.html');
   }
@@ -119,7 +119,7 @@ class AlgorithmController extends BaseController{
   }
 
   private static function fetchGlobalParams(){
-    $algorithms = Algorithm::fetchNames();
+    $algorithms = Algorithm::fetchSimple();
     $tags = Tag::fetchNames();
     $classes = AClass::fetchNames();      
 

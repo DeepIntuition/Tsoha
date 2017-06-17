@@ -12,11 +12,7 @@
   <form method="post" action="{{base_path}}/register">
     <div class="form-group">
       <label>Username</label>
-      {% if message %}
-        <input type="text" name="username" class="form-control" value="{username}">
-      {% else %}
-        <input type="text" name="username" class="form-control">
-      {% endif %}
+        <input type="text" name="username" class="form-control" value="{{username}}">
     </div>
 
     <div class="form-group">

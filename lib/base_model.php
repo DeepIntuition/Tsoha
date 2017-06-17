@@ -20,7 +20,7 @@
       if(count($this->validators) > 1){
         foreach($this->validators as $validator){
           $errors = array_merge($errors, $this->{$validator}());
-        }          
+        }
       }else{
         $validator = $this->validators[0];
         $errors[] = $this->{$validator}();

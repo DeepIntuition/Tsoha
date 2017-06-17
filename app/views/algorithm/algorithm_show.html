@@ -2,26 +2,26 @@
 {% block content %}
 {% import "macros/forms.html" as forms %}
     <h1>{{ algorithm.name }}</h1>
-    <p>
+    <div>
       {% if user_logged_in.administrator %}
         {{forms.delete_button("#{base_path}/algorithm/#{algorithm.id}/deletealgo")}}
         {{forms.modify_algorithm_button("#{base_path}/algorithm/modify/#{algorithm.id}") }}
       {% endif %}
-    </p>
+    </div>
 
     <ul>
-      <li><strong>Class:</strong>{{algorithm.class}}</li>
-      <li><strong>Time Complexity:</strong>{{algorithm.timecomplexity}}</li>
-      <li><strong>Year:</strong>{{algorithm.year}}</li>
-      <li><strong>Authors:</strong>{{algorithm.author}}</li>
-      <li><strong>Similar algorithms:</strong> 
+      <li><strong>Class: </strong>{{algorithm.class}}</li>
+      <li><strong>Time Complexity: </strong>{{algorithm.timecomplexity}}</li>
+      <li><strong>Year: </strong>{{algorithm.year}}</li>
+      <li><strong>Authors: </strong>{{algorithm.author}}</li>
+      <li><strong>Similar algorithms: </strong> 
         {% for algo1 in algorithm.similar %}
-          <a href="{{base_path}}/algorithm/" class="btn btn-default">{{ algo1 }}</a>
+          <a href="{{base_path}}/algorithm/{{algo1.id}}" class="btn btn-default">{{ algo1.name }}</a>
         {% endfor %}
       </li>
       <li><strong>Tags:</strong>
         {% for tagi in algorithm.tags %}
-          <a href="{{base_path}}/tags/{{ tagi.id }}" class="btn btn-default">{{ tagi.name }}</a>
+          <a href="{{base_path}}/tags/{{ tagi.id }}" class="btn btn-default-sm">{{ tagi.name }}</a>
         {% endfor %}
       </li>
       <li><strong>Implementations:</strong>
@@ -56,13 +56,16 @@
           <li><strong>Date:</strong>{{ analysis.date }}</li>
           <div class="well">
               {{ analysis.description }}            
-          </div>
-        </ul>  
-        {% if user_logged_in %}
-          {{  forms.modify_algorithm_button("#{base_path}/analysis/modify/#{analysis.id}") }}
+          </div> 
+        {% if analysis.contributor_id == user_logged_in.id %}
+          {{  forms.modify_algorithm_button("#{base_path}/algorithm/#{algorithm.id}/analysis/edit/#{analysis.id}") }}
+          {{  forms.delete_button("#{base_path}/algorithm/#{algorithm.id}/analysis/delete/#{analysis.id}") }}
         {% endif %}
+        </ul> 
       {% endfor %}
+    <div>
     {% if user_logged_in %}
-      <a href="#" class="btn btn-success">Add new analysis</a>
+      <a href="{{base_path}}/algorithm/{{algorithm.id}}/analysis/new" class="btn btn-success">Add new analysis</a>
     {% endif %}
+    </div>
 {% endblock %}

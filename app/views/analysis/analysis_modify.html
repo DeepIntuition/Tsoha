@@ -1,12 +1,6 @@
 {% extends "base.html" %}
 {% block content %}
-  <h2>Modify Algorithm</h2>
-
-  {% if errors %}
-    {% for message in errors %}
-      {{ messages.warning_message("#{message}") }}
-    {% endfor %}
-  {% endif %}
+  <h2>Modify Analysis</h2>
 
   <form>
     <div class="form-group">
@@ -36,25 +30,14 @@
     <div class="form-group">
       <label>Select Another Time Complexity Class:</label>
       <select class="form-control" name="timecomplexity" type="text">
-        <option value="O(1)">O(1) - Constant</option>
-        <option value="O(logn)">O(logn) - Logarithmic</option>
-        <option value="O(logn*)">O(logn*) - Amortized</option>
-        <option value="O(n)">O(n) - Linear</option>
-        <option value="O(n*)">O(n*) - Amortized</option>
-        <option value="O(nlogn)">O(nlogn) - n-Logarithmic</option>
-        <option value="O(n*logn)">O(nlogn) - Amortized</option>
-        <option value="O(n^2)">O(n^2) - Squared</option>
-        <option value="O(n*^2)">O(n*^2) - Amortized</option>
-        <option value="O(n^3)">O(n^3) - Cubed</option>
-        <option value="O(n*^3)">O(n^3) - Amortized</option>
-        <option value="O(n^k)">O(n^k) - Polynomial</option>
-        <option value="O(n*^k)">O(n^k) - Amortized</option>
-        <option value="O(2^n^k)">O(2^n^k) - Non-det Polynomial</option>
-        <option value="O(2^n*^k)">O(2^n^k) - Amortized</option>
-        <option value="O(V*E)">O(V*E) - Graphs</option>
-        <option value="O(V^2)">O(V^2) - Graphs</option>
-        <option value="O(E^2)">O(E^2) - Graphs</option>
-        <option value="O(VE^2)">O(VE^2) - Graphs</option>
+        <option>O(1) - Constant</option>
+        <option>O(logn) - Logarithmic</option>
+        <option>O(n) - Linear</option>
+        <option>O(nlogn) - n-Logarithmic</option>
+        <option>O(n^2) - Squared</option>
+        <option>O(n^3) - Cubed</option>
+        <option>O(n^k) - Polynomial</option>
+        <option>O(2^n^k) - Non-det Polynomial</option>
       </select>
     </div>
 
@@ -69,15 +52,17 @@
 
      <table class="table table-striped table-bordered">
     <thead>
-      <tr>Linked Algorithms:</tr>
-      <tr></tr>
+      <tr>
+        <th>Linked Similar Algorithms</th>
+        <th>Handle links</th>
+      </tr>
     </thead>
 
     <tbody>
       {% for s_algo in params.similar %}
         <tr>
-          <td><{{s_algo.name}}</a></td>
-          <td><<form method="post" action="{{base_path}}/algorithm/{{ algorithm.id }}/delete_link/{{ s_algo.id }}" style="display: inline-block;">
+          <td><{{s_algo}}</a></td>
+          <td><<form method="post" action="{{base_path}}/algorithm/{{ algorithm.id }}/delete_link/{{ s_algo }}" style="display: inline-block;">
         <button type="submit" class="btn btn-danger">Remove link</button>
       </form></td>
         </tr>
@@ -89,7 +74,7 @@
       <label>Select Other Similar Algorithms:</label>
       <select multiple class="form-control" name="similar[]">
         {% for algo1 in params.algorithms %}  
-          <option>{{ algo1.name }}</option>
+          <option>{{ algo1 }}</option>
         {% endfor %}
       </select>
     </div>
@@ -102,7 +87,7 @@
     <div class="form-group">
       <label>Tags: </label>
       <input name="tags[]" class="form-control"
-                   value={% for tag in params.tags %}{{tag}}", "{% endfor %} data-role="tagsinput" />
+                   value={% for tag in params.tags %}{{tag}}{% endfor %} data-role="tagsinput" />
     </div>
 
     <div class="form-group">

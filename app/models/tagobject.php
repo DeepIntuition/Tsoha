@@ -19,11 +19,11 @@ class Tagobject extends BaseModel{
     $tagObject = array();
 
     foreach ($rows as $row) {
-      $tagobjects[] = new Tagobject(
+      $tagobjects[] = new Tagobject(array(
         'id' => $row['Tagobject.id'],
         'tag_id' => $row['Tagobject.tag_id'],
         'tag_name' => $row['Tag.name'],
-        )
+        ));
     }
 
     return $tagobjects;
