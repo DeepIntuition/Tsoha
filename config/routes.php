@@ -8,60 +8,16 @@
     AlgorithmController::home();
   });
 
-  $routes-> post('/algorithm/new', function(){
-    AlgorithmController::store();
-  });
-
-  $routes-> get('/algorithm/modify/:id', function($id){
-    AlgorithmController::edit($id);
-  });
-
-  $routes-> get('/algorithm/:id/analysis/edit/:analysis_id', function($id, $analysis_id){
-    AnalysisController::edit($id, $analysis_id);
-  });
-
-  $routes-> post('/algorithm/:id/analysis/edit/:analysis_id', function($id, $analysis_id){
-    AnalysisController::update($id, $analysis_id);
-  });
-
-  $routes-> post('/algorithm/:id/analysis/delete/:analysis_id', function($id, $analysis_id){
-    AnalysisController::delete($analysis_id, $id);
-  });
-
-  $routes-> get('/algorithm/:id/analysis/new', function($id){
-    AnalysisController::new($id);
-  });
-
-  $routes-> post('/algorithm/:id/analysis/new', function($id){
-    AnalysisController::store($id);
-  });
-
-  $routes-> post('/algorithm/modify/:id', function($id){
-    AlgorithmController::update($id);
-  });
-
   $routes->get('/index', function() {
     AlgorithmController::index();
   });
 
-  $routes->get('/tags/index', function() {
-    TagController::index();
-  });
-
-  $routes->get('/tags/:id', function($id) {
-    TagController::tag_show($id);
-  });
-
-  $routes->get('/implementation_show', function() {
-    AlgorithmController::implementation_show();
-  });
-
-  $routes->get('/implementation_modify', function() {
-    AlgorithmController::implementation_modify();
-  });
-
   $routes->get('/algorithm/new', function() {
     AlgorithmController::new();
+  });
+
+  $routes->post('/algorithm/new', function(){
+    AlgorithmController::store();
   });
 
   $routes->get('/algorithm/:id', function($id) {
@@ -76,8 +32,48 @@
     AlgorithmController::algorithm_modify();
   });
 
-  $routes->post('/algorithm/:id/deletealgo', function($id){
+  $routes->get('/algorithm/deletealgo/:id', function($id){
     AlgorithmController::delete($id);
+  });
+
+  $routes->get('/algorithm/modify/:id', function($id){
+    AlgorithmController::edit($id);
+  });
+
+  $routes-> post('/algorithm/modify/:id', function($id){
+    AlgorithmController::update($id);
+  });
+  
+  $routes-> get('/algorithm/:id/analysis/edit/:analysis_id', function($id, $analysis_id){
+    AnalysisController::edit($id, $analysis_id);
+  });
+
+  $routes-> post('/algorithm/:id/analysis/edit/:analysis_id', function($id, $analysis_id){
+    AnalysisController::update($id);
+  });
+
+  $routes-> post('/algorithm/:id/analysis/delete/:analysis_id', function($analysis_id, $algorithm_id){
+    AnalysisController::delete($analysis_id, $algorithm_id);
+  });
+
+  $routes-> get('/algorithm/:id/analysis/new', function($id){
+    AnalysisController::new($id);
+  });
+
+  $routes-> post('/algorithm/:id/analysis/new', function($id){
+    AnalysisController::store($id);
+  });
+
+  $routes-> get('/algorithm/:algorithm_id/implementation/:planguage', function($algorithm_id, $planguage){
+    ImplementationController::show($algorithm_id, $planguage);
+  });
+
+  $routes->get('/tags/index', function() {
+    TagController::index();
+  });
+
+  $routes->get('/tags/:id', function($id) {
+    TagController::tag_show($id);
   });
 
   $routes->get('/login', function() {

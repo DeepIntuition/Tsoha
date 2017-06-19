@@ -165,13 +165,14 @@ class Algorithm extends BaseModel{
   }
 
   public function delete(){
+    AlgorithmLink::deleteByAlgorithmId($this->id);
+    Analysis::deleteByAlgorithmId($this->id);
+    Implementation::deleteByAlgorithmId($this->id);
+    Tagobject::deleteByAlgorithmId($this->id);
+
     $query = DB::connection()->prepare('
       DELETE FROM Algorithm WHERE id= :algorithm_id');
     $query->execute(array('algorithm_id' => $this->id));
-
-    AlgorithmLink::deleteByAlgorithmId($this->id);
-    Analysis::deleteByAlgorithmId($this->id);
-    Tagobject::deleteByAlgorithmId($this->id);
   }
 
   public function update(){

@@ -1,11 +1,11 @@
-{% macro planguage_button_selector(planguage) %}
+{% macro planguage_button_selector(planguage, path) %}
 	{% if planguage == "Ruby" %}
-        <button type="button" class="btn btn-danger btn-sm">Ruby</button>
+        <button type="button" href="{{path}}" class="btn btn-danger btn-sm">Ruby</button>
     {% elseif planguage == "Python" %}
-        <button type="button" class="btn btn-primary btn-sm">Python</button>
+        <button type="button" href="{{path}}" class="btn btn-primary btn-sm">Python</button>
     {% elseif planguage == "Java" %}
-        <button type="button" class="btn btn-success btn-sm">Java</button>
+        <button type="button" href="{{path}}" class="btn btn-success btn-sm">Java</button>
     {% else %}
-        <button type="button" class="btn btn-default btn-sm">{{ planguage }}</button>
+        <button type="button" href="{{path}}" class="btn btn-default btn-sm">{{ planguage }}</button>
     {% endif %}   
 {% endmacro %}

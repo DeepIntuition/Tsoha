@@ -15,7 +15,7 @@
   <form method="post" action="{{base_path}}/algorithm/{{algorithm_id}}/analysis/new">
     <div class="form-group">
       <label>Select Time Complexity Class:</label>
-      <select class="form-control" name="timecomplexity" type="text">
+      <select class="form-control" style="width:20em" name="timecomplexity" type="text">
         <option value="O(1)">O(1) - Constant</option>
         <option value="O(logn)">O(logn) - Logarithmic</option>
         <option value="O(logn*)">O(logn*) - Amortized</option>
@@ -40,8 +40,8 @@
     </div>
 
     <div class="form-group">
-      <h3><strong>Analysis:</strong></h3>
-      <textarea name="description" class="form-control" value="{{ attributes.description }}"></textarea>
+      <label>Analysis: </label>
+      <textarea name="description" style="height:20em" class="form-control" value="{{ attributes.description }}"></textarea>
     </div>
 
     <button type="submit" class="btn btn-default">Submit</button>

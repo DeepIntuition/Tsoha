@@ -7,6 +7,13 @@
   {% if message %}
   	{{ messages.success_message("#{message}") }}
   {% endif %}
+  <blockquote class="blockquote">
+    <p class="mb-0">
+      <font color="gray"><i>An algorithm must be seen to be believed.</i></font><br>
+      <strong><font color="green">&#8211;Donald Knuth</font></strong>
+    </p>
+  </blockquote>
+
   {% if user_logged_in %}
   	<a href={{base_path}}/index class="btn btn-primary btn-lg">Explore</a> 
   {% else %}

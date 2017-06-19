@@ -1,72 +1,98 @@
 {% extends "base.html" %}
 {% block content %}
 {% import "macros/forms.html" as forms %}
-    <h2><strong>Algorithm:</strong> {{ algorithm.name }}</h2>
-    <div>
+    
+  <div class='page-header'>
+    <div class='btn-toolbar pull-right'>
+      <div class='btn-group'>
+        <a href="{{base_path}}/algorithm/{{algorithm.id}}/analysis/new" class="btn btn-primary">View implementations</a>
+      </div>
+      {% if user_logged_in %}
+      <div class='btn-group'>
+          <a href="{{base_path}}/algorithm/{{algorithm.id}}/analysis/new" class="btn btn-success">Add new analysis</a>
+          <a href="#" class="btn btn-success">Add new implementation</a>
+      </div>
+      {% endif %}
       {% if user_logged_in.administrator %}
-        {{forms.delete_button("#{base_path}/algorithm/#{algorithm.id}/deletealgo")}}
-        {{forms.modify_algorithm_button("#{base_path}/algorithm/modify/#{algorithm.id}") }}
+      <div class='btn-group'>
+         {{forms.delete_button("#{base_path}/algorithm/deletealgo/#{algorithm.id}")}}
+         {{forms.modify_algorithm_button("#{base_path}/algorithm/modify/#{algorithm.id}") }}
+      </div>
       {% endif %}
     </div>
-    <hr>
-    <ul>
-      <li><strong>Class: </strong>{{algorithm.class}}</li>
-      <li><strong>Time Complexity: </strong>{{algorithm.timecomplexity}}</li>
-      <li><strong>Year: </strong>{{algorithm.year}}</li>
-      <li><strong>Authors: </strong>{{algorithm.author}}</li>
-      <li><strong>Similar algorithms: </strong> 
-        {% for algo1 in algorithm.similar %}
-          <a href="{{base_path}}/algorithm/{{algo1.id}}" class="btn btn-default">{{ algo1.name }}</a>
-        {% endfor %}
-      </li>
-      <li><strong>Tags:</strong>
-        {% for tagi in algorithm.tags %}
-          <a href="{{base_path}}/tags/{{ tagi.id }}" class="btn btn-default-sm">{{ tagi.name }}</a>
-        {% endfor %}
-      </li>
-      <li><strong>Implementations:</strong>
-        {% for planguage in algorithm.implementations %}
-              {% if planguage == "Ruby" %}
-                <button type="button" class="btn btn-danger btn-sm">Ruby</button>
-              {% elseif planguage == "Python" %}
-                <button type="button" class="btn btn-primary btn-sm">Python</button>
-              {% elseif planguage == "Java" %}
-                <button type="button" class="btn btn-success btn-sm">Java</button>
-              {% else %}
-                <button type="button" class="btn btn-default btn-sm">{{ planguage }}</button>
-              {% endif %}   
-        {% endfor %}
-      </li>
-    </ul>
-    <hr>
-    {% if user_logged_in %}
-      <p>
-          <a href="#" class="btn btn-success">Add new implementation</a>
-        </p>
-      {% endif %}
-      <h3>Description</h3>
-      <p>{{algorithm.description}}</p>
+    <h2><strong>Algorithm:</strong> {{ algorithm.name }}</h2>
+  </div>
 
-      <h3><strong>Time-Complexity Analyzes</strong> by user</h3>
+  <h3>Description</h3>
+    <p>{{algorithm.description}}<font color="gray">&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<t>Source Wikipedia</font></p>
+
+    <h3>Specifications</h3>             
+    <table class="table table-hover">
+      <thead>
+        <tr>
+          <th>Class</th>
+          <th>Time Complexity Class</th>
+          <th>Author</th>
+          <th>Year</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><font color="navy">{{algorithm.class}}</font></td>
+          <td><font color="green"><u>{{algorithm.timecomplexity}}</u></font></td>
+          <td>{{algorithm.author}}</td>
+          <td>{{algorithm.year}}</td>
+        </tr>
+      </tbody>
+    </table>
+  
+
+  
+  <div class="container">
+    <div class="row">
+      <div class="col">
+        <strong>Similar algorithms: </strong> 
+        {% for algo1 in algorithm.similar %}
+          <a href="{{base_path}}/algorithm/{{algo1.id}}" class="btn btn-default btn-sm">{{ algo1.name }}</a>
+        {% endfor %}      
+      </div>
+      <div class="col">
+        <strong>Tags:</strong>
+          {% for tagi in algorithm.tags %}
+            <a href="{{base_path}}/tags/{{ tagi.id }}" class="btn btn-default-sm">{{ tagi.name }}</a>
+          {% endfor %}      
+      </div>
+      <div class="col">
+        <strong>Available Implementations:</strong>
+          {% for planguage in algorithm.implementations %}
+            {{ selectors.planguage_button_selector("#{planguage}", "#{base_path}/algorithm/#{algorithm.id}/implementations/#{planguage}") }}
+          {% endfor %}      
+      </div>
+    </div>
+  </div>
+  
+  <div>
+    <hr>
+    {% if algorithm.analyses %}
+      <h3><strong>Time-Complexity Analyzes</strong></h3>
+      <span style="display:block; height:5px;"> </span>
       {% for analysis in algorithm.analyses %}
         <p>
-            <strong><a href="#" class="btn btn-default">{{ analysis.name }}</a></strong>
+          <strong><a href="#" class="btn btn-default">{{ analysis.name }}</a></strong>
         </p>
-        <ul>  
-          <li><strong>Time Complexity Class:</strong>{{ analysis.timecomplexity }}</li>
-          <li><strong>Date:</strong>{{ analysis.date }}</li>
-          <div class="well">
-              {{ analysis.description }}            
-          </div> 
+        <strong>Achieved Time Complexity Class: </strong>{{ analysis.timecomplexity }}<br>
+        <strong>Date: </strong>{{ analysis.date }}<br>
+        <span style="display:block; height:10px;"></span>
+        <div class="well">
+            <font color="gray">{{ analysis.description }}</font>            
+        </div> 
         {% if analysis.contributor_id == user_logged_in.id %}
           {{  forms.modify_algorithm_button("#{base_path}/algorithm/#{algorithm.id}/analysis/edit/#{analysis.id}") }}
           {{  forms.delete_button("#{base_path}/algorithm/#{algorithm.id}/analysis/delete/#{analysis.id}") }}
         {% endif %}
-        </ul> 
       {% endfor %}
-    <div>
-    {% if user_logged_in %}
-      <a href="{{base_path}}/algorithm/{{algorithm.id}}/analysis/new" class="btn btn-success">Add new analysis</a>
+    {% else %}
+      <h3>No time complexity analyses yet</h3>
     {% endif %}
-    </div>
+  </div> 
 {% endblock %}

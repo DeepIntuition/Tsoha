@@ -2,19 +2,21 @@
 {% import "macros/messages.html" as messages %}
 {% extends "base.html" %}
 {% block content %}
+
+<div class='page-header'>
+  <div class='btn-toolbar pull-right'>
+    {% if user_logged_in.administrator %}  
+    <a href="{{base_path}}/algorithm/new" class="btn btn-success">Add new algorithm</a>
+    <a href="{{base_path}}/class/new" class="btn btn-success">Add new class</a>
+    {% endif %}
+    <a href="{{base_path}}/tags/index" class="btn btn-primary btn">View all Tags</a>
+  </div>
 <h1>Algorithms</h1>
+</div>   
 
 {% if message %}
 {{ messages.success_message("#{message}") }}
 {% endif %}
-
-<p>
-  {% if user_logged_in.administrator %}  
-  <a href="{{base_path}}/algorithm/new" class="btn btn-success">Add new algorithm</a>
-  <a href="{{base_path}}/class/new" class="btn btn-success">Add new Class</a>
-  {% endif %}
-  <a href="{{base_path}}/tags/index" class="btn btn-primary btn">All Tags</a>
-</p>
 <table class="table table-striped table-bordered">
   <thead>
     <tr>
@@ -30,7 +32,7 @@
     <tr>
       <td><a href="{{base_path}}/algorithm/{{algorithm.id}}">{{algorithm.name}}</a></td>
       <td>{{algorithm.class}}</td>
-      <td>{{algorithm.timecomplexity}}</td>
+      <td><font color="green">{{algorithm.timecomplexity}}</font></td>
       <td>
         {% for planguage in algorithm.implementations %}
         {% if planguage == "Ruby" %}
