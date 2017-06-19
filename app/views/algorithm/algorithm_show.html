@@ -1,14 +1,14 @@
 {% extends "base.html" %}
 {% block content %}
 {% import "macros/forms.html" as forms %}
-    <h1>{{ algorithm.name }}</h1>
+    <h2><strong>Algorithm:</strong> {{ algorithm.name }}</h2>
     <div>
       {% if user_logged_in.administrator %}
         {{forms.delete_button("#{base_path}/algorithm/#{algorithm.id}/deletealgo")}}
         {{forms.modify_algorithm_button("#{base_path}/algorithm/modify/#{algorithm.id}") }}
       {% endif %}
     </div>
-
+    <hr>
     <ul>
       <li><strong>Class: </strong>{{algorithm.class}}</li>
       <li><strong>Time Complexity: </strong>{{algorithm.timecomplexity}}</li>
@@ -38,6 +38,7 @@
         {% endfor %}
       </li>
     </ul>
+    <hr>
     {% if user_logged_in %}
       <p>
           <a href="#" class="btn btn-success">Add new implementation</a>
@@ -46,7 +47,7 @@
       <h3>Description</h3>
       <p>{{algorithm.description}}</p>
 
-      <h3>Time-Complexity Analyzes by User</h3>
+      <h3><strong>Time-Complexity Analyzes</strong> by user</h3>
       {% for analysis in algorithm.analyses %}
         <p>
             <strong><a href="#" class="btn btn-default">{{ analysis.name }}</a></strong>
