@@ -2,12 +2,12 @@
 
 class AnalysisController extends BaseController{
 
-  public static function store($algorithm_id) {
+  public static function store($algorithms_id) {
     self::check_logged_in();
     $user = self::get_user_logged_in();
     $params = $_POST;
     $attributes = array(
-      'algorithm_id' => $algorithm_id,
+      'algorithm_id' => $algorithms_id,
       'contributor_id' => $user->id,
       'timecomplexity' => $params['timecomplexity'],
       'description' => $params['description']
@@ -19,46 +19,39 @@ class AnalysisController extends BaseController{
 
     if(count($errors) == 0){
       $Analysis->save();
-      $algorithm = new Algorithm(array('id' => $algorithm_id));
-      Redirect::to('/algorithm/:id' . $algorithm->id, array('message' => 'Analysis has been successfully added to the database!'));
-    } else {
+      Redirect::to('/algorithm/' . $algorithms_id, array('message' => 'Analysis has been successfully added to the database!'));
+    }else{
       View::make('analysis/new.html', array('errors' => $errors, 'attributes' => $attributes));
     }
   }
 
-  public static function edit($id){
+  public static function edit($algorithm_id, $analysis_id){
     self::check_logged_in();
-    $Analysis = Analysis::fetchSingleAnalysis($id);
-    $params = AnalysisController::fetchGlobalParams();  
-
-    View::make('Analysis/Analysis_modify.html', array('Analysis' => $Analysis, 'params' => $params));
+    $analysis = Analysis::fetch($analysis_id);
+    View::make('analysis/analysis_modify.html', array('analysis' => $analysis));
   }
 
-  public static function update($id){
+  public static function update($algorithm_id, $analysis_id){
     self::check_logged_in();
     $params = $_POST;
 
-    $Analysis = new Analysis(array(
-      'name' => $params['name'],
-      'class' => $params['class'],
+    $analysis = new Analysis(array(
+      'id' => $analysis_id,
+      'algorithm_id' => $algorithm_id,
+      'contributor_id' => $params['contributor_id'],
       'timecomplexity' => $params['timecomplexity'],
-      'year' => $params['year'],
-      'tags' => $tags,
-      'author' => $params['author'],
-      'description' => $params['description'],
-      'similar' => $similar 
+      'description' => $params['description']
       ));
 
-    $errors = $Analysis->errors();
-    // Kint::dump($errors);
-    
+    $errors = array();
+    // $errors = $analysis->errors();
     
     if(count($errors) > 0){
-      View::make('Analysis/Analysis_modify.html', array('errors' => $errors, 'attributes' => $attributes));
+      View::make('analysis/analysis_modify.html', array('errors' => $errors, 'attributes' => $attributes));
     }else{
-      $Analysis->update();
+      $analysis->update();
 
-      Redirect::to('/algorithm/:id' . $id, array('message' => 'Analysis was successfully modified!'));
+      Redirect::to('/algorithm/' . $algorithm_id, array('message' => 'Analysis was successfully modified!'));
     }
   }
 
@@ -72,8 +65,7 @@ class AnalysisController extends BaseController{
     $Analysis = new Analysis(array('id' => $id));
     $Analysis->delete();
 
-    $algorithm = new Algorithm(array('id' => $algorithm_id));
-      Redirect::to('/algorithm/:id' . $algorithm->id, array('message' => 'Analysis has been removed successfully!'));
+    Redirect::to('/algorithm/' . $algorithm_id, array('message' => 'Analysis has been removed successfully!'));
   }
  
 }

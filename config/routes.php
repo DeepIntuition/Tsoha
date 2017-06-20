@@ -49,10 +49,10 @@
   });
 
   $routes-> post('/algorithm/:id/analysis/edit/:analysis_id', function($id, $analysis_id){
-    AnalysisController::update($id);
+    AnalysisController::update($id, $analysis_id);
   });
 
-  $routes-> post('/algorithm/:id/analysis/delete/:analysis_id', function($analysis_id, $algorithm_id){
+  $routes-> get('/algorithm/:id/analysis/delete/:analysis_id', function($algorithm_id, $analysis_id){
     AnalysisController::delete($analysis_id, $algorithm_id);
   });
 
@@ -84,11 +84,11 @@
     UserController::verify_user();
   });
 
-  $routes->post('/logout', function() {
+  $routes->get('/logout', function() {
     UserController::logout();
   });
 
-  $routes->get('/logout', function() {
+  $routes->post('/logout', function() {
     UserController::logout();
   });
 
