@@ -13,9 +13,13 @@ class AlgorithmController extends BaseController{
     }
     if(isset($params['inputTags']))  {
       $separatedTags = explode(",", $params['inputTags'][0]);
+      
+      Kint::dump($separatedTags);
       $uniqueTags = Tag::saveNewTags($separatedTags);
       $tags = array_merge($tags, $uniqueTags);
+      Kint::dump($tags);
     }
+    /*
     if(isset($params['similar'])) {
       $similar = $params['similar'];  
     }
@@ -40,6 +44,7 @@ class AlgorithmController extends BaseController{
     } else {
       View::make('algorithm/new.html', array('errors' => $errors, 'attributes' => $attributes));
     }
+    */
   }
 
   public static function edit($id){

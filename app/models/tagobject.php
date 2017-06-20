@@ -49,12 +49,12 @@ class Tagobject extends BaseModel{
         
       $tagObject->save();
     }
-  }
+  } 
 
   public static function saveByName($algorithm_id, $tagNames){
     foreach($tagNames as $tag) {
       $query = DB::connection()->prepare('INSERT INTO Tagobject (algorithm_id, tag_id) VALUES (:algorithm_id, (SELECT id FROM Tag WHERE name= :tagName))');
-      $query->execute(array('algorithm_id' => $algorithm_id, 'tagName' => $tag));
+      $query->execute(array('algorithm_id' => $algorithm_id, 'tagName' => $tag->name));
     }
   }
 
