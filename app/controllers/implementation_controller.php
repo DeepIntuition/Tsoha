@@ -34,6 +34,13 @@ class ImplementationController extends BaseController{
     View::make('Implementation/Implementation_modify.html', array('Implementation' => $Implementation, 'params' => $params));
   }
 
+  public static function show($algorithm_id, $planguage){
+    $implementations = Implementation::fetchAllByAlgorithm($algorithm_id);
+    $algorithm = Algorithm::fetchSingleAlgorithm($algorithm_id);
+
+    View::make('implementation/implementations_show.html', array('implementations' => $implementations, 'selected_planguage' => $planguage, 'algorithm' => $algorithm, 'back_path' => $back_path));
+  }
+
   public static function update($id){
     self::check_logged_in();
     $params = $_POST;

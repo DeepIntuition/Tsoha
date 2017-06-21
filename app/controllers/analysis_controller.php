@@ -13,12 +13,11 @@ class AnalysisController extends BaseController{
       'description' => $params['description']
       );
 
-    $Analysis = new Analysis($attributes);
-    // $errors = $Analysis->errors();
-    $errors = array();
+    $analysis = new Analysis($attributes);
+    $errors = $analysis->errors();
 
     if(count($errors) == 0){
-      $Analysis->save();
+      $analysis->save();
       Redirect::to('/algorithm/' . $algorithms_id, array('message' => 'Analysis has been successfully added to the database!'));
     }else{
       View::make('analysis/new.html', array('errors' => $errors, 'attributes' => $attributes));
@@ -35,19 +34,19 @@ class AnalysisController extends BaseController{
     self::check_logged_in();
     $params = $_POST;
 
-    $analysis = new Analysis(array(
+    $attributes = array(
       'id' => $analysis_id,
       'algorithm_id' => $algorithm_id,
       'contributor_id' => $params['contributor_id'],
       'timecomplexity' => $params['timecomplexity'],
       'description' => $params['description']
-      ));
+      );
 
-    $errors = array();
-    // $errors = $analysis->errors();
+    $analysis = new Analysis($attributes);
+    $errors = $analysis->errors();
     
     if(count($errors) > 0){
-      View::make('analysis/analysis_modify.html', array('errors' => $errors, 'attributes' => $attributes));
+      View::make('analysis/analysis_modify.html', array('errors' => $errors, 'analysis' => $attributes));
     }else{
       $analysis->update();
 

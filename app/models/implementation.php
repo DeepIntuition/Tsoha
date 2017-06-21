@@ -1,86 +1,86 @@
 <?php
 
-class Analysis extends BaseModel{
-	public $id, $name, $algorithm_id, $contributor_id, $timecomplexity, $date, $description;
+class Implementation extends BaseModel{
+	public $id, $name, $algorithm_id, $contributor_id, $planguage, $date, $description;
 
 	public function __construct($attributes){
 		parent::__construct($attributes);
-    $this->validators = array('validate_description','validate_timecomplexity', 'validate_contributor');
+    $this->validators = array('validate_description','validate_programminglanguage', 'validate_contributor');
 	}
 
-	public static function fetchAnalyses($algorithm_id){
+	public static function fetchAllByAlgorithm($algorithm_id){
  		$query = DB::connection()->prepare('
-   		SELECT Analysis.id AS id,
+   		SELECT Implementation.id AS id,
    			Contributor.name AS added_by, 
-   			Analysis.contributor_id AS cont_id, 
-  			Analysis.timecomplexity AS time_comp, 
-  			Analysis.date AS date_added, 
-  			Analysis.description AS description 
-     		FROM Algorithm, Analysis, Contributor 
-        WHERE Algorithm.id = analysis.algorithm_id 
-        AND Contributor.id = analysis.contributor_id 
+   			Implementation.contributor_id AS cont_id, 
+  			Implementation.programminglanguage AS planguage, 
+  			Implementation.date AS date_added, 
+  			Implementation.description AS description 
+     		FROM Algorithm, Implementation, Contributor 
+        WHERE Algorithm.id = Implementation.algorithm_id 
+        AND Contributor.id = Implementation.contributor_id 
         AND Algorithm.id= :algorithm_id');
 
 	  $query->execute(array('algorithm_id' => $algorithm_id));
 	  $rows = $query->fetchAll();
-  	$analyses = array();
+  	$implementations = array();
 
 		foreach ($rows as $row) {
-			$analyses[] = new Analysis(array(
+			$implementations[] = new Implementation(array(
 	       	'id' => $row['id'],
 	       	'name' => $row['added_by'],
 	       	'algorithm_id' => $algorithm_id,
 	       	'contributor_id' => $row['cont_id'],
-	       	'timecomplexity' => $row['time_comp'],
+	       	'programminglanguage' => $row['planguage'],
 	       	'date' => $row['date_added'],
 	       	'description' => $row['description']
 	       	));
 		}
 
-		return $analyses;
+		return $implementations;
 	}
 
   public static function fetch($id){
     $query = DB::connection()->prepare('
       SELECT Algorithm.id AS algorithm_id, 
         Contributor.name AS added_by, 
-        Analysis.contributor_id AS cont_id, 
-        Analysis.timecomplexity AS time_comp, 
-        Analysis.date AS date_added, 
-        Analysis.description AS description 
-        FROM Algorithm, Analysis, Contributor 
-        WHERE Algorithm.id = analysis.algorithm_id 
-        AND Contributor.id = analysis.contributor_id 
-        AND Analysis.id= :analysis_id');
+        Implementation.contributor_id AS cont_id, 
+        Implementation.programminglanguage AS planguage, 
+        Implementation.date AS date_added, 
+        Implementation.description AS description 
+        FROM Algorithm, Implementation, Contributor 
+        WHERE Algorithm.id = Implementation.algorithm_id 
+        AND Contributor.id = Implementation.contributor_id 
+        AND Implementation.id= :Implementation_id');
 
-    $query->execute(array('analysis_id' => $id));
+    $query->execute(array('Implementation_id' => $id));
     $row = $query->fetch();
 
     if($row){
-      $analysis = new Analysis(array(
+      $Implementation = new Implementation(array(
         'id' => $id,
         'name' => $row['added_by'],
         'algorithm_id' => $row['algorithm_id'],
         'contributor_id' => $row['cont_id'],
-        'timecomplexity' => $row['time_comp'],
+        'programminglanguage' => $row['planguage'],
         'date' => $row['date_added'],
         'description' => $row['description']
       ));
     }
 
-    return $analysis;
+    return $Implementation;
   }
 
   public function save(){
     $query = DB::connection()->prepare('
-        INSERT INTO Analysis (algorithm_id, contributor_id, timecomplexity, description, date)
-          VALUES (:algorithm_id, :contributor_id, :timecomplexity, :description, CURRENT_DATE)
+        INSERT INTO Implementation (algorithm_id, contributor_id, programminglanguage, description, date)
+          VALUES (:algorithm_id, :contributor_id, :programminglanguage, :description, CURRENT_DATE)
           RETURNING id, date');
 
     $query->execute(array(
       'algorithm_id' => $this->algorithm_id,
       'contributor_id' => $this->contributor_id,
-      'timecomplexity' => $this->timecomplexity,
+      'programminglanguage' => $this->programminglanguage,
       'description' => $this->description
       ));
 
@@ -91,28 +91,28 @@ class Analysis extends BaseModel{
 
   public function update(){
     $query = DB::connection()->prepare('
-        UPDATE Analysis SET 
-          timecomplexity = :timecomplexity, 
+        UPDATE Implementation SET 
+          programminglanguage = :programminglanguage, 
           description = :description
-        WHERE id= :analysis_id 
+        WHERE id= :Implementation_id 
         AND contributor_id= :contributor_id');
 
     $query->execute(array(
-      'timecomplexity' => $this->timecomplexity,
+      'programminglanguage' => $this->programminglanguage,
       'description' => $this->description,
-      'analysis_id' => $this->id,
+      'Implementation_id' => $this->id,
       'contributor_id' => $this->contributor_id
       ));
   }
 
   public function delete(){
     	$query = DB::connection()->prepare('
-      		DELETE FROM Analysis WHERE id= :id');
+      		DELETE FROM Implementation WHERE id= :id');
     	$query->execute(array('id' => $this->id));
   }
 
   public static function deleteByAlgorithmId($algorithm_id){
-    $query = DB::connection()->prepare('DELETE FROM Analysis WHERE algorithm_id= :algorithm_id');
+    $query = DB::connection()->prepare('DELETE FROM Implementation WHERE algorithm_id= :algorithm_id');
     $query->execute(array('algorithm_id' => $algorithm_id));
   }
 
@@ -126,12 +126,12 @@ class Analysis extends BaseModel{
     return $errors;
   }
 
-  public function validate_timecomplexity(){
+  public function validate_programminglanguage(){
     $errors = array();
     $string_max_length = 30;
 
-    $errors = array_merge($errors, $this->validate_not_null($this->timecomplexity));
-    $errors = array_merge($errors, $this->validate_string_max_length($this->timecomplexity, $string_max_length));
+    $errors = array_merge($errors, $this->validate_not_null($this->programminglanguage));
+    $errors = array_merge($errors, $this->validate_string_max_length($this->programminglanguage, $string_max_length));
     
     return $errors;
   }

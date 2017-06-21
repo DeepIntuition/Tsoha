@@ -69,17 +69,16 @@
 
      <table class="table table-striped table-bordered">
     <thead>
-      <tr>Linked Algorithms:</tr>
-      <tr></tr>
+      <tr><strong>Linked Algorithms:</strong></tr>
     </thead>
 
     <tbody>
-      {% for s_algo in params.similar %}
+      {% for algo in algorithm.similar %}
         <tr>
-          <td><{{s_algo.name}}</a></td>
+          <td><{{algo.name}}</a></td>
           <td><<form method="post" action="{{base_path}}/algorithm/{{ algorithm.id }}/delete_link/{{ s_algo.id }}" style="display: inline-block;">
-        <button type="submit" class="btn btn-danger">Remove link</button>
-      </form></td>
+          <button type="submit" class="btn btn-danger">Remove link</button>
+          </form></td>
         </tr>
       {% endfor %}
     </tbody>

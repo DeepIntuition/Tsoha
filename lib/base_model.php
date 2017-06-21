@@ -32,7 +32,7 @@
     public function validate_not_null($string){
       $errors = array();
       if($string == '' || $string == null) {
-        $errors[] = 'String should not be empty!';
+        $errors[] = 'Field should not be empty!';
       }
       return $errors;
     }

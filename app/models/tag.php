@@ -56,7 +56,7 @@ class Tag extends BaseModel{
       $newTag = new Tag(array('name' => $key));
       if($newTag->check_name_available()){
         $newTag->save();
-        $uniqueTags[] = $newTag;
+        $uniqueTags[] = $newTag->name;
       }
     }
     return $uniqueTags;
@@ -108,6 +108,11 @@ class Tag extends BaseModel{
     }else{
       return TRUE;
     }
+  }
 
+  public function delete(){
+    $query = DB::connection()->prepare('
+      DELETE FROM Tag WHERE id= :id');
+    $query->execute(array('id' => $this->id));
   }
 }

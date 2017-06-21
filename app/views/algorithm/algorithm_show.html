@@ -7,7 +7,7 @@
   <div class='page-header'>
     <div class='btn-toolbar pull-right'>
       <div class='btn-group'>
-        <a href="{{base_path}}/algorithm/{{algorithm.id}}/analysis/new" class="btn btn-primary">View implementations</a>
+        <a href="{{base_path}}/algorithm/{{algorithm.id}}/implementation/All" class="btn btn-primary">View implementations</a>
       </div>
       {% if user_logged_in %}
       <div class='btn-group'>
@@ -56,16 +56,16 @@
         <strong>Similar algorithms: </strong> 
         {% for algo1 in algorithm.similar %}
           <a href="{{base_path}}/algorithm/{{algo1.id}}" class="btn btn-default btn-sm">{{ algo1.name }}</a>
-        {% endfor %}
+        {% endfor %}    
         <br>      
         <strong>Tags:</strong>
           {% for tagi in algorithm.tags %}
-            <a href="{{base_path}}/tags/{{ tagi.id }}" class="btn btn-default-sm">{{ tagi.name }}</a>
+            <a href="{{base_path}}/tags/{{ tagi.id }}" class="btn btn-default btn-sm">{{ tagi.name }}</a>
           {% endfor %}
         <br>      
         <strong>Available Implementations:</strong>
           {% for planguage in algorithm.implementations %}
-            {{ selectors.planguage_button_selector("#{planguage}", "#{base_path}/algorithm/#{algorithm.id}/implementations/#{planguage}") }}
+            {{ selectors.planguage_button_selector("#{planguage}", "#{base_path}/algorithm/#{algorithm.id}/implementation/#{planguage}") }}
           {% endfor %}      
   </div>
   

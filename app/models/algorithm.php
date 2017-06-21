@@ -4,55 +4,55 @@ class Algorithm extends BaseModel{
   
   public $id, $class, $name, $timecomplexity, $year, $author, $description, $implementations, $analyses, $similar, $tags;
   
-  	public function __construct($attributes){
-    	parent::__construct($attributes);
-      $this->validators = array('validate_name','validate_year','validate_description','validate_class');
+  public function __construct($attributes){
+  	parent::__construct($attributes);
+    $this->validators = array('validate_name','validate_year','validate_description','validate_class');
+  }
+
+  public function save(){
+    $query = DB::connection()->prepare('
+      INSERT INTO Algorithm (class_id, name, timecomplexity, year, author, description) 
+        VALUES ((SELECT id FROM Class WHERE name= :class), :name, :timecomplexity, :year, :author, :description) RETURNING id');
+
+    $query->execute(array('class' => $this->class, 'name' => $this->name, 'timecomplexity' => $this->timecomplexity, 'year' => $this->year, 'author' => $this->author, 'description' => $this->description));
+    
+    $row = $query->fetch();
+    $this->id = $row['id'];
+
+    if(isset($this->tags)) {
+      Tagobject::saveByName($this->id, $this->tags);
+    }
+    if(isset($this->similar)) {
+      AlgorithmLink::saveByName($this->id, $this->similar);
+    }
+  }
+
+  public static function fetchAll(){
+		$query = DB::connection()->prepare('SELECT * FROM Algorithm');
+
+		$query->execute();
+		$rows = $query->fetchAll();
+  	$algorithms = array();
+
+  	foreach ($rows as $row) {
+  		$row_id = $row['id'];
+  		$implementations = Algorithm::fetchImplementedLanguages($row_id);
+      $class = AClass::fetchClassByAlgorithm($row_id);
+
+  		$algorithms[] = new Algorithm(array(
+  			'id' => $row_id,
+  			'class' => $class,
+  			'name' => $row['name'],
+  			'timecomplexity' => $row['timecomplexity'],
+  			'year' => $row['year'],
+  			'author' => $row['author'],
+  			'description' => $row['description'],
+  			'implementations' => $implementations
+  		));
   	}
 
-    public function save(){
-      $query = DB::connection()->prepare('
-        INSERT INTO Algorithm (class_id, name, timecomplexity, year, author, description) 
-          VALUES ((SELECT id FROM Class WHERE name= :class), :name, :timecomplexity, :year, :author, :description) RETURNING id');
-
-      $query->execute(array('class' => $this->class, 'name' => $this->name, 'timecomplexity' => $this->timecomplexity, 'year' => $this->year, 'author' => $this->author, 'description' => $this->description));
-      
-      $row = $query->fetch();
-      $this->id = $row['id'];
-
-      if(isset($this->tags)) {
-        Tagobject::saveByName($this->id, $this->tags);
-      }
-      if(isset($this->similar)) {
-        AlgorithmLink::saveByName($this->id, $this->similar);
-      }
-    }
-
-  	public static function fetchAll(){
-  		$query = DB::connection()->prepare('SELECT * FROM Algorithm');
- 
-  		$query->execute();
-  		$rows = $query->fetchAll();
-    	$algorithms = array();
-
-    	foreach ($rows as $row) {
-    		$row_id = $row['id'];
-    		$implementations = Algorithm::fetchImplementedLanguages($row_id);
-        $class = AClass::fetchClassByAlgorithm($row_id);
-
-    		$algorithms[] = new Algorithm(array(
-    			'id' => $row_id,
-    			'class' => $class,
-    			'name' => $row['name'],
-    			'timecomplexity' => $row['timecomplexity'],
-    			'year' => $row['year'],
-    			'author' => $row['author'],
-    			'description' => $row['description'],
-    			'implementations' => $implementations
-    		));
-    	}
-
-    	return $algorithms;
-    }
+  	return $algorithms;
+  }
 
 	public static function fetchImplementedLanguages($algorithm_id){
 
@@ -127,11 +127,12 @@ class Algorithm extends BaseModel{
   } 
 
   public static function fetchByTag($tag_id){
-     $query = DB::connection()->prepare('
+    $query = DB::connection()->prepare('
       SELECT Algorithm.id AS id, Algorithm.name AS name 
         FROM Algorithm, Tagobject 
         WHERE Tagobject.algorithm_id = Algorithm.id 
-        AND Tagobject.tag_id = :tag_id');
+        AND Tagobject.tag_id = :tag_id'
+    );
 
     $query->execute(array('tag_id' => $tag_id));
     $rows = $query->fetchAll();
@@ -187,13 +188,13 @@ class Algorithm extends BaseModel{
         WHERE id= :algorithm_id');
 
     $query->execute(array(
-      'algorithm_id' => $this->id,
-      'class_id' => $this->class_id,
+      'class_id' => $this->class,
       'name' => $this->name,
       'timecomplexity' => $this->timecomplexity,
       'year' => $this->year,
       'author' => $this->author,
-      'description' => $this->description));
+      'description' => $this->description,
+      'algorithm_id' => $this->id));
 
     Tagobject::update($this->id, $this->tags);
     AlgorithmLink::update($this->id, $this->similar);
@@ -237,8 +238,8 @@ class Algorithm extends BaseModel{
     $errors = array();
     $string_max_length = 4000;
 
-    $errors = array_merge($errors, $this->validate_not_null($this->class));
-    $errors = array_merge($errors, $this->validate_string_max_length($this->class, $string_max_length));
+    $errors = array_merge($errors, $this->validate_not_null($this->description));
+    $errors = array_merge($errors, $this->validate_string_max_length($this->description, $string_max_length));
     
     return $errors;
   }

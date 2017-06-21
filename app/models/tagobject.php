@@ -30,7 +30,9 @@ class Tagobject extends BaseModel{
   }
 
   public function save(){
-    $query = DB::connection()->prepare('INSERT INTO Tagobject (algorithm_id, tag_id) VALUES ( :algorithm_id, :tag_id ) RETURNING id');
+    $query = DB::connection()->prepare('
+      INSERT INTO Tagobject (algorithm_id, tag_id) 
+        VALUES ( :algorithm_id, :tag_id ) RETURNING id');
 
     $query->execute(array('algorithm_id' => $this->algorithm_id, 'tag_id' => $this->tag_id));
 
@@ -40,7 +42,8 @@ class Tagobject extends BaseModel{
 
   public static function saveByAlgorithmId($algorithm_id, $tagNames){
     foreach($tagNames as $tagName) {
-      $query = DB::connection()->prepare('SELECT id FROM Tag WHERE name= :tagName');
+      $query = DB::connection()->prepare('
+        SELECT id FROM Tag WHERE name= :tagName');
       
       //Kint::dump($tagNames);
       $query->execute(array('tagName' => $tagName));
@@ -53,13 +56,17 @@ class Tagobject extends BaseModel{
 
   public static function saveByName($algorithm_id, $tagNames){
     foreach($tagNames as $tag) {
-      $query = DB::connection()->prepare('INSERT INTO Tagobject (algorithm_id, tag_id) VALUES (:algorithm_id, (SELECT id FROM Tag WHERE name= :tagName))');
-      $query->execute(array('algorithm_id' => $algorithm_id, 'tagName' => $tag->name));
+      $query = DB::connection()->prepare('
+        INSERT INTO Tagobject (algorithm_id, tag_id) 
+        VALUES (:algorithm_id, (SELECT id FROM Tag WHERE name= :tagName))');
+      $query->execute(array('algorithm_id' => $algorithm_id, 'tagName' => $tag));
     }
   }
 
   public static function deleteByAlgorithmId($algorithm_id){
-    $query = DB::connection()->prepare('DELETE FROM Tagobject WHERE algorithm_id= :algorithm_id');
+    $query = DB::connection()->prepare('
+      DELETE FROM Tagobject 
+        WHERE algorithm_id= :algorithm_id');
     $query->execute(array('algorithm_id' => $algorithm_id));
   }
 

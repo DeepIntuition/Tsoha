@@ -82,16 +82,21 @@ INSERT INTO Implementation (algorithm_id, contributor_id, programminglanguage, d
 
 INSERT INTO Implementation (algorithm_id, contributor_id, programminglanguage, date, description)
 	VALUES ((SELECT id FROM Algorithm WHERE name='Strassen Matrix Multiplication'), 
-			(SELECT id FROM Contributor WHERE name='NikkiSaari56'),
+			(SELECT id FROM Contributor WHERE name='Yyni Yllapitaja'),
 			'Java',
 			'2003-03-07',
 			'for i in n, for j in k, where n is the horizontal and k is the vertical dimensionality of the matrix...');
 
+INSERT INTO Implementation (algorithm_id, contributor_id, programminglanguage, date, description)
+	VALUES ((SELECT id FROM Algorithm WHERE name='Mergesort'), 
+			(SELECT id FROM Contributor WHERE name='Yyni Yllapitaja'),
+			'Python',
+			'2013-03-07',
+			'for i in n, for j in k, where n is the horizontal and k is the vertical dimensionality of the matrix end of merge_array');
 
--- Lisätään NikkiSaari56:n analyysi Mergesortista
 INSERT INTO Analysis (algorithm_id, contributor_id, timecomplexity, date, description)
 	VALUES ((SELECT id FROM Algorithm WHERE name='Mergesort'), 
-			(SELECT id FROM Contributor WHERE name='NikkiSaari56'),
+			(SELECT id FROM Contributor WHERE name='AlgorithmExpert'),
 			'O(nlogn)',
 			'2012-01-08',
 			'Mergesort can be analyzed through substitution method, we can derive a good guess through basic recursion tree method: at each level of recursion we do about n amount of work and at each level the array is split into two. We will have a guess of O(nlogn). We have to show that T(n) <= cnlogn. The basic recursion looks like the following: T(n)=2T(n/2) + n. By substitution we get: T(n) = 2(c*n/2*log*(n/2)) <= cn*(logn - log2) <= cnlogn');

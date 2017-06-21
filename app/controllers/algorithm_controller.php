@@ -4,26 +4,19 @@ class AlgorithmController extends BaseController{
 
   public static function store() {
     self::check_logged_in();
+    $redirect_path = "/index";
+    self::check_administrator_rights($redirect_path);
+
     $params = $_POST;
     $tags = array();
     $similar = array();
       
-    if(isset($params['tags']))  {
-      $tags = $params['tags'];  
-    }
-    if(isset($params['inputTags']))  {
-      $separatedTags = explode(",", $params['inputTags'][0]);
-      
-      Kint::dump($separatedTags);
-      $uniqueTags = Tag::saveNewTags($separatedTags);
-      $tags = array_merge($tags, $uniqueTags);
-      Kint::dump($tags);
-    }
-    /*
+    $tags = self::mergeTags($params);    
+    
     if(isset($params['similar'])) {
       $similar = $params['similar'];  
     }
-    
+
     $attributes = array(
       'name' => $params['name'],
       'class' => $params['class'],
@@ -38,17 +31,19 @@ class AlgorithmController extends BaseController{
     $algorithm = new Algorithm($attributes);
     $errors = $algorithm->errors();
 
-    if(count($errors) == 0){
+    if(count($errors) > 0){
+      View::make('algorithm/new.html', array('errors' => $errors, 'attributes' => $attributes));
+    } else {
       $algorithm->save();
       Redirect::to('/algorithm/' . $algorithm->id, array('message' => 'Algorithm has been successfully added to the database!'));
-    } else {
-      View::make('algorithm/new.html', array('errors' => $errors, 'attributes' => $attributes));
     }
-    */
   }
 
   public static function edit($id){
     self::check_logged_in();
+    $redirect_path = "/algorithm/" . $id;
+    self::check_administrator_rights($redirect_path);
+    
     $algorithm = Algorithm::fetchSingleAlgorithm($id);
     $params = AlgorithmController::fetchGlobalParams();  
 
@@ -57,7 +52,14 @@ class AlgorithmController extends BaseController{
 
   public static function update($id){
     self::check_logged_in();
+    $redirect_path = "/algorithm/" . $id;
+    self::check_administrator_rights($redirect_path);
+    
     $params = $_POST;
+    $tags = array();
+    $similar = array();
+      
+    $tags = self::mergeTags($params); 
 
     $algorithm = new Algorithm(array(
       'name' => $params['name'],
@@ -71,8 +73,6 @@ class AlgorithmController extends BaseController{
       ));
 
     $errors = $algorithm->errors();
-    // Kint::dump($errors);
-    
     
     if(count($errors) > 0){
       View::make('algorithm/algorithm_modify.html', array('errors' => $errors, 'attributes' => $attributes));
@@ -81,7 +81,6 @@ class AlgorithmController extends BaseController{
 
       Redirect::to('/algorithm/:id' . $algorithm->id, array('message' => 'Algorithm was successfully modified!'));
     }
-    
   }
 
   public static function home(){
@@ -93,12 +92,18 @@ class AlgorithmController extends BaseController{
 
   public static function new(){
     self::check_logged_in();
+    $redirect_path = "/index";
+    self::check_administrator_rights($redirect_path);
+
     $params = AlgorithmController::fetchGlobalParams();          
     View::make('algorithm/new.html', array('params' => $params));
   }
 
   public static function delete($id){
     self::check_logged_in();
+    $redirect_path = "/algorithm/" . $id;
+    self::check_administrator_rights($redirect_path);
+
     $algorithm = new Algorithm(array('id' => $id));
     $algorithm->delete();
 
@@ -136,4 +141,25 @@ class AlgorithmController extends BaseController{
 
     return $params;           
   } 
+
+  private static function mergeTags($params){
+    $tags = array();
+    if(isset($params['tags']))  {
+      $tags = $params['tags'];  
+    }
+    if($params['inputTags']['0'] != null)  {
+      $separatedNewTags = explode(",", $params['inputTags'][0]);
+
+      $i = 0;
+      foreach ($separatedNewTags as $string) {
+        $separatedNewTags[$i] = trim($string);
+        $i += 1;
+      }
+      
+      $uniqueTags = Tag::saveNewTags($separatedNewTags);
+      $tags = array_merge($tags, $uniqueTags);
+    }
+    return $tags;
+  }
+
 }

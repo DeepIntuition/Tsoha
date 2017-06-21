@@ -17,6 +17,11 @@
 {% if message %}
 {{ messages.success_message("#{message}") }}
 {% endif %}
+
+{% if errors %}
+{{ messages.warning_message("#{message}") }}
+{% endif %}
+
 <table class="table table-striped table-bordered">
   <thead>
     <tr>

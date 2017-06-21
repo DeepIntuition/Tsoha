@@ -18,12 +18,14 @@
           $content['user_logged_in'] = BaseController::get_user_logged_in();
         }
 
+        /* Deprecated
         if(method_exists('BaseController', 'check_administrator_rights')){
           if(BaseController::check_administrator_rights()){
             $content['administrator'] = 1;
           }
         } 
-
+        */
+        
         // Tulostetaan Twig:n renderöimä näkymä
         echo $twig->render($view, $content);
       } catch (Exception $e){
