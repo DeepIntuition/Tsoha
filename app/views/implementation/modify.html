@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+{% block content %}
+{% import "macros/messages.html" as messages %}
+  <h2>Modify Implementation</h2>
+
+  {% if back_path %}
+      <a href="{{ back_path }}" class="btn btn-default">Back</a>
+  {% endif %}
+
+  {% if errors %}
+    {% for message in errors %}
+      {{ messages.warning_message("#{message}") }}
+    {% endfor %}
+  {% endif %}
+
+  <form method="post" action="{{base_path}}/algorithm/{{implementation.algorithm_id}}/implementation/edit/{{implementation.id}}">
+    <div class="form-group">
+      <input name="algorithm_id" type="hidden" class="form-control" value="{{ implementation.algorithm_id }}">
+      <input name="contributor_id" type="hidden" class="form-control" value="{{ implementation.contributor_id }}">
+      <input name="date" type="hidden" class="form-control" value="{{ implementation.date }}">
+    </div>
+
+    <div class="form-group">
+      <label>Current Programming Language</label>
+      <p>{{ implementation.planguage }}</p>
+    </div>
+
+    <div class="form-group">
+      <label>Select Programming Language: </label>
+      <select class="form-control" style="width:20em" name="planguage_select" type="text">
+        <option>Assembly Language</option>
+        <option>C</option>
+        <option>C++</option>
+        <option>C#</option>
+        <option>Delphi</option>
+        <option>F#</option>
+        <option>Fortran</option>
+        <option>Go</option>
+        <option>Haskell</option>
+        <option>Java</option>
+        <option>Javascript</option>
+        <option>Julia</option>
+        <option>Lisp</option>
+        <option>MatLab</option>
+        <option>Perl</option>
+        <option>PHP</option>
+        <option>Prolog</option>
+        <option>Python</option>
+        <option>R</option>
+        <option>Ruby</option>
+        <option>Scala</option>
+        <option>Scratch</option>
+        <option>Swift</option>
+        <option>Visual Basic</option>
+        <option>Visual Basic .NET</option>
+        <option>Other (write below)</option>
+      </select>
+    </div>
+
+    <div>
+      <label>Custom Language: </label>
+      <input name="planguage_other" style="width:20em" type="text" class="form-control"></text>
+    </div>
+
+     <div class="form-group">
+      <label>Description: </label>
+      <textarea name="description" style="height:20em" class="form-control">{{ implementation.description }}</textarea>
+    </div>
+
+    <div class="form-group">
+      <button type="submit" class="btn btn-primary">Save</button>
+    </div>
+  </form>
+{% endblock %}

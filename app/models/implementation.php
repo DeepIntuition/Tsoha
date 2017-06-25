@@ -80,7 +80,7 @@ class Implementation extends BaseModel{
     $query->execute(array(
       'algorithm_id' => $this->algorithm_id,
       'contributor_id' => $this->contributor_id,
-      'planguage' => $this->programminglanguage,
+      'programminglanguage' => $this->planguage,
       'description' => $this->description
       ));
 
@@ -94,13 +94,13 @@ class Implementation extends BaseModel{
         UPDATE Implementation SET 
           programminglanguage = :programminglanguage, 
           description = :description
-        WHERE id= :Implementation_id 
+        WHERE id= :implementation_id 
         AND contributor_id= :contributor_id');
 
     $query->execute(array(
       'programminglanguage' => $this->planguage,
       'description' => $this->description,
-      'Implementation_id' => $this->id,
+      'implementation_id' => $this->id,
       'contributor_id' => $this->contributor_id
       ));
   }

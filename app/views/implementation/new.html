@@ -6,6 +6,8 @@
       <a href="{{ back_path }}" class="btn btn-default">Back</a>
   {% endif %}
 
+  <hr>
+
   {% if errors %}
     <div class="alert alert-danger">
       <ul>
@@ -16,10 +18,10 @@
     </div>
   {% endif %}
 
-  <form method="post" action="{{base_path}}/algorithm/{{algorithm_id}}/new_implementation">
+  <form method="post" action="{{base_path}}/algorithm/{{ algorithm_id }}/new_implementation">
     <div class="form-group">
-      <label>Select Programming Language:</label>
-      <select class="form-control" style="width:20em" name="planguage_select" type="text">
+      <label>Select Programming Language: </label>
+      <select class="form-control" style="width:20em" name="planguage_select" title="Choose one of the following" type="text">
         <option>Assembly Language</option>
         <option>C</option>
         <option>C++</option>
@@ -45,10 +47,14 @@
         <option>Swift</option>
         <option>Visual Basic</option>
         <option>Visual Basic .NET</option>
+        <option>Other (write below)</option>
       </select>
     </div>
 
-    <hr>
+    <div>
+      <label><strong>Custom Language: </strong></label>
+      <input type="text" style="width:20em" name="planguage_other" value="{{ attributes.planguage }}">
+    </div>
 
     <div class="form-group">
       <label>Write your implementation here: </label>

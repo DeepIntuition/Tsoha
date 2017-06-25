@@ -1,7 +1,18 @@
 {% extends "base.html" %}
 {% block content %}
-
-	<h3><strong>Algorithms associated with tag: </strong>{{ tagName }}</h3>
+	
+	<div class='page-header'>
+    	<div class='btn-toolbar pull-right'>
+    		{% if user_logged_in.administrator %}
+      		<div class='btn-group'>
+        		<a href="{{base_path}}/tags/delete/{{ tag_id }}" class="btn btn-danger">Delete Tag</a>
+        	</div>
+        	{% endif %}
+      	</div>
+      	<h3><strong>Algorithms associated with tag: </strong>{{ tagName }}</h3>
+    	<a href="{{ base_path }}/tags/index" class="btn btn-default">Back to Tags</a>
+    </div>
+	
 	{% for algorithm in algorithms %}
 		<a a class="btn btn-default btn-sm" href="{{base_path}}/algorithm/{{algorithm.id}}">{{ algorithm.name }}</a>
 	{% endfor %}

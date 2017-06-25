@@ -44,7 +44,7 @@
     AnalysisController::update($id, $analysis_id);
   });
 
-  $routes->get('/algorithm/:id/analysis/delete/:analysis_id/?:back_path', function($algorithm_id, $analysis_id){
+  $routes->get('/algorithm/:id/analysis/delete/:analysis_id', function($algorithm_id, $analysis_id){
     AnalysisController::delete($analysis_id, $algorithm_id);
   });
 
@@ -68,8 +68,20 @@
     ImplementationController::store($algorithm_id);
   });
 
-  $routes->get('/algorithm/:algorithm_id/delete_link/:algorithm_to_id', function($algorithm_id, $algorithm_to_id){
-    AlgorithmController::deleteLink($algorithm_id, $algorithm_to_id);
+  $routes->get('/algorithm/:algorithm_id/implementation/edit/:implementation_id', function($algorithm_id, $implementation_id){
+    ImplementationController::edit($algorithm_id, $implementation_id);
+  });
+
+  $routes->post('/algorithm/:algorithm_id/implementation/edit/:implementation_id', function($algorithm_id, $implementation_id){
+    ImplementationController::update($algorithm_id, $implementation_id);
+  });
+
+  $routes->get('/algorithm/:algorithm_id/implementation/delete/:implementation_id', function($algorithm_id, $implementation_id){
+    ImplementationController::delete($algorithm_id, $implementation_id);
+  });
+
+  $routes->get('/algorithm/:algorithm_id/implementation/delete/:implementation_id', function($algorithm_id, $implementation_id){
+    ImplementationController::delete($algorithm_id, $implementation_id);
   });
 
   $routes->get('/tags/index', function() {
@@ -78,6 +90,10 @@
 
   $routes->get('/tags/:id', function($id) {
     TagController::tag_show($id);
+  });
+
+  $routes->get('/tags/delete/:id', function($id) {
+    TagController::delete($id);
   });
 
   $routes->get('/login', function() {

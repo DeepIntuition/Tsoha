@@ -179,7 +179,7 @@ class Algorithm extends BaseModel{
   public function update(){
     $query = DB::connection()->prepare('
         UPDATE Algorithm SET
-          class_id = :class_id,
+          class_id = (SELECT id FROM Class WHERE name= :class),
           name = :name,
           timecomplexity = :timecomplexity, 
           year = :year, 
@@ -187,9 +187,8 @@ class Algorithm extends BaseModel{
           description = :description
         WHERE id= :id');
 
-    Kint::dump($this);
     $query->execute(array(
-      'class_id' => $this->class,
+      'class' => $this->class,
       'name' => $this->name,
       'timecomplexity' => $this->timecomplexity,
       'year' => $this->year,

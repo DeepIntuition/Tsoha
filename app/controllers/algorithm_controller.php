@@ -90,7 +90,6 @@ class AlgorithmController extends BaseController{
     $tags_single_string = self::array_to_string($algorithm->tags);
 
     $params = AlgorithmController::fetchGlobalParams();  
-    Kint::dump($algorithm);
     View::make('algorithm/algorithm_modify.html', array('algorithm' => $algorithm, 'params' => $params, 'tags_single_string' => $tags_single_string));
   }
 
@@ -102,8 +101,12 @@ class AlgorithmController extends BaseController{
     $params = $_POST;
     $tags = array();
     $similar = array();
-      
-    $tags = self::mergeTags($params); 
+    
+    if(isset($params['similar'])){
+      $similar = $params['similar'];
+    }
+
+    $tags = AlgorithmController::updateMergeTags($params); 
 
     $algorithm = new Algorithm(array(
       'id' => $id,
@@ -116,7 +119,7 @@ class AlgorithmController extends BaseController{
       'description' => $params['description'],
       'similar' => $similar 
       ));
-
+    
     $errors = $algorithm->errors();
     
     if(count($errors) > 0){
@@ -126,6 +129,7 @@ class AlgorithmController extends BaseController{
 
       Redirect::to('/algorithm/' . $algorithm->id, array('message' => 'Algorithm was successfully modified!'));
     }
+    
   }
   
   public static function delete($id){
@@ -176,15 +180,44 @@ class AlgorithmController extends BaseController{
       $checkedNewTags = array();
       foreach ($separatedNewTags as $string) {
         $string = trim($string);
-
         # Check in case of duplicates
         if(!in_array($string, $allTags)){
           $checkedNewTags[] = trim($string);  
         }
       }
-      
       Tag::saveNewTags($checkedNewTags);
       $tags = array_merge($tags, $checkedNewTags);
+    }
+    return $tags;
+  }
+
+  private static function updateMergeTags($params){
+    $tags = array();
+    $allTags = Tag::fetchNames();
+
+    if(isset($params['tags']))  {
+      $tags = $params['tags'];  
+    }
+    if($params['inputTags']['0'] != null)  {
+      $separatedNewTags = explode(",", $params['inputTags'][0]);
+      $uniqueTags = array();
+      $otherTags = array();
+
+      foreach ($separatedNewTags as $string) {
+        $string = trim($string);
+        # Take out duplicates in case of double adding
+        if(!in_array($string, $tags)){
+          $otherTags[] = $string;  
+        }
+
+        # Differentiate those that are not in the DB
+        if(!in_array($string, $allTags)){
+          $uniqueTags[] = $string;  
+        }
+      }
+      Tag::saveNewTags($uniqueTags);
+      $tags = array_merge($tags, $othertags);
+      $tags = array_merge($tags, $uniqueTags);
     }
     return $tags;
   }
