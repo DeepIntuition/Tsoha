@@ -8,6 +8,9 @@ Yleisiä linkkejä:
 #### Ylläpitäjän tunnukset:
 * __käyttäjänimi:__ Yyni Yllapitaja
 * __salasana:__ pwsedwrs223**
+#### Tavallisen käyttäjän tunnukset:
+* __käyttäjänimi:__ AlgorithmExpert
+* __salasana:__ AlgorithmExpert1@
 
 ## Työn aihe
 
