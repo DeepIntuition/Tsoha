@@ -2,6 +2,28 @@
 
 class AlgorithmController extends BaseController{
 
+  public static function home(){
+    if(!isset($_SESSION['user'])){
+      $_SESSION['user'] = null;
+    }
+    View::make('home.html');
+  }
+
+  public static function algorithm_show($id){
+    $algorithm = Algorithm::fetchSingleAlgorithm($id);
+    View::make('algorithm/algorithm_show.html', array('algorithm' => $algorithm));
+  }
+
+  public static function new(){
+    self::check_logged_in();
+    $redirect_path = "/index";
+    self::check_administrator_rights($redirect_path);
+
+    $params = AlgorithmController::fetchGlobalParams();          
+    View::make('algorithm/new.html', array('params' => $params));
+  }
+
+
   public static function store() {
     self::check_logged_in();
     $redirect_path = "/index";
@@ -10,17 +32,23 @@ class AlgorithmController extends BaseController{
     $params = $_POST;
     $tags = array();
     $similar = array();
-      
+
     $tags = self::mergeTags($params);    
     
     if(isset($params['similar'])) {
       $similar = $params['similar'];  
     }
 
+    $timecomplexity = $params['timecomplexity'];
+
+    if(strlen($params['timecomplexity_other']) > 2) {
+      $timecomplexity = $params['timecomplexity_other'];  
+    }
+
     $attributes = array(
       'name' => $params['name'],
       'class' => $params['class'],
-      'timecomplexity' => $params['timecomplexity'],
+      'timecomplexity' => $timecomplexity,
       'year' => $params['year'],
       'tags' => $tags,
       'author' => $params['author'],
@@ -29,10 +57,23 @@ class AlgorithmController extends BaseController{
       );
 
     $algorithm = new Algorithm($attributes);
+    
     $errors = $algorithm->errors();
 
     if(count($errors) > 0){
-      View::make('algorithm/new.html', array('errors' => $errors, 'attributes' => $attributes));
+      $tags_single_string = "";
+
+      $i = 0;
+      foreach ($tags as $tag) {
+        if($i == (count($tags) - 1)){
+          $tags_single_string = $tags_single_string . $tag;  
+        }else{
+          $tags_single_string = $tags_single_string . $tag . ", ";
+        }
+        $i += 1;  
+      }
+      $params = AlgorithmController::fetchGlobalParams();
+      View::make('algorithm/new.html', array('errors' => $errors, 'attributes' => $attributes, 'tags_single_string' => $tags_single_string, 'params' => $params));
     } else {
       $algorithm->save();
       Redirect::to('/algorithm/' . $algorithm->id, array('message' => 'Algorithm has been successfully added to the database!'));
@@ -43,11 +84,14 @@ class AlgorithmController extends BaseController{
     self::check_logged_in();
     $redirect_path = "/algorithm/" . $id;
     self::check_administrator_rights($redirect_path);
-    
-    $algorithm = Algorithm::fetchSingleAlgorithm($id);
-    $params = AlgorithmController::fetchGlobalParams();  
 
-    View::make('algorithm/algorithm_modify.html', array('algorithm' => $algorithm, 'params' => $params));
+    $algorithm = Algorithm::fetchSingleAlgorithm($id);
+
+    $tags_single_string = self::array_to_string($algorithm->tags);
+
+    $params = AlgorithmController::fetchGlobalParams();  
+    Kint::dump($algorithm);
+    View::make('algorithm/algorithm_modify.html', array('algorithm' => $algorithm, 'params' => $params, 'tags_single_string' => $tags_single_string));
   }
 
   public static function update($id){
@@ -62,6 +106,7 @@ class AlgorithmController extends BaseController{
     $tags = self::mergeTags($params); 
 
     $algorithm = new Algorithm(array(
+      'id' => $id,
       'name' => $params['name'],
       'class' => $params['class'],
       'timecomplexity' => $params['timecomplexity'],
@@ -79,26 +124,10 @@ class AlgorithmController extends BaseController{
     }else{
       $algorithm->update();
 
-      Redirect::to('/algorithm/:id' . $algorithm->id, array('message' => 'Algorithm was successfully modified!'));
+      Redirect::to('/algorithm/' . $algorithm->id, array('message' => 'Algorithm was successfully modified!'));
     }
   }
-
-  public static function home(){
-    if(!isset($_SESSION['user'])){
-      $_SESSION['user'] = null;
-    }
-    View::make('home.html');
-  }
-
-  public static function new(){
-    self::check_logged_in();
-    $redirect_path = "/index";
-    self::check_administrator_rights($redirect_path);
-
-    $params = AlgorithmController::fetchGlobalParams();          
-    View::make('algorithm/new.html', array('params' => $params));
-  }
-
+  
   public static function delete($id){
     self::check_logged_in();
     $redirect_path = "/algorithm/" . $id;
@@ -110,22 +139,15 @@ class AlgorithmController extends BaseController{
     Redirect::to('/index', array('message' => 'Algorithm has been removed successfully!'));
   }
 
+  public static function deleteLink($algorithm_id, $algorithm_to_id){
+    self::check_logged_in();
+    AlgorithmLink::deleteLink($algorithm_id, $algorithm_to_id);
+    Redirect::to('/algorithm/modify/' . $algorithm_id, array('message' => 'Link removed.'));
+  }
+
   public static function index(){      
     $algorithms = Algorithm::fetchAll();
     View::make('algorithm/index.html', array('algorithms' => $algorithms));
-  }
-
-  public static function algorithm_show($id){
-    $algorithm = Algorithm::fetchSingleAlgorithm($id);
-    View::make('algorithm/algorithm_show.html', array('algorithm' => $algorithm));
-  }
-
-  public static function implementation_show(){
-    View::make('suunnitelmat/implementation_show.html');
-  }
-
-  public static function implementation_modify(){
-    View::make('suunnitelmat/implementation_modify.html');
   }
 
   private static function fetchGlobalParams(){
@@ -144,22 +166,36 @@ class AlgorithmController extends BaseController{
 
   private static function mergeTags($params){
     $tags = array();
+    $allTags = Tag::fetchNames();
+
     if(isset($params['tags']))  {
       $tags = $params['tags'];  
     }
     if($params['inputTags']['0'] != null)  {
       $separatedNewTags = explode(",", $params['inputTags'][0]);
-
-      $i = 0;
+      $checkedNewTags = array();
       foreach ($separatedNewTags as $string) {
-        $separatedNewTags[$i] = trim($string);
-        $i += 1;
+        $string = trim($string);
+
+        # Check in case of duplicates
+        if(!in_array($string, $allTags)){
+          $checkedNewTags[] = trim($string);  
+        }
       }
       
-      $uniqueTags = Tag::saveNewTags($separatedNewTags);
-      $tags = array_merge($tags, $uniqueTags);
+      Tag::saveNewTags($checkedNewTags);
+      $tags = array_merge($tags, $checkedNewTags);
     }
     return $tags;
   }
 
+  private static function array_to_string($stringarray){
+    $tags_single_string = "";
+
+    foreach ($stringarray as $tag) {
+      $tags_single_string = $tags_single_string . $tag->name . ", ";  
+    }
+
+    return $tags_single_string;
+  }
 }

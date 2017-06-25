@@ -8,7 +8,7 @@ class Implementation extends BaseModel{
     $this->validators = array('validate_description','validate_programminglanguage', 'validate_contributor');
 	}
 
-	public static function fetchAllByAlgorithm($algorithm_id){
+	public static function fetchByAlgorithm($algorithm_id){
  		$query = DB::connection()->prepare('
    		SELECT Implementation.id AS id,
    			Contributor.name AS added_by, 
@@ -31,7 +31,7 @@ class Implementation extends BaseModel{
 	       	'name' => $row['added_by'],
 	       	'algorithm_id' => $algorithm_id,
 	       	'contributor_id' => $row['cont_id'],
-	       	'programminglanguage' => $row['planguage'],
+	       	'planguage' => $row['planguage'],
 	       	'date' => $row['date_added'],
 	       	'description' => $row['description']
 	       	));
@@ -62,7 +62,7 @@ class Implementation extends BaseModel{
         'name' => $row['added_by'],
         'algorithm_id' => $row['algorithm_id'],
         'contributor_id' => $row['cont_id'],
-        'programminglanguage' => $row['planguage'],
+        'planguage' => $row['planguage'],
         'date' => $row['date_added'],
         'description' => $row['description']
       ));
@@ -80,7 +80,7 @@ class Implementation extends BaseModel{
     $query->execute(array(
       'algorithm_id' => $this->algorithm_id,
       'contributor_id' => $this->contributor_id,
-      'programminglanguage' => $this->programminglanguage,
+      'planguage' => $this->programminglanguage,
       'description' => $this->description
       ));
 
@@ -98,7 +98,7 @@ class Implementation extends BaseModel{
         AND contributor_id= :contributor_id');
 
     $query->execute(array(
-      'programminglanguage' => $this->programminglanguage,
+      'programminglanguage' => $this->planguage,
       'description' => $this->description,
       'Implementation_id' => $this->id,
       'contributor_id' => $this->contributor_id
@@ -130,8 +130,8 @@ class Implementation extends BaseModel{
     $errors = array();
     $string_max_length = 30;
 
-    $errors = array_merge($errors, $this->validate_not_null($this->programminglanguage));
-    $errors = array_merge($errors, $this->validate_string_max_length($this->programminglanguage, $string_max_length));
+    $errors = array_merge($errors, $this->validate_not_null($this->planguage));
+    $errors = array_merge($errors, $this->validate_string_max_length($this->planguage, $string_max_length));
     
     return $errors;
   }

@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% block content %}
+  <h1>Add new Implementation</h1>
+
+  {% if back_path %}
+      <a href="{{ back_path }}" class="btn btn-default">Back</a>
+  {% endif %}
+
+  {% if errors %}
+    <div class="alert alert-danger">
+      <ul>
+        {% for error in errors %}
+          <li>{{error}}</li>
+        {% endfor %}
+      </ul>
+    </div>
+  {% endif %}
+
+  <form method="post" action="{{base_path}}/algorithm/{{algorithm_id}}/new_implementation">
+    <div class="form-group">
+      <label>Select Programming Language:</label>
+      <select class="form-control" style="width:20em" name="planguage_select" type="text">
+        <option>Assembly Language</option>
+        <option>C</option>
+        <option>C++</option>
+        <option>C#</option>
+        <option>Delphi</option>
+        <option>F#</option>
+        <option>Fortran</option>
+        <option>Go</option>
+        <option>Haskell</option>
+        <option>Java</option>
+        <option>Javascript</option>
+        <option>Julia</option>
+        <option>Lisp</option>
+        <option>MatLab</option>
+        <option>Perl</option>
+        <option>PHP</option>
+        <option>Prolog</option>
+        <option>Python</option>
+        <option>R</option>
+        <option>Ruby</option>
+        <option>Scala</option>
+        <option>Scratch</option>
+        <option>Swift</option>
+        <option>Visual Basic</option>
+        <option>Visual Basic .NET</option>
+      </select>
+    </div>
+
+    <hr>
+
+    <div class="form-group">
+      <label>Write your implementation here: </label>
+      <textarea name="description" style="height:20em" class="form-control" value="{{ attributes.description }}"></textarea>
+    </div>
+
+    <button type="submit" class="btn btn-success">Submit</button>
+  </form>
+{% endblock %}

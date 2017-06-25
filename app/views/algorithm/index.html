@@ -40,15 +40,15 @@
       <td><font color="green">{{algorithm.timecomplexity}}</font></td>
       <td>
         {% for planguage in algorithm.implementations %}
-        {% if planguage == "Ruby" %}
-        <button type="button" class="btn btn-danger btn-sm">Ruby</button>
-        {% elseif planguage == "Python" %}
-        <button type="button" class="btn btn-primary btn-sm">Python</button>
-        {% elseif planguage == "Java" %}
-        <button type="button" class="btn btn-success btn-sm">Java</button>
-        {% else %}
-        <button type="button" class="btn btn-default btn-sm">{{ planguage }}</button>
-        {% endif %}   
+          {% if planguage == "Ruby" %}
+            <a href="{{base_path}}/algorithm/{{algorithm.id}}/implementation/{{planguage}}" class="btn btn-danger btn-sm">{{planguage}}</a>
+          {% elseif planguage == "Python" %}
+            <a href="{{base_path}}/algorithm/{{algorithm.id}}/implementation/{{planguage}}" class="btn btn-primary btn-sm">{{planguage}}</a>
+          {% elseif planguage == "Java" %}
+            <a href="{{base_path}}/algorithm/{{algorithm.id}}/implementation/{{planguage}}" class="btn btn-success btn-sm">{{planguage}}</a>
+          {% else %}
+            <a href="{{base_path}}/algorithm/{{algorithm.id}}/implementation/{{planguage}}" class="btn btn-default btn-sm">{{planguage}}</a>
+          {% endif %}   
         {% endfor %}
       </td>
       <th>

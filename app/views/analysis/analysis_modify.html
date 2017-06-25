@@ -3,6 +3,10 @@
 {% import "macros/messages.html" as messages %}
   <h2>Modify Analysis</h2>
 
+  {% if back_path %}
+      <a href="{{ back_path }}" class="btn btn-default">Back</a>
+  {% endif %}
+
   {% if errors %}
     {% for message in errors %}
       {{ messages.warning_message("#{message}") }}
@@ -46,6 +50,11 @@
         <option value="O(E^2)">O(E^2) - Graphs</option>
         <option value="O(VE^2)">O(VE^2) - Graphs</option>
       </select>
+    </div>
+
+    <div>
+      <label>Choose Other: </label>
+      <input name="timecomplexity_other" style="width:20em" type="text" class="form-control" value="{{ attributes.planguage }}"></text>
     </div>
 
      <div class="form-group">

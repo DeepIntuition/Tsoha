@@ -185,8 +185,9 @@ class Algorithm extends BaseModel{
           year = :year, 
           author = :author, 
           description = :description
-        WHERE id= :algorithm_id');
+        WHERE id= :id');
 
+    Kint::dump($this);
     $query->execute(array(
       'class_id' => $this->class,
       'name' => $this->name,
@@ -194,7 +195,7 @@ class Algorithm extends BaseModel{
       'year' => $this->year,
       'author' => $this->author,
       'description' => $this->description,
-      'algorithm_id' => $this->id));
+      'id' => $this->id));
 
     Tagobject::update($this->id, $this->tags);
     AlgorithmLink::update($this->id, $this->similar);
@@ -219,8 +220,14 @@ class Algorithm extends BaseModel{
     $errors = array_merge($errors, $this->validate_not_null($this->year));
     $errors = array_merge($errors, $this->validate_string_max_length($this->year, $string_max_length));
     $errors = array_merge($errors, $this->validate_string_length_at_least($this->year, $string_max_length));
-    $errors = array_merge($errors, $this->validate_string_contains_only_numbers($this->year));          
-      
+    $errors = array_merge($errors, $this->validate_string_contains_only_numbers($this->year));
+    
+    $date = date("Y");
+    $intdate = (int)$date;          
+    if((int)$this->year > $intdate){
+      $errors[] = 'Your input year is in the future. Please change.';  
+    }
+           
     return $errors;
   }
 
@@ -237,8 +244,10 @@ class Algorithm extends BaseModel{
   public function validate_description(){
     $errors = array();
     $string_max_length = 4000;
+    $string_min_length = 40;
 
     $errors = array_merge($errors, $this->validate_not_null($this->description));
+    $errors = array_merge($errors, $this->validate_string_length_at_least($this->description, $string_min_length));
     $errors = array_merge($errors, $this->validate_string_max_length($this->description, $string_max_length));
     
     return $errors;

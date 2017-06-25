@@ -2,6 +2,10 @@
 {% block content %}
   <h1>Add new Algorithm</h1>
 
+  {% if back_path %}
+      <a href="{{ back_path }}" class="btn btn-default">Back</a>
+  {% endif %}
+
   {% if errors %}
     <div class="alert alert-danger">
       <ul>
@@ -30,15 +34,31 @@
    <div class="form-group">
       <label>Time Complexity:</label>
       <select class="form-control" name="timecomplexity" type="text" value="{{ attributes.timecomplexity }}">
-        <option>O(1) - Constant</option>
-        <option>O(logn) - Logarithmic</option>
-        <option>O(n) - Linear</option>
-        <option>O(nlogn) - n-Logarithmic</option>
-        <option>O(n^2) - Squared</option>
-        <option>O(n^3) - Cubed</option>
-        <option>O(n^k) - Polynomial</option>
-        <option>O(2^n^k) - Non-deterministic Polynomial</option>
+        <option value="O(1)">O(1) - Constant</option>
+        <option value="O(logn)">O(logn) - Logarithmic</option>
+        <option value="O(logn*)">O(logn*) - Amortized</option>
+        <option value="O(n)">O(n) - Linear</option>
+        <option value="O(n*)">O(n*) - Amortized</option>
+        <option value="O(nlogn)">O(nlogn) - n-Logarithmic</option>
+        <option value="O(n*logn)">O(nlogn) - Amortized</option>
+        <option value="O(n^2)">O(n^2) - Squared</option>
+        <option value="O(n*^2)">O(n*^2) - Amortized</option>
+        <option value="O(n^3)">O(n^3) - Cubed</option>
+        <option value="O(n*^3)">O(n^3) - Amortized</option>
+        <option value="O(n^k)">O(n^k) - Polynomial</option>
+        <option value="O(n*^k)">O(n^k) - Amortized</option>
+        <option value="O(2^n^k)">O(2^n^k) - Non-det Polynomial</option>
+        <option value="O(2^n*^k)">O(2^n^k) - Amortized</option>
+        <option value="O(V*E)">O(V*E) - Graphs</option>
+        <option value="O(V^2)">O(V^2) - Graphs</option>
+        <option value="O(E^2)">O(E^2) - Graphs</option>
+        <option value="O(VE^2)">O(VE^2) - Graphs</option>
       </select>
+    </div>
+
+    <div>
+      <label>Choose Other: </label>
+      <input name="timecomplexity_other" style="width:20em" type="text" class="form-control"></text>
     </div>
 
     <div class="form-group">
@@ -66,18 +86,17 @@
     </div>
 
     <div class="form-group">
-      <label>Add tags: </label>
-      <input name="inputTags[]" class="form-control"
-                   value="{{ attributes.tags }}" data-role="tagsinput" />
-    </div>
-
-    <div class="form-group">
-      <label>Select Tags: </label>
+      <label>Select From Existing Tags: </label><br>
       <select multiple data-role="tagsinput" name="tags[]">
       {% for tagname in params.tags %}  
         <option>{{ tagname }}</option>
       {% endfor %}
       </select>
+    </div>
+
+    <div class="form-group">
+      <label>Add New Tags: </label><font color="gray"><p>(use this to add new tags, use ','' to differentiate between tags)</font></p>
+      <input name="inputTags[]" class="form-control" value="{{ tags_single_string }}" data-role="tagsinput" />
     </div>
 
     <button type="submit" class="btn btn-default">Submit</button>

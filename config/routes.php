@@ -24,14 +24,6 @@
     AlgorithmController::algorithm_show($id);
   });
   
-  $routes->get('/algorithm_list', function() {
-    AlgorithmController::algorithm_list();
-  });
-
-  $routes->get('/algorithm_modify', function() {
-    AlgorithmController::algorithm_modify();
-  });
-
   $routes->get('/algorithm/deletealgo/:id', function($id){
     AlgorithmController::delete($id);
   });
@@ -40,32 +32,44 @@
     AlgorithmController::edit($id);
   });
 
-  $routes-> post('/algorithm/modify/:id', function($id){
+  $routes->post('/algorithm/modify/:id', function($id){
     AlgorithmController::update($id);
   });
   
-  $routes-> get('/algorithm/:id/analysis/edit/:analysis_id', function($id, $analysis_id){
+  $routes->get('/algorithm/:id/analysis/edit/:analysis_id', function($id, $analysis_id){
     AnalysisController::edit($id, $analysis_id);
   });
 
-  $routes-> post('/algorithm/:id/analysis/edit/:analysis_id', function($id, $analysis_id){
+  $routes->post('/algorithm/:id/analysis/edit/:analysis_id', function($id, $analysis_id){
     AnalysisController::update($id, $analysis_id);
   });
 
-  $routes-> get('/algorithm/:id/analysis/delete/:analysis_id', function($algorithm_id, $analysis_id){
+  $routes->get('/algorithm/:id/analysis/delete/:analysis_id/?:back_path', function($algorithm_id, $analysis_id){
     AnalysisController::delete($analysis_id, $algorithm_id);
   });
 
-  $routes-> get('/algorithm/:id/analysis/new', function($id){
+  $routes->get('/algorithm/:id/analysis/new', function($id){
     AnalysisController::new($id);
   });
 
-  $routes-> post('/algorithm/:id/analysis/new', function($id){
+  $routes->post('/algorithm/:id/analysis/new', function($id){
     AnalysisController::store($id);
   });
 
-  $routes-> get('/algorithm/:algorithm_id/implementation/:planguage', function($algorithm_id, $planguage){
+  $routes->get('/algorithm/:algorithm_id/implementation/:planguage', function($algorithm_id, $planguage){
     ImplementationController::show($algorithm_id, $planguage);
+  });
+
+  $routes->get('/algorithm/:algorithm_id/new_implementation', function($algorithm_id){
+    ImplementationController::new($algorithm_id);
+  });
+
+  $routes->post('/algorithm/:algorithm_id/new_implementation', function($algorithm_id){
+    ImplementationController::store($algorithm_id);
+  });
+
+  $routes->get('/algorithm/:algorithm_id/delete_link/:algorithm_to_id', function($algorithm_id, $algorithm_to_id){
+    AlgorithmController::deleteLink($algorithm_id, $algorithm_to_id);
   });
 
   $routes->get('/tags/index', function() {
@@ -107,5 +111,3 @@
   $routes->post('/class/new', function() {
     AClassController::store();
   });
-
-  

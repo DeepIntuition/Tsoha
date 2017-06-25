@@ -14,8 +14,6 @@ class BaseController{
   public static function check_logged_in(){
     if (!isset($_SESSION['user'])) {
       Redirect::to('/login', array('message' => "You don't have the necessary rights. Please login first."));
-    }else{
-      return TRUE;
     } 
   }
 

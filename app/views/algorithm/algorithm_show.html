@@ -12,7 +12,7 @@
       {% if user_logged_in %}
       <div class='btn-group'>
           <a href="{{base_path}}/algorithm/{{algorithm.id}}/analysis/new" class="btn btn-success">Add new analysis</a>
-          <a href="#" class="btn btn-success">Add new implementation</a>
+          <a href="{{ base_path }}/algorithm/{{ algorithm.id }}/new_implementation" class="btn btn-success">Add new implementation</a>
       </div>
       {% endif %}
       {% if user_logged_in.administrator %}
@@ -23,6 +23,11 @@
       {% endif %}
     </div>
     <h2><strong>Algorithm:</strong> {{ algorithm.name }}</h2>
+    
+    
+    <a href="{{ base_path }}/index" class="btn btn-default">Back to Index</a>
+    
+
   </div>
 
   {% if message %}
@@ -53,20 +58,28 @@
     </table>
   
   <div class="bs-callout bd-callout-primary">
-        <strong>Similar algorithms: </strong> 
-        {% for algo1 in algorithm.similar %}
-          <a href="{{base_path}}/algorithm/{{algo1.id}}" class="btn btn-default btn-sm">{{ algo1.name }}</a>
-        {% endfor %}    
-        <br>      
-        <strong>Tags:</strong>
-          {% for tagi in algorithm.tags %}
-            <a href="{{base_path}}/tags/{{ tagi.id }}" class="btn btn-default btn-sm">{{ tagi.name }}</a>
-          {% endfor %}
-        <br>      
-        <strong>Available Implementations:</strong>
-          {% for planguage in algorithm.implementations %}
-            {{ selectors.planguage_button_selector("#{planguage}", "#{base_path}/algorithm/#{algorithm.id}/implementation/#{planguage}") }}
-          {% endfor %}      
+    <strong>Similar algorithms: </strong> 
+    {% for algo1 in algorithm.similar %}
+      <a href="{{base_path}}/algorithm/{{algo1.id}}" class="btn btn-default btn-sm">{{ algo1.name }}</a>
+    {% endfor %}    
+    <br>      
+    <strong>Tags:</strong>
+      {% for tagi in algorithm.tags %}
+        <a href="{{base_path}}/tags/{{ tagi.id }}" class="btn btn-default btn-sm">{{ tagi.name }}</a>
+      {% endfor %}
+    <br>      
+    <strong>Available Implementations:</strong>
+    {% for planguage in algorithm.implementations %}
+      {% if planguage == "Ruby" %}
+        <a href="{{base_path}}/algorithm/{{algorithm.id}}/implementation/{{planguage}}" class="btn btn-danger btn-sm">{{planguage}}</a>
+      {% elseif planguage == "Python" %}
+        <a href="{{base_path}}/algorithm/{{algorithm.id}}/implementation/{{planguage}}" class="btn btn-primary btn-sm">{{planguage}}</a>
+      {% elseif planguage == "Java" %}
+        <a href="{{base_path}}/algorithm/{{algorithm.id}}/implementation/{{planguage}}" class="btn btn-success btn-sm">{{planguage}}</a>
+      {% else %}
+        <a href="{{base_path}}/algorithm/{{algorithm.id}}/implementation/{{planguage}}" class="btn btn-default btn-sm">{{planguage}}</a>
+      {% endif %}   
+    {% endfor %} 
   </div>
   
   {% if algorithm.analyses %}

@@ -59,6 +59,16 @@ class AlgorithmLink extends BaseModel{
     $query->execute(array('algorithm_id' => $algorithm_id));
   }
 
+  public static function deleteLink($algorithm_id, $algorithm_to_id){
+    $query = DB::connection()->prepare('
+      DELETE FROM Algorithmlink 
+        WHERE algorithmfrom_id= :algorithm_id 
+        AND algorithmto_id= :algorithm_to_id');
+    $query->execute(array(
+      'algorithm_id' => $algorithm_id,
+      'algorithm_to_id' => $algorithm_to_id));
+  }
+
   public static function update($algorithm_id, $algorithmNames){
     AlgorithmLink::deleteByAlgorithmId($algorithm_id);
     AlgorithmLink::saveByName($algorithm_id, $algorithmNames);

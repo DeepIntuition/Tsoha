@@ -51,15 +51,10 @@ class Tag extends BaseModel{
   }
 
   public static function saveNewTags($newTags){
-    $uniqueTags = array();
     foreach ($newTags as $key) {
       $newTag = new Tag(array('name' => $key));
-      if($newTag->check_name_available()){
-        $newTag->save();
-        $uniqueTags[] = $newTag->name;
-      }
+      $newTag->save();
     }
-    return $uniqueTags;
   }
 
   public static function fetchTagsByAlgorithm($algorithm_id){
@@ -115,4 +110,5 @@ class Tag extends BaseModel{
       DELETE FROM Tag WHERE id= :id');
     $query->execute(array('id' => $this->id));
   }
+
 }

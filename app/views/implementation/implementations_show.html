@@ -3,19 +3,18 @@
 {% import "macros/forms.html" as forms %}
 {% import "macros/messages.html" as messages %}
 {% import "macros/selectors.html" as selectors %}
-  {% set bool_all = false %}
-  {% if selected_planguage == "All" %}
-      {% set bool_all = true %}
-  {% endif %}  
   <div class='page-header'>
     <div class='btn-toolbar pull-right'>
       <div class='btn-group'>
         <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">{{ selected_planguage }}<span class="caret"></span></button>
         <ul class="dropdown-menu" role="menu">
-          {% set implemented_languages = ["All"] %}
+          {% if selected_planguage != 'all' %}
+            <li><a href="{{ base_path }}/algorithm/{{ algorithm.id }}/implementation/all">All</a></li>
+          {% endif %}
+          {% set implemented_languages = [] %}
           {% for implementation in implementations %}
-            {% if not implementation.planguage in implemented_languages %}
-              {% if implementation.planguage != selected_language %}
+            {% if not(implementation.planguage in implemented_languages) %}
+              {% if implementation.planguage != selected_planguage %}
                 {% set implemented_languages = [implemented_languages, implementation.planguage] %}
                   <li><a href="{{ base_path }}/algorithm/{{ algorithm.id }}/implementation/{{ implementation.planguage }}">{{ implementation.planguage }}</a></li>
               {% endif %}
@@ -26,17 +25,13 @@
 
       {% if user_logged_in %}
       <div class='btn-group'>
-        <a href="{{ base_path }}/algorithm/{{ algorithm.id }}/implementation/new" class="btn btn-success">Add new implementation</a>
+        <a href="{{ base_path }}/algorithm/{{ algorithm.id }}/new_implementation" class="btn btn-success">Add new implementation</a>
       </div>
       {% endif %}
     </div>
 
     <h2><strong>Algorithm: </strong>{{ algorithm.name }}</h2>
-    {% if back_path %}
-      <a href="{{ back_path }}" class="btn btn-default">Go back</a>
-    {% else %}
-      <a href="{{ back_path }}" class="btn btn-default disabled">Go back</a>
-    {% endif %}
+    <a href="{{base_path}}/algorithm/{{ algorithm.id }}" class="btn btn-default">Back</a>
   </div>
 
   {% if message %}
@@ -67,8 +62,6 @@
 
     <h3>Implementations</h3>
     {% for implementation in implementations %}
-      {% if not bool_all %}
-        {% if selected_planguage == implementation.planguage %}
         <div class="bs-callout bd-callout-primary"> 
           <table class="table table-hover">
             <thead>
@@ -80,11 +73,19 @@
             </thead>
             <tbody>
               <tr>
-                <td><button class="btn btn-primary btn-sm">{{implementation.name}}</button></td>
+                <td><button class="btn btn-primary btn-sm">{{ implementation.name }}</button></td>
                 <td>
-                  {{ selectors.planguage_button_selector("#{implementation.planguage}", "#{base_path}/algorithm/#{algorithm.id}/implementation/#{implementation.planguage}") }}
+                  {% if implementation.planguage == "Ruby" %}
+                      <a href="{{base_path}}/algorithm/{{algorithm.id}}/implementation/{{implementation.planguage}}" class="btn btn-danger btn-sm">{{implementation.planguage}}</a>
+                    {% elseif implementation.planguage == "Python" %}
+                      <a href="{{base_path}}/algorithm/{{algorithm.id}}/implementation/{{implementation.planguage}}" class="btn btn-primary btn-sm">{{implementation.planguage}}</a>
+                    {% elseif implementation.planguage == "Java" %}
+                      <a href="{{base_path}}/algorithm/{{algorithm.id}}/implementation/{{implementation.planguage}}" class="btn btn-success btn-sm">{{implementation.planguage}}</a>
+                    {% else %}
+                      <a href="{{base_path}}/algorithm/{{algorithm.id}}/implementation/{{implementation.planguage}}" class="btn btn-default btn-sm">{{implementation.planguage}}</a>
+                  {% endif %}   
                 </td>
-                <td><font color="gray">{{implementation.date}}</td>
+                <td><font color="gray">{{ implementation.date }}</td>
               </tr>
             </tbody>
           </table>
@@ -96,43 +97,15 @@
           {{  forms.modify_algorithm_button("#{base_path}/algorithm/#{algorithm.id}/implementation/edit/#{implementation.id}") }}
           {{  forms.delete_button("#{base_path}/algorithm/#{algorithm.id}/implementation/delete/#{implementation.id}") }}
         {% endif %}
-      {% endif %}
-      </div>
-      {% else %}
-      <div class="bs-callout bd-callout-primary"> 
-          <table class="table table-hover">
-            <thead>
-              <tr>
-                <th>Author</th>
-                <th>Programming language</th>
-                <th>Date added</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td><button class="btn btn-primary btn-sm">{{implementation.contributor_name}}</button></td>
-                <td>
-                  {{ selectors.planguage_button_selector("#{implementation.planguage}", "#{base_path}/algorithm/#{algorithm.id}/implementation/#{implementation.planguage}") }}
-                </td>
-                <td><font color="gray">{{implementation.date}}</td>
-              </tr>
-            </tbody>
-          </table>
-
-        <div class="well">
-            <font color="gray">{{ implementation.description }}</font>            
-        </div> 
-        {% if implementation.contributor_id == user_logged_in.id %}
-          {{  forms.modify_algorithm_button("#{base_path}/algorithm/#{algorithm.id}/implementation/edit/#{implementation.id}") }}
-          {{  forms.delete_button("#{base_path}/algorithm/#{algorithm.id}/implementation/delete/#{implementation.id}") }}
-        {% endif %}
-      </div>        
-      {% endif %}  
+      </div> 
     {% endfor %}
 
   {% else %}
-    <h4>Sorry, there are no implementations for this algorithm in the AlgorithmDB yet.</h4>
-    <a href="{{ base_path }}/algorithm/{{ algorithm.id }}/implementation/new" class="btn btn-success">Add one</a> 
+    {% if selected_planguage == 'all' %}
+      <h4>Sorry, there are 0 implementations for this algorithm in the AlgorithmDB at the moment.</h4>
+    {% else %}
+      <h4>Sorry, there are no implementations in <strong>{{ selected_planguage }}</strong> for this algorithm in the AlgorithmDB.</h4>
+    {% endif %}
+    <a href="{{ base_path }}/algorithm/{{ algorithm.id }}/new_implementation" class="btn btn-success">Add one</a>
   {% endif %}
-   
 {% endblock %}
